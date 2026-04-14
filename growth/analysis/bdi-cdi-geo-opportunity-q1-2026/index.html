@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDI/CDI Geo Opportunity Report - Jones Road Beauty</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&family=Space+Mono&display=swap" rel="stylesheet">
+    <style>
+        @font-face { font-family: 'Canela'; src: local('Canela-Light'), local('Canela Light'), url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'Canela'; src: local('Canela-LightItalic'), local('Canela Light Italic'), url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-LightItalic.otf') format('opentype'); font-weight: 300; font-style: italic; font-display: swap; }
+        @font-face { font-family: 'BaseMonoWideWeb'; src: local('BaseMonoWideWeb'), local('Base Mono Wide'), url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWideThin_6014.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'RingsideWideWeb'; src: local('RingsideWideWeb'), local('RingsideWide-Book'), url('https://jrb-fonts-cdn.vercel.app/fonts/RingsideWide-Book_Web.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+        @font-face { font-family: 'GeogrotesqueCondBoldWeb'; src: local('GeogrotesqueCondBoldWeb'), local('Geogrotesque Cond Bold'), url('https://jrb-fonts-cdn.vercel.app/fonts/Geogrotesque.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+
+        :root {
+            --jrb-black: #000000;
+            --jrb-cream: #f6f2eb;
+            --jrb-pink: #ff2e92;
+            --jrb-white: #FFFFFF;
+            --jrb-border: #d0d0d0;
+            --font-headline: 'Canela', 'DM Serif Display', Georgia, serif;
+            --font-body: 'RingsideWideWeb', 'DM Sans', -apple-system, sans-serif;
+            --font-mono: 'BaseMonoWideWeb', 'Space Mono', monospace;
+            --font-display: 'GeogrotesqueCondBoldWeb', 'Barlow Condensed', 'Arial Black', sans-serif;
+            --ease-smooth: cubic-bezier(0.39, 0.575, 0.565, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+        body {
+            font-family: var(--font-body);
+            background: var(--jrb-cream);
+            color: var(--jrb-black);
+            line-height: 1.5;
+            letter-spacing: .025em;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .slide {
+            min-height: 100vh;
+            padding: clamp(2rem, 6vw, 5rem) clamp(2rem, 8vw, 6rem);
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+        .slide--dark { background: var(--jrb-black); color: var(--jrb-white); }
+        .slide--pink { background: var(--jrb-pink); color: var(--jrb-white); }
+
+        h1 { font-family: var(--font-headline); font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 300; line-height: 1.1; margin-bottom: 1rem; }
+        h2 { font-family: var(--font-headline); font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 300; line-height: 1.15; margin-bottom: 1.5rem; }
+        h3 { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.18px; margin-bottom: 1rem; }
+        p { font-family: var(--font-body); font-size: clamp(1rem, 1.8vw, 1.25rem); max-width: 60ch; margin-bottom: 1rem; line-height: 1.6; }
+        .subtitle { font-family: var(--font-mono); font-size: 13px; font-weight: 550; letter-spacing: 0.4px; text-transform: uppercase; color: var(--jrb-pink); margin-bottom: 1rem; }
+        .slide--dark .subtitle { color: var(--jrb-pink); }
+        .slide--pink .subtitle { color: var(--jrb-black); }
+
+        .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.8s var(--ease-smooth), transform 0.8s var(--ease-smooth); }
+        .slide.visible .reveal { opacity: 1; transform: translateY(0); }
+        .reveal:nth-child(2) { transition-delay: 0.1s; }
+        .reveal:nth-child(3) { transition-delay: 0.2s; }
+        .reveal:nth-child(4) { transition-delay: 0.3s; }
+        .reveal:nth-child(5) { transition-delay: 0.35s; }
+        .reveal:nth-child(6) { transition-delay: 0.4s; }
+
+        .progress { position: fixed; top: 0; left: 0; height: 3px; background: var(--jrb-pink); width: 0%; z-index: 100; transition: width 0.3s ease; }
+        .nav-hint { position: fixed; bottom: 2rem; right: 2rem; font-family: var(--font-mono); font-size: 11px; font-weight: 550; text-transform: uppercase; letter-spacing: 0.4px; opacity: 0.4; z-index: 50; }
+        .slide-counter { position: fixed; bottom: 2rem; left: 2rem; font-family: var(--font-mono); font-size: 11px; font-weight: 550; text-transform: uppercase; letter-spacing: 0.4px; opacity: 0.4; z-index: 50; }
+
+        /* Stat cards */
+        .stat-row { display: flex; gap: 2rem; flex-wrap: wrap; margin: 2rem 0; }
+        .stat-card {
+            background: var(--jrb-white);
+            border: 1px solid var(--jrb-border);
+            border-radius: 2px;
+            padding: 1.5rem 2rem;
+            min-width: 200px;
+            flex: 1;
+        }
+        .slide--dark .stat-card { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); }
+        .stat-card .label {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 550;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            opacity: 0.5;
+            margin-bottom: 0.5rem;
+        }
+        .stat-card .value {
+            font-family: var(--font-headline);
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            line-height: 1.1;
+        }
+        .stat-card .detail {
+            font-family: var(--font-body);
+            font-size: 14px;
+            opacity: 0.6;
+            margin-top: 0.25rem;
+        }
+        .stat-card .value.pink { color: var(--jrb-pink); }
+
+        /* Quadrant */
+        .quadrant-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px;
+            margin: 2rem 0;
+            max-width: 900px;
+        }
+        .quadrant-cell {
+            padding: 1.5rem 2rem;
+            border-radius: 2px;
+        }
+        .quadrant-cell h3 { font-size: 14px; margin-bottom: 0.75rem; }
+        .quadrant-cell p { font-size: 14px; opacity: 0.7; margin-bottom: 0; max-width: none; }
+        .q-tl { background: rgba(0,0,0,0.04); }
+        .q-tr { background: rgba(0,0,0,0.08); }
+        .q-bl { background: rgba(0,0,0,0.02); }
+        .q-br { background: var(--jrb-pink); color: white; }
+        .q-br h3 { color: white; }
+
+        /* Tables */
+        .data-table {
+            width: 100%;
+            max-width: 1100px;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 14px;
+        }
+        .data-table th {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 550;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            text-align: left;
+            padding: 0.75rem 1rem;
+            border-bottom: 2px solid var(--jrb-black);
+            white-space: nowrap;
+        }
+        .data-table td {
+            font-family: var(--font-body);
+            font-size: 14px;
+            padding: 0.65rem 1rem;
+            border-bottom: 1px solid var(--jrb-border);
+            white-space: nowrap;
+        }
+        .data-table td.num { font-family: var(--font-mono); font-size: 13px; text-align: right; }
+        .data-table th.num { text-align: right; }
+        .data-table tr.highlight td { background: rgba(255,46,146,0.06); font-weight: 500; }
+        .data-table .gap-pos { color: var(--jrb-pink); font-weight: 600; }
+        .slide--dark .data-table th { border-bottom-color: rgba(255,255,255,0.3); color: rgba(255,255,255,0.5); }
+        .slide--dark .data-table td { border-bottom-color: rgba(255,255,255,0.1); color: var(--jrb-white); }
+        .slide--dark .data-table tr.highlight td { background: rgba(255,46,146,0.12); }
+
+        /* Bar chart */
+        .bar-chart { max-width: 900px; margin: 1.5rem 0; }
+        .bar-row { display: flex; align-items: center; margin-bottom: 0.6rem; }
+        .bar-label {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            font-weight: 550;
+            width: 120px;
+            flex-shrink: 0;
+            text-align: right;
+            padding-right: 1rem;
+        }
+        .bar-track { flex: 1; height: 32px; position: relative; background: rgba(0,0,0,0.04); border-radius: 2px; overflow: hidden; }
+        .bar-fill { height: 100%; border-radius: 2px; display: flex; align-items: center; padding-left: 0.75rem; font-family: var(--font-mono); font-size: 11px; font-weight: 550; color: white; transition: width 1s var(--ease-smooth); }
+        .bar-fill.cat { background: var(--jrb-black); }
+        .bar-fill.brand { background: var(--jrb-pink); }
+        .bar-fill.rev { background: rgba(0,0,0,0.25); }
+        .bar-dual { display: flex; gap: 2px; height: 100%; }
+
+        /* Callout */
+        .callout {
+            background: var(--jrb-black);
+            color: var(--jrb-white);
+            padding: 2rem 2.5rem;
+            border-radius: 2px;
+            margin: 2rem 0;
+            max-width: 800px;
+        }
+        .callout p { color: var(--jrb-white); opacity: 0.85; }
+        .callout strong { color: var(--jrb-pink); }
+
+        /* Timeline */
+        .timeline { max-width: 800px; margin: 2rem 0; }
+        .timeline-phase {
+            display: flex;
+            gap: 2rem;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--jrb-border);
+        }
+        .timeline-phase:last-child { border-bottom: none; }
+        .phase-marker {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 550;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: var(--jrb-pink);
+            width: 120px;
+            flex-shrink: 0;
+            padding-top: 0.25rem;
+        }
+        .phase-content h3 { margin-bottom: 0.5rem; }
+        .phase-content p { font-size: 15px; opacity: 0.7; margin-bottom: 0.25rem; }
+        .phase-content ul { list-style: none; padding: 0; }
+        .phase-content li {
+            font-family: var(--font-body);
+            font-size: 14px;
+            padding: 0.3rem 0;
+            padding-left: 1.25rem;
+            position: relative;
+            line-height: 1.5;
+        }
+        .phase-content li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.65rem;
+            width: 6px;
+            height: 6px;
+            background: var(--jrb-pink);
+            border-radius: 50%;
+        }
+
+        /* KPI grid */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+            max-width: 1000px;
+        }
+        .kpi-card {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 2px;
+            padding: 1.25rem 1.5rem;
+        }
+        .kpi-card .kpi-label {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 550;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            opacity: 0.45;
+            margin-bottom: 0.5rem;
+        }
+        .kpi-card .kpi-value {
+            font-family: var(--font-headline);
+            font-size: 1.5rem;
+            font-weight: 300;
+        }
+        .kpi-card .kpi-detail {
+            font-family: var(--font-body);
+            font-size: 12px;
+            opacity: 0.5;
+            margin-top: 0.25rem;
+        }
+
+        /* Opportunity bar */
+        .opp-bar-group { margin-bottom: 1.25rem; max-width: 800px; }
+        .opp-bar-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.35rem; }
+        .opp-bar-state { font-family: var(--font-body); font-size: 15px; font-weight: 500; }
+        .opp-bar-gap { font-family: var(--font-mono); font-size: 13px; font-weight: 550; color: var(--jrb-pink); }
+        .opp-bar-container { height: 28px; background: rgba(0,0,0,0.04); border-radius: 2px; position: relative; overflow: hidden; }
+        .opp-bar-actual { height: 100%; background: var(--jrb-black); border-radius: 2px; position: absolute; left: 0; top: 0; }
+        .opp-bar-expected { height: 100%; border-right: 2px dashed var(--jrb-pink); position: absolute; left: 0; top: 0; }
+        .opp-bar-meta { display: flex; gap: 2rem; margin-top: 0.25rem; }
+        .opp-bar-detail { font-family: var(--font-mono); font-size: 10px; opacity: 0.4; text-transform: uppercase; letter-spacing: 0.3px; }
+
+        /* Bullet list */
+        .bullet-list { list-style: none; padding: 0; max-width: 700px; }
+        .bullet-list li {
+            font-family: var(--font-body);
+            font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+            padding: 0.5rem 0 0.5rem 1.5rem;
+            position: relative;
+            line-height: 1.5;
+        }
+        .bullet-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.85rem;
+            width: 8px;
+            height: 8px;
+            background: var(--jrb-pink);
+            border-radius: 50%;
+        }
+        .slide--dark .bullet-list li::before { background: var(--jrb-pink); }
+
+        /* Two-col layout */
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; max-width: 1100px; }
+        @media (max-width: 768px) { .two-col { grid-template-columns: 1fr; gap: 2rem; } .stat-row { flex-direction: column; } }
+
+        /* Emphasis */
+        .em-pink { color: var(--jrb-pink); }
+        .em-big { font-family: var(--font-headline); font-size: clamp(3rem, 8vw, 6rem); font-weight: 300; line-height: 1; display: block; margin: 0.5rem 0; }
+    </style>
+</head>
+<body>
+    <div class="progress"></div>
+
+    <!-- ======================= SLIDE 1: TITLE ======================= -->
+    <section class="slide slide--dark">
+        <p class="subtitle reveal">Growth Strategy / April 2026</p>
+        <h1 class="reveal">BDI/CDI<br>Geo Opportunity Report</h1>
+        <p class="reveal" style="opacity:0.5; margin-top:1rem;">Where category demand is strong but JRB brand awareness lags &mdash; and what to do about it.</p>
+    </section>
+
+    <!-- ======================= SLIDE 2: WHAT IS BDI/CDI ======================= -->
+    <section class="slide">
+        <p class="subtitle reveal">Framework</p>
+        <h2 class="reveal">What are BDI &amp; CDI?</h2>
+        <div class="two-col reveal">
+            <div>
+                <h3>Category Development Index (CDI)</h3>
+                <p>Measures how strong <em>beauty/cosmetics category demand</em> is in a state relative to the national average. A CDI of 1.10 means that state has 10% more category demand than average.</p>
+            </div>
+            <div>
+                <h3>Brand Development Index (BDI)</h3>
+                <p>Measures how strong <em>JRB brand interest</em> is in a state relative to the national average. A BDI of 0.71 means JRB awareness is 29% below average in that state.</p>
+            </div>
+        </div>
+        <div class="stat-row reveal" style="margin-top:2rem;">
+            <div class="stat-card">
+                <div class="label">CDI Average (All States)</div>
+                <div class="value">0.92</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">BDI Average (All States)</div>
+                <div class="value">1.15</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Target Zone</div>
+                <div class="value pink">CDI &gt; 0.92 &amp; BDI &lt; 1.15</div>
+                <div class="detail">Above-avg category demand + below-avg brand interest</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================= SLIDE 3: QUADRANT MAP ======================= -->
+    <section class="slide">
+        <p class="subtitle reveal">Quadrant Overview</p>
+        <h2 class="reveal">Four types of markets</h2>
+        <div class="quadrant-grid reveal">
+            <div class="quadrant-cell q-tl">
+                <h3>Low CDI, High BDI</h3>
+                <p><strong>Brand surplus.</strong> JRB is well-known but category demand is soft. 27 states live here &mdash; mostly Northeast &amp; Mountain West. Protect, don't over-invest.</p>
+            </div>
+            <div class="quadrant-cell q-tr">
+                <h3>High CDI, High BDI</h3>
+                <p><strong>Brand + category strength.</strong> IL, NJ, NY. JRB is strong where the category is strong. Maximize share &amp; defend.</p>
+            </div>
+            <div class="quadrant-cell q-bl">
+                <h3>Low CDI, Low BDI</h3>
+                <p><strong>Double gap.</strong> 11 states with weak category demand AND weak JRB awareness. Deprioritize &mdash; hard to move both levers at once.</p>
+            </div>
+            <div class="quadrant-cell q-br">
+                <h3>High CDI, Low BDI</h3>
+                <p><strong>Category surplus = opportunity.</strong> People are buying beauty &mdash; just not JRB. This is where we focus.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================= SLIDE 4: THE BIG NUMBER ======================= -->
+    <section class="slide slide--dark">
+        <p class="subtitle reveal">The Opportunity</p>
+        <h2 class="reveal">JRB is leaving</h2>
+        <span class="em-big em-pink reveal">$2.5M+</span>
+        <h2 class="reveal">on the table in Q1 alone</h2>
+        <p class="reveal" style="opacity:0.5; margin-top:1rem;">Target opportunity states are under-indexing vs. category share. If JRB captured revenue proportional to category demand, these states would generate $2.5M+ more in Q1.</p>
+    </section>
+
+    <!-- ======================= SLIDE 5: OPPORTUNITY GAP BARS ======================= -->
+    <section class="slide">
+        <p class="subtitle reveal">Revenue Gap Analysis</p>
+        <h2 class="reveal">Actual revenue vs. category-adjusted expectation</h2>
+        <p class="reveal" style="opacity:0.6; font-size:14px;">Jan 1 &ndash; Apr 12, 2026. Dashed line = expected revenue if JRB matched category share. Gap = revenue left on the table.</p>
+
+        <div class="reveal" style="margin-top:1.5rem;">
+            <div class="opp-bar-group">
+                <div class="opp-bar-header">
+                    <span class="opp-bar-state">California</span>
+                    <span class="opp-bar-gap">+$936K gap</span>
+                </div>
+                <div class="opp-bar-container">
+                    <div class="opp-bar-actual" style="width:56%"></div>
+                    <div class="opp-bar-expected" style="width:72%"></div>
+                </div>
+                <div class="opp-bar-meta">
+                    <span class="opp-bar-detail">Actual: $3.32M (11.8%)</span>
+                    <span class="opp-bar-detail">Expected: $4.26M (15.2% cat share)</span>
+                    <span class="opp-bar-detail">CDI 1.22 / BDI 0.71</span>
+                </div>
+            </div>
+
+            <div class="opp-bar-group">
+                <div class="opp-bar-header">
+                    <span class="opp-bar-state">Texas</span>
+                    <span class="opp-bar-gap">+$936K gap</span>
+                </div>
+                <div class="opp-bar-container">
+                    <div class="opp-bar-actual" style="width:40%"></div>
+                    <div class="opp-bar-expected" style="width:53%"></div>
+                </div>
+                <div class="opp-bar-meta">
+                    <span class="opp-bar-detail">Actual: $1.87M (6.7%)</span>
+                    <span class="opp-bar-detail">Expected: $2.81M (10.0% cat share)</span>
+                    <span class="opp-bar-detail">CDI 1.10 / BDI 0.69</span>
+                </div>
+            </div>
+
+            <div class="opp-bar-group">
+                <div class="opp-bar-header">
+                    <span class="opp-bar-state">New York</span>
+                    <span class="opp-bar-gap">+$380K gap</span>
+                </div>
+                <div class="opp-bar-container">
+                    <div class="opp-bar-actual" style="width:38%"></div>
+                    <div class="opp-bar-expected" style="width:46%"></div>
+                </div>
+                <div class="opp-bar-meta">
+                    <span class="opp-bar-detail">Actual: $1.78M (6.3%)</span>
+                    <span class="opp-bar-detail">Expected: $2.16M (7.7% cat share)</span>
+                    <span class="opp-bar-detail">CDI 1.11 / BDI 1.11</span>
+                </div>
+            </div>
+
+            <div class="opp-bar-group">
+                <div class="opp-bar-header">
+                    <span class="opp-bar-state">Florida</span>
+                    <span class="opp-bar-gap">+$374K gap</span>
+                </div>
+                <div class="opp-bar-container">
+                    <div class="opp-bar-actual" style="width:33%"></div>
+                    <div class="opp-bar-expected" style="width:40%"></div>
+                </div>
+                <div class="opp-bar-meta">
+                    <span class="opp-bar-detail">Actual: $1.53M (5.4%)</span>
+                    <span class="opp-bar-detail">Expected: $1.90M (6.8% cat share)</span>
+                    <span class="opp-bar-detail">CDI 0.98 / BDI 0.92</span>
+                </div>
+            </div>
+
+            <div class="opp-bar-group">
+                <div class="opp-bar-header">
+                    <span class="opp-bar-state">Georgia</span>
+                    <span class="opp-bar-gap">+$178K gap</span>
+                </div>
+                <div class="opp-bar-container">
+                    <div class="opp-bar-actual" style="width:15.6%"></div>
+                    <div class="opp-bar-expected" style="width:19.3%"></div>
+                </div>
+                <div class="opp-bar-meta">
+                    <span class="opp-bar-detail">Actual: $732K (2.6%)</span>
+                    <span class="opp-bar-detail">Expected: $910K (3.2% cat share)</span>
+                    <span class="opp-bar-detail">CDI 0.95 / BDI 0.83</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================= SLIDE 6: FULL STATE TABLE ======================= -->
+    <section class="slide">
+        <p class="subtitle reveal">Target States</p>
+        <h2 class="reveal">States meeting the criteria: CDI &gt; 0.92 &amp; BDI &lt; 1.15</h2>
+        <p class="reveal" style="font-size:14px; opacity:0.5;">Sorted by revenue gap. Shopify data: Jan 1 &ndash; Apr 12, 2026. US total: $28.1M.</p>
+
+        <div class="reveal" style="overflow-x:auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>State</th>
+                        <th class="num">CDI</th>
+                        <th class="num">BDI</th>
+                        <th class="num">CDI-BDI Gap</th>
+                        <th class="num">Cat Share</th>
+                        <th class="num">Rev Share</th>
+                        <th class="num">Revenue</th>
+                        <th class="num">Orders</th>
+                        <th class="num">New Cust.</th>
+                        <th class="num">Rev Gap</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="highlight">
+                        <td>California</td>
+                        <td class="num">1.22</td>
+                        <td class="num">0.71</td>
+                        <td class="num gap-pos">+0.51</td>
+                        <td class="num">15.16%</td>
+                        <td class="num">11.83%</td>
+                        <td class="num">$3.32M</td>
+                        <td class="num">35,786</td>
+                        <td class="num">14,035</td>
+                        <td class="num gap-pos">+$936K</td>
+                    </tr>
+                    <tr class="highlight">
+                        <td>Texas</td>
+                        <td class="num">1.10</td>
+                        <td class="num">0.69</td>
+                        <td class="num gap-pos">+0.41</td>
+                        <td class="num">9.99%</td>
+                        <td class="num">6.66%</td>
+                        <td class="num">$1.87M</td>
+                        <td class="num">19,042</td>
+                        <td class="num">7,809</td>
+                        <td class="num gap-pos">+$936K</td>
+                    </tr>
+                    <tr class="highlight">
+                        <td>New York</td>
+                        <td class="num">1.11</td>
+                        <td class="num">1.11</td>
+                        <td class="num">0.00</td>
+                        <td class="num">7.69%</td>
+                        <td class="num">6.33%</td>
+                        <td class="num">$1.78M</td>
+                        <td class="num">19,380</td>
+                        <td class="num">7,403</td>
+                        <td class="num gap-pos">+$380K</td>
+                    </tr>
+                    <tr class="highlight">
+                        <td>Florida</td>
+                        <td class="num">0.98</td>
+                        <td class="num">0.92</td>
+                        <td class="num gap-pos">+0.06</td>
+                        <td class="num">6.78%</td>
+                        <td class="num">5.44%</td>
+                        <td class="num">$1.53M</td>
+                        <td class="num">16,454</td>
+                        <td class="num">6,560</td>
+                        <td class="num gap-pos">+$374K</td>
+                    </tr>
+                    <tr class="highlight">
+                        <td>Georgia</td>
+                        <td class="num">0.95</td>
+                        <td class="num">0.83</td>
+                        <td class="num gap-pos">+0.12</td>
+                        <td class="num">3.24%</td>
+                        <td class="num">2.60%</td>
+                        <td class="num">$732K</td>
+                        <td class="num">7,908</td>
+                        <td class="num">3,231</td>
+                        <td class="num gap-pos">+$178K</td>
+                    </tr>
+                    <tr>
+                        <td>Arizona</td>
+                        <td class="num">1.05</td>
+                        <td class="num">0.96</td>
+                        <td class="num gap-pos">+0.09</td>
+                        <td class="num">2.25%</td>
+                        <td class="num">2.24%</td>
+                        <td class="num">$630K</td>
+                        <td class="num">6,754</td>
+                        <td class="num">2,483</td>
+                        <td class="num">+$2K</td>
+                    </tr>
+                    <tr>
+                        <td>Tennessee</td>
+                        <td class="num">0.94</td>
+                        <td class="num">1.00</td>
+                        <td class="num">-0.06</td>
+                        <td class="num">1.87%</td>
+                        <td class="num">1.90%</td>
+                        <td class="num">$535K</td>
+                        <td class="num">5,500</td>
+                        <td class="num">2,302</td>
+                        <td class="num">&mdash;</td>
+                    </tr>
+                    <tr>
+                        <td>Nevada</td>
+                        <td class="num">1.10</td>
+                        <td class="num">0.75</td>
+                        <td class="num gap-pos">+0.35</td>
+                        <td class="num">1.10%</td>
+                        <td class="num">0.85%</td>
+                        <td class="num">$238K</td>
+                        <td class="num">2,454</td>
+                        <td class="num">947</td>
+                        <td class="num gap-pos">+$71K</td>
+                    </tr>
+                    <tr>
+                        <td>Louisiana</td>
+                        <td class="num">0.99</td>
+                        <td class="num">0.71</td>
+                        <td class="num gap-pos">+0.28</td>
+                        <td class="num">1.09%</td>
+                        <td class="num">0.82%</td>
+                        <td class="num">$229K</td>
+                        <td class="num">2,450</td>
+                        <td class="num">1,014</td>
+                        <td class="num gap-pos">+$77K</td>
+                    </tr>
+                    <tr>
+                        <td>Alabama</td>
+                        <td class="num">0.93</td>
+                        <td class="num">0.94</td>
+                        <td class="num">-0.01</td>
+                        <td class="num">1.19%</td>
+                        <td class="num">1.03%</td>
+                        <td class="num">$290K</td>
+                        <td class="num">3,140</td>
+                        <td class="num">1,280</td>
+                        <td class="num gap-pos">+$44K</td>
+                    </tr>
+                    <tr>
+                        <td>Hawaii</td>
+                        <td class="num">1.01</td>
+                        <td class="num">0.77</td>
+                        <td class="num gap-pos">+0.24</td>
+                        <td class="num">0.43%</td>
+                        <td class="num">0.35%</td>
+                        <td class="num">$97K</td>
+                        <td class="num">970</td>
+                        <td class="num">422</td>
+                        <td class="num gap-pos">+$24K</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ======================= SLIDE 7: KEY LEARNINGS ======================= -->
+    <section class="slide slide--dark">
+        <p class="subtitle reveal">Key Learnings</p>
+        <h2 class="reveal">What the data tells us</h2>
+        <ul class="bullet-list reveal" style="margin-top:1rem;">
+            <li><strong style="color:var(--jrb-pink)">CA + TX = 25% of category demand but only 18.5% of JRB revenue.</strong> These two states alone account for ~$1.9M in unrealized Q1 revenue. The category is buying beauty &mdash; they're just not buying JRB.</li>
+            <li><strong style="color:var(--jrb-pink)">Florida is a sleeping giant.</strong> Nearly 7% of category demand, BDI of 0.92. JRB under-indexes by $374K. A large retiree/mature beauty audience that's under-served.</li>
+            <li><strong style="color:var(--jrb-pink)">The Northeast is already working.</strong> VT (2.08), ME (1.85), MT (1.74), NH (1.66) &mdash; JRB massively over-indexes. Bobbi's audience is here. No incremental spend needed.</li>
+            <li><strong style="color:var(--jrb-pink)">Southern states are a double gap.</strong> MS, AL, LA have low CDI AND low BDI. But LA is interesting &mdash; CDI is 0.99 (near average) with a very low BDI of 0.71. Worth testing.</li>
+            <li><strong style="color:var(--jrb-pink)">JRB retail stores over-index nearby states.</strong> NJ (1.32 BDI), CT (1.44), CO (1.42) &mdash; all have stores. Physical retail lifts digital brand interest in surrounding geos.</li>
+        </ul>
+    </section>
+
+    <!-- ======================= SLIDE 8: CONTRAST SLIDE ======================= -->
+    <section class="slide">
+        <p class="subtitle reveal">Contrast</p>
+        <h2 class="reveal">States where JRB is winning vs. losing</h2>
+        <div class="two-col reveal" style="margin-top:1.5rem;">
+            <div>
+                <h3>Over-Indexing (Brand Strong)</h3>
+                <table class="data-table" style="font-size:13px;">
+                    <thead><tr><th>State</th><th class="num">BDI</th><th class="num">Rev Share</th><th class="num">Cat Share</th></tr></thead>
+                    <tbody>
+                        <tr><td>Vermont</td><td class="num">2.08</td><td class="num">0.34%</td><td class="num">0.13%</td></tr>
+                        <tr><td>Maine</td><td class="num">1.85</td><td class="num">0.63%</td><td class="num">0.30%</td></tr>
+                        <tr><td>Montana</td><td class="num">1.74</td><td class="num">0.52%</td><td class="num">0.22%</td></tr>
+                        <tr><td>New Hampshire</td><td class="num">1.66</td><td class="num">0.66%</td><td class="num">0.33%</td></tr>
+                        <tr><td>Massachusetts</td><td class="num">1.52</td><td class="num">3.35%</td><td class="num">2.30%</td></tr>
+                        <tr><td>Colorado</td><td class="num">1.42</td><td class="num">3.11%</td><td class="num">1.71%</td></tr>
+                        <tr><td>Connecticut</td><td class="num">1.44</td><td class="num">1.90%</td><td class="num">1.10%</td></tr>
+                    </tbody>
+                </table>
+                <p style="font-size:13px; opacity:0.5; margin-top:0.5rem;">Revenue outpaces category share. JRB resonates with these demos.</p>
+            </div>
+            <div>
+                <h3 style="color:var(--jrb-pink);">Under-Indexing (Opportunity)</h3>
+                <table class="data-table" style="font-size:13px;">
+                    <thead><tr><th>State</th><th class="num">BDI</th><th class="num">Rev Share</th><th class="num">Cat Share</th></tr></thead>
+                    <tbody>
+                        <tr class="highlight"><td>California</td><td class="num">0.71</td><td class="num">11.83%</td><td class="num">15.16%</td></tr>
+                        <tr class="highlight"><td>Texas</td><td class="num">0.69</td><td class="num">6.66%</td><td class="num">9.99%</td></tr>
+                        <tr class="highlight"><td>Florida</td><td class="num">0.92</td><td class="num">5.44%</td><td class="num">6.78%</td></tr>
+                        <tr class="highlight"><td>Georgia</td><td class="num">0.83</td><td class="num">2.60%</td><td class="num">3.24%</td></tr>
+                        <tr><td>Nevada</td><td class="num">0.75</td><td class="num">0.85%</td><td class="num">1.10%</td></tr>
+                        <tr><td>Louisiana</td><td class="num">0.71</td><td class="num">0.82%</td><td class="num">1.09%</td></tr>
+                        <tr><td>Hawaii</td><td class="num">0.77</td><td class="num">0.35%</td><td class="num">0.43%</td></tr>
+                    </tbody>
+                </table>
+                <p style="font-size:13px; opacity:0.5; margin-top:0.5rem;">Category demand exists. JRB just isn't capturing it.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================= SLIDE 9: TARGETING PLAN ======================= -->
+    <section class="slide slide--pink">
+        <p class="subtitle reveal">Plan of Action</p>
+        <h1 class="reveal">Geo-Targeted<br>Awareness Campaign</h1>
+        <p class="reveal" style="opacity:0.85; margin-top:1rem;">A phased approach to close the brand gap in high-category-demand states, measure lift, and scale what works.</p>
+    </section>
+
+    <!-- ======================= SLIDE 10: PHASE 1 ======================= -->
+    <section class="slide">
+        <p class="subtitle reveal">Phase 1 / Weeks 1-4</p>
+        <h2 class="reveal">Launch geo-targeted awareness on Meta</h2>
+
+        <div class="timeline reveal" style="margin-top:1.5rem;">
+            <div class="timeline-phase">
+                <div class="phase-marker">Target Geos</div>
+                <div class="phase-content">
+                    <h3>Primary: CA, TX, FL, GA</h3>
+                    <p>35% of beauty category demand. $2.4M+ revenue gap. Budget weight by category size.</p>
+                    <h3 style="margin-top:0.75rem;">Secondary: AZ, NV, LA</h3>
+                    <p>Smaller markets but large BDI gaps. Include at lower budget.</p>
+                </div>
+            </div>
+            <div class="timeline-phase">
+                <div class="phase-marker">Campaign Setup</div>
+                <div class="phase-content">
+                    <ul>
+                        <li>Create a <strong>dedicated prospecting campaign</strong> with geo-targeting overlaid on existing interest/LAL audiences</li>
+                        <li>Separate ad sets per state (or state cluster) for clean measurement</li>
+                        <li>Exclude existing customers in each geo to focus purely on new acquisition</li>
+                        <li>Start with 2-3 best-performing awareness/TOF creatives from existing campaigns</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="timeline-phase">
+                <div class="phase-marker">Creative</div>
+                <div class="phase-content">
+                    <ul>
+                        <li><strong>Awareness-first, not DR.</strong> Founder story, "why clean beauty," product education</li>
+                        <li>Video &gt; static for awareness (optimize for ThruPlay, not purchases)</li>
+                        <li>Test 1-2 creatives with regional/cultural hooks (e.g., "Texas heat-proof" for TX)</li>
+                        <li>Include UGC from creators in target states if available</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================= SLIDE 11: PHASE 2 ======================= -->
+    <section class="slide slide--dark">
+        <p class="subtitle reveal">Phase 2 / Weeks 4-8</p>
+        <h2 class="reveal">Measure the lift</h2>
+        <p class="reveal" style="opacity:0.6;">Run a clean pre/post + test/control comparison to isolate the impact of geo-targeted awareness.</p>
+
+        <div class="two-col reveal" style="margin-top:2rem;">
+            <div>
+                <h3>Test vs. Control Design</h3>
+                <ul class="bullet-list">
+                    <li><strong>Test states:</strong> CA, TX, FL, GA, AZ, NV, LA (receive geo-targeted awareness spend)</li>
+                    <li><strong>Control states:</strong> OK, KY, WV, MS (similar CDI/BDI profile but no incremental spend)</li>
+                    <li>4-week read minimum before evaluating</li>
+                    <li>Optional: Meta brand lift study in test geos for recall/awareness data</li>
+                </ul>
+            </div>
+            <div>
+                <h3>Baselines to Set Now</h3>
+                <div class="kpi-grid" style="grid-template-columns:1fr 1fr;">
+                    <div class="kpi-card">
+                        <div class="kpi-label">Branded Search Volume</div>
+                        <div class="kpi-value">Set via GT</div>
+                        <div class="kpi-detail">Google Trends by state, weekly</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Site Traffic by State</div>
+                        <div class="kpi-value">Set via GA4</div>
+                        <div class="kpi-detail">GA4 geo report, sessions + users</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">New Customer Rate</div>
+                        <div class="kpi-value">Set via Shopify</div>
+                        <div class="kpi-detail">New customer orders / total orders by state</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Branded Ad Opp %</div>
+                        <div class="kpi-value">Set via BDI</div>
+                        <div class="kpi-detail">Already baselined in BDI/CDI report</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Revenue per State</div>
+                        <div class="kpi-value">Set via Polar</div>
+                        <div class="kpi-detail">Shopify billing province, weekly</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">BDI Score</div>
+                        <div class="kpi-value">Current</div>
+                        <div class="kpi-detail">Re-run BDI/CDI at end of test</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================= SLIDE 12: PHASE 3 ======================= -->
+    <section class="slide">
+        <p class="subtitle reveal">Phase 3 / Week 8+</p>
+        <h2 class="reveal">Evaluate, iterate, expand</h2>
+
+        <div class="timeline reveal" style="margin-top:1.5rem;">
+            <div class="timeline-phase">
+                <div class="phase-marker">Evaluate</div>
+                <div class="phase-content">
+                    <ul>
+                        <li>Re-run BDI/CDI analysis &mdash; did Brand Index move in target states?</li>
+                        <li>Compare test states' revenue growth vs. control states</li>
+                        <li>Calculate <strong>incremental ROAS</strong>: (test state lift - control state lift) / awareness spend</li>
+                        <li>Check new customer acquisition rate change in test geos</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="timeline-phase">
+                <div class="phase-marker">Iterate</div>
+                <div class="phase-content">
+                    <ul>
+                        <li>Double down on states showing strongest BDI lift</li>
+                        <li>Kill or re-creative states with no movement</li>
+                        <li>Test layering retargeting in states that showed awareness lift but not conversion lift</li>
+                        <li>Adapt top-performing creative for new geos</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="timeline-phase">
+                <div class="phase-marker">Expand</div>
+                <div class="phase-content">
+                    <ul>
+                        <li>If lift is positive, expand to Tier 2 states: <strong>NY, IL, VA, WA, TN, MD</strong></li>
+                        <li>Set a goal: move target states' Market Strength from &lt;0.70 toward 1.0</li>
+                        <li>Consider pairing with influencer/creator partnerships in target geos</li>
+                        <li>Explore CTV/connected TV in CA + TX for upper-funnel scale</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================= SLIDE 13: SUCCESS METRICS ======================= -->
+    <section class="slide slide--dark">
+        <p class="subtitle reveal">Success Metrics</p>
+        <h2 class="reveal">What "good" looks like</h2>
+
+        <div class="stat-row reveal" style="margin-top:2rem;">
+            <div class="stat-card">
+                <div class="label">BDI Lift in Target States</div>
+                <div class="value pink">+0.10</div>
+                <div class="detail">Move from ~0.75 avg toward 0.85+ in 8 weeks</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Revenue Share Shift</div>
+                <div class="value pink">+1-2pp</div>
+                <div class="detail">Target states' share of US revenue closer to category share</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Branded Search Lift</div>
+                <div class="value pink">+15%</div>
+                <div class="detail">"Jones Road Beauty" search volume in target geos</div>
+            </div>
+        </div>
+        <div class="stat-row reveal">
+            <div class="stat-card">
+                <div class="label">New Customer Growth</div>
+                <div class="value pink">+10%</div>
+                <div class="detail">New customer orders in target states vs. control</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Incremental ROAS</div>
+                <div class="value pink">&gt; 2.0x</div>
+                <div class="detail">Lift in test states minus control, over awareness spend</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Revenue Gap Closed</div>
+                <div class="value pink">$500K+</div>
+                <div class="detail">Quarterly run-rate improvement in CA + TX alone</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================= SLIDE 14: BUDGET ALLOCATION ======================= -->
+    <section class="slide">
+        <p class="subtitle reveal">Budget Allocation</p>
+        <h2 class="reveal">Recommended spend weighting by opportunity size</h2>
+        <p class="reveal" style="font-size:14px; opacity:0.5;">Weighted by category size and BDI gap magnitude. Actual budget TBD based on total awareness allocation.</p>
+
+        <div class="reveal" style="margin-top:2rem;">
+            <div class="bar-chart">
+                <div class="bar-row">
+                    <div class="bar-label">California</div>
+                    <div class="bar-track"><div class="bar-fill cat" style="width:35%">35%</div></div>
+                </div>
+                <div class="bar-row">
+                    <div class="bar-label">Texas</div>
+                    <div class="bar-track"><div class="bar-fill cat" style="width:25%">25%</div></div>
+                </div>
+                <div class="bar-row">
+                    <div class="bar-label">Florida</div>
+                    <div class="bar-track"><div class="bar-fill cat" style="width:18%">18%</div></div>
+                </div>
+                <div class="bar-row">
+                    <div class="bar-label">Georgia</div>
+                    <div class="bar-track"><div class="bar-fill cat" style="width:10%">10%</div></div>
+                </div>
+                <div class="bar-row">
+                    <div class="bar-label">Arizona</div>
+                    <div class="bar-track"><div class="bar-fill" style="width:5%; background:rgba(0,0,0,0.3);">5%</div></div>
+                </div>
+                <div class="bar-row">
+                    <div class="bar-label">Nevada</div>
+                    <div class="bar-track"><div class="bar-fill" style="width:4%; background:rgba(0,0,0,0.3);">4%</div></div>
+                </div>
+                <div class="bar-row">
+                    <div class="bar-label">Louisiana</div>
+                    <div class="bar-track"><div class="bar-fill" style="width:3%; background:rgba(0,0,0,0.3);">3%</div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="callout reveal">
+            <h3 style="color:var(--jrb-pink);">Budget Note</h3>
+            <p>This is <strong>incremental awareness budget</strong>, not a reallocation of existing DR spend. The goal is brand-building in under-penetrated geos, which has a longer payback window. Recommend <strong>10-15% of monthly Meta budget</strong> carved out for this geo-awareness initiative.</p>
+        </div>
+    </section>
+
+    <!-- ======================= SLIDE 15: NEXT STEPS ======================= -->
+    <section class="slide slide--dark">
+        <p class="subtitle reveal">Next Steps</p>
+        <h2 class="reveal">Immediate action items</h2>
+
+        <div class="timeline reveal" style="margin-top:2rem;">
+            <div class="timeline-phase" style="border-color:rgba(255,255,255,0.1);">
+                <div class="phase-marker">This Week</div>
+                <div class="phase-content">
+                    <ul>
+                        <li>Set baselines: pull GA4 sessions by state, Google Trends for "Jones Road Beauty" by state, Shopify new customer rate by state</li>
+                        <li>Identify 2-3 TOF creatives from existing campaigns to use as initial creative</li>
+                        <li>Define exact awareness budget carve-out</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="timeline-phase" style="border-color:rgba(255,255,255,0.1);">
+                <div class="phase-marker">Next Week</div>
+                <div class="phase-content">
+                    <ul>
+                        <li>Build Meta campaign: geo-targeted awareness in CA, TX, FL, GA, AZ, NV, LA</li>
+                        <li>Set up GA4 segments/audiences for test vs. control states</li>
+                        <li>Launch + begin 4-week awareness flight</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="timeline-phase" style="border-color:rgba(255,255,255,0.1);">
+                <div class="phase-marker">Week 4</div>
+                <div class="phase-content">
+                    <ul>
+                        <li>First check-in: branded search volume, site traffic by state, early conversion signals</li>
+                        <li>Optimize: kill underperforming ad sets, scale winners</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="timeline-phase" style="border-bottom:none;">
+                <div class="phase-marker">Week 8</div>
+                <div class="phase-content">
+                    <ul>
+                        <li>Full evaluation: re-run BDI/CDI, revenue comparison, incremental ROAS calc</li>
+                        <li>Decision: expand to Tier 2 or iterate on Tier 1</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================= SLIDE 16: CLOSING ======================= -->
+    <section class="slide slide--dark" style="text-align:center; align-items:center;">
+        <p class="subtitle reveal">Jones Road Beauty</p>
+        <h1 class="reveal" style="max-width:700px;">The demand exists.<br>Let's go get it.</h1>
+        <p class="reveal" style="opacity:0.4; margin-top:2rem;">BDI/CDI Geo Opportunity Report &mdash; April 2026</p>
+    </section>
+
+    <div class="slide-counter"></div>
+    <div class="nav-hint">arrows to navigate</div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const progress = document.querySelector('.progress');
+        const counter = document.querySelector('.slide-counter');
+        let current = 0;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    const idx = Array.from(slides).indexOf(entry.target);
+                    current = idx;
+                    counter.textContent = (idx + 1) + ' / ' + slides.length;
+                    // Update counter color based on slide type
+                    const isDark = entry.target.classList.contains('slide--dark') || entry.target.classList.contains('slide--pink');
+                    counter.style.color = isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)';
+                    document.querySelector('.nav-hint').style.color = isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)';
+                    updateProgress();
+                }
+            });
+        }, { threshold: 0.5 });
+
+        slides.forEach(slide => observer.observe(slide));
+
+        function updateProgress() {
+            const scrolled = window.scrollY;
+            const total = document.body.scrollHeight - window.innerHeight;
+            const pct = total > 0 ? (scrolled / total) * 100 : 0;
+            progress.style.width = pct + '%';
+        }
+
+        window.addEventListener('scroll', updateProgress);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                current = Math.min(current + 1, slides.length - 1);
+                slides[current].scrollIntoView({ behavior: 'smooth' });
+            }
+            if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                e.preventDefault();
+                current = Math.max(current - 1, 0);
+                slides[current].scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+
+        slides[0].classList.add('visible');
+        counter.textContent = '1 / ' + slides.length;
+    </script>
+</body>
+</html>
