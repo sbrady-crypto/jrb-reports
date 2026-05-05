@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Incremental Reach Report — JRB Meta Ads</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Tiempos+Headline&display=swap');
+  :root {
+    --jrb-cream: #f5f1e8;
+    --jrb-black: #1a1a1a;
+    --jrb-green: #2d4a2b;
+    --jrb-gold: #c8a97e;
+    --jrb-rust: #b85c3c;
+    --jrb-sage: #8a9a7a;
+    --border: #e0d9c8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--jrb-cream);
+    color: var(--jrb-black);
+    margin: 0;
+    padding: 40px 24px;
+    line-height: 1.55;
+  }
+  .container { max-width: 1180px; margin: 0 auto; }
+  header {
+    border-bottom: 2px solid var(--jrb-black);
+    padding-bottom: 24px;
+    margin-bottom: 36px;
+  }
+  h1 {
+    font-family: 'Tiempos Headline', Georgia, serif;
+    font-size: 42px;
+    margin: 0 0 6px;
+    letter-spacing: -0.5px;
+  }
+  .subtitle { color: #555; font-size: 14px; letter-spacing: 0.5px; text-transform: uppercase; }
+  h2 {
+    font-family: 'Tiempos Headline', Georgia, serif;
+    font-size: 26px;
+    margin: 48px 0 14px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+  }
+  h3 { font-size: 16px; margin: 24px 0 8px; color: var(--jrb-green); text-transform: uppercase; letter-spacing: 1px;}
+  p, li { font-size: 14px; }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+  .stat {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .stat-label { font-size: 11px; color: #777; text-transform: uppercase; letter-spacing: 0.8px; }
+  .stat-value { font-family: 'Tiempos Headline', serif; font-size: 26px; margin-top: 4px; }
+  .stat-sub { font-size: 12px; color: #666; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 13px;
+  }
+  th {
+    background: var(--jrb-black);
+    color: var(--jrb-cream);
+    text-align: left;
+    padding: 10px 12px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-weight: 600;
+  }
+  td { padding: 10px 12px; border-top: 1px solid var(--border); vertical-align: top; }
+  tr:hover td { background: #faf6ec; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .name { font-family: 'SF Mono', monospace; font-size: 12px; color: #333; }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .badge-best { background: var(--jrb-green); color: white; }
+  .badge-good { background: var(--jrb-sage); color: white; }
+  .badge-watch { background: var(--jrb-gold); color: white; }
+  .badge-cut { background: var(--jrb-rust); color: white; }
+  .callout {
+    background: white;
+    border-left: 4px solid var(--jrb-green);
+    padding: 16px 20px;
+    margin: 16px 0;
+    border-radius: 4px;
+  }
+  .callout.warn { border-left-color: var(--jrb-rust); }
+  .callout strong { font-family: 'Tiempos Headline', serif; font-size: 16px;}
+  .legend { font-size: 12px; color: #666; margin-top: 8px;}
+  .legend code { background: #efeadf; padding: 1px 5px; border-radius: 3px;}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Incremental Reach Report</h1>
+  <div class="subtitle">Meta Ad Account 788856061928226 · Snapshot 2026-05-05</div>
+</header>
+
+<h2>What this is measuring</h2>
+<p>
+  <strong>Incremental Reach</strong> = unique people a campaign/adset added to the account that no other
+  campaign/adset reached. <strong>iCPR</strong> = spend ÷ incremental reach (cost per <em>net new</em> person).
+  <strong>Audience Overlap %</strong> = share of a unit's reach that was <em>also</em> reached by something else.
+</p>
+<p>
+  The goal: maximize incremental reach at a low iCPR. Anything with 100% overlap and 0 incremental reach is
+  fully redundant — every person it reached was already paid for somewhere else.
+</p>
+
+<div class="summary-grid">
+  <div class="stat"><div class="stat-label">Total Account Reach</div><div class="stat-value">29.9M</div></div>
+  <div class="stat"><div class="stat-label">Top Inc. Reach (Campaign)</div><div class="stat-value">9.3M</div><div class="stat-sub">ASC ViewContent</div></div>
+  <div class="stat"><div class="stat-label">Top Inc. Reach (Adset)</div><div class="stat-value">6.5M</div><div class="stat-sub">ASC ViewContent</div></div>
+  <div class="stat"><div class="stat-label">Best iCPR</div><div class="stat-value">$0.01</div><div class="stat-sub">emily.fauver creator + CA ViewContent</div></div>
+</div>
+
+<h2>Campaign-level winners</h2>
+<p>Sorted by incremental reach. <span class="badge badge-best">BEST</span> = high net new + low iCPR. <span class="badge badge-cut">REDUNDANT</span> = 100% overlap, $0 iCPR efficiency.</p>
+
+<table>
+<thead><tr>
+  <th>Campaign</th><th class="num">Reach</th><th class="num">Spend</th>
+  <th class="num">Inc. Reach</th><th class="num">Inc. %</th><th class="num">Overlap</th><th class="num">iCPR</th><th>Verdict</th>
+</tr></thead>
+<tbody>
+<tr><td class="name">Prospecting|ASC|ViewContent</td><td class="num">10.6M</td><td class="num">$163.4K</td><td class="num"><strong>9,318,878</strong></td><td class="num">31.2%</td><td class="num">12.4%</td><td class="num">$0.02</td><td><span class="badge badge-best">BEST</span></td></tr>
+<tr><td class="name">Prospecting|ASC|VO|Partnership|Purchase</td><td class="num">6.9M</td><td class="num">$528.1K</td><td class="num"><strong>4,034,029</strong></td><td class="num">13.5%</td><td class="num">41.9%</td><td class="num">$0.13</td><td><span class="badge badge-best">BEST</span></td></tr>
+<tr><td class="name">Prospecting|Manual|Consideration|QuizComplete2</td><td class="num">3.0M</td><td class="num">$132.9K</td><td class="num"><strong>2,053,812</strong></td><td class="num">6.9%</td><td class="num">31.1%</td><td class="num">$0.06</td><td><span class="badge badge-best">BEST</span></td></tr>
+<tr><td class="name">Prospecting|ASC|CO|IA|Purchase</td><td class="num">4.3M</td><td class="num">$257.5K</td><td class="num">1,606,102</td><td class="num">5.4%</td><td class="num">62.7%</td><td class="num">$0.16</td><td><span class="badge badge-good">GOOD</span></td></tr>
+<tr><td class="name">Prospecting|ASC|VO|AEB|Purchase</td><td class="num">3.4M</td><td class="num">$266.5K</td><td class="num">1,594,429</td><td class="num">5.3%</td><td class="num">53.0%</td><td class="num">$0.17</td><td><span class="badge badge-good">GOOD</span></td></tr>
+<tr><td class="name">Prospecting|ReelsTrendingAds|Awareness|BlushingStickNew</td><td class="num">1.2M</td><td class="num">$39.3K</td><td class="num">940,388</td><td class="num">3.1%</td><td class="num">23.0%</td><td class="num">$0.04</td><td><span class="badge badge-best">BEST</span></td></tr>
+<tr><td class="name">Prospecting|ASC|INTL|EU|AUNZ|Purchase</td><td class="num">923K</td><td class="num">$55.7K</td><td class="num">741,461</td><td class="num">2.5%</td><td class="num">19.7%</td><td class="num">$0.08</td><td><span class="badge badge-best">BEST</span></td></tr>
+<tr><td class="name">Prospecting|ASC|CO|CostCap|Purchase</td><td class="num">2.5M</td><td class="num">$221.8K</td><td class="num">724,973</td><td class="num">2.4%</td><td class="num">71.2%</td><td class="num">$0.31</td><td><span class="badge badge-watch">WATCH</span></td></tr>
+<tr><td class="name">Prospecting|ReelsTrendingAds|Awareness|BlushingStick</td><td class="num">962K</td><td class="num">$18.7K</td><td class="num">604,686</td><td class="num">2.0%</td><td class="num">37.1%</td><td class="num">$0.03</td><td><span class="badge badge-best">BEST</span></td></tr>
+<tr><td class="name">Prospecting|ASC|VO|Returning|Purchase</td><td class="num">478K</td><td class="num">$87.2K</td><td class="num">293,498</td><td class="num">1.0%</td><td class="num">38.6%</td><td class="num">$0.30</td><td><span class="badge badge-good">GOOD</span></td></tr>
+<tr><td class="name">Prospecting|ASC|CO|AEB|LipRecharge|Purchase</td><td class="num">818K</td><td class="num">$53.4K</td><td class="num">287,972</td><td class="num">1.0%</td><td class="num">64.8%</td><td class="num">$0.19</td><td><span class="badge badge-watch">WATCH</span></td></tr>
+<tr><td class="name">Prospecting|CASC|BlushingStick|AwarenessSales</td><td class="num">611K</td><td class="num">$32.8K</td><td class="num">237,590</td><td class="num">0.8%</td><td class="num">61.1%</td><td class="num">$0.14</td><td><span class="badge badge-watch">WATCH</span></td></tr>
+<tr><td class="name">Prospecting|ASC|CO|Partnership|Winners|Purchase</td><td class="num">2.5M</td><td class="num">$204K</td><td class="num">388,225</td><td class="num">1.3%</td><td class="num">84.5%</td><td class="num">$0.53</td><td><span class="badge badge-cut">REDUNDANT</span></td></tr>
+<tr><td class="name">Prospecting|ASC|VO|IA|Purchase</td><td class="num">404K</td><td class="num">$25.1K</td><td class="num">0</td><td class="num">0.0%</td><td class="num">100%</td><td class="num">$0.00</td><td><span class="badge badge-cut">REDUNDANT</span></td></tr>
+<tr><td class="name">Prospecting|ASC|INTL|UK|Purchase</td><td class="num">738K</td><td class="num">$50.1K</td><td class="num">0</td><td class="num">0.0%</td><td class="num">100%</td><td class="num">$0.00</td><td><span class="badge badge-cut">REDUNDANT</span></td></tr>
+<tr><td class="name">NewCustomerAcquisitionBenchTest-control</td><td class="num">110K</td><td class="num">$9.2K</td><td class="num">0</td><td class="num">0.0%</td><td class="num">100%</td><td class="num">$0.00</td><td><span class="badge badge-cut">REDUNDANT</span></td></tr>
+</tbody>
+</table>
+
+<div class="callout">
+  <strong>Top campaign takeaway</strong><br>
+  <strong>ASC ViewContent</strong> is the single most efficient lever in the account: 9.3M net-new people at $0.02 iCPR
+  and only 12.4% overlap. It's reaching a true upper-funnel audience the rest of the account isn't touching.
+  <strong>Partnership Purchase</strong> ($528K spend, 4M incremental) is the second engine — the volume justifies the higher iCPR.
+</div>
+
+<div class="callout warn">
+  <strong>Three campaigns to interrogate immediately</strong><br>
+  <strong>ASC|VO|IA|Purchase</strong> ($25K), <strong>ASC|INTL|UK|Purchase</strong> ($50K), and the <strong>NCA control cell</strong> ($9K)
+  all show 100% overlap / 0 incremental reach. You are paying twice for the same eyeballs.
+  Worth confirming whether the UK campaign appears twice in the file (there are two rows with the same name in the adset CSV) before pulling budget.
+</div>
+
+<h2>Adset-level winners</h2>
+<p>Top adsets by incremental reach. iCPR sub-$0.05 with overlap under 25% is the sweet spot.</p>
+
+<table>
+<thead><tr>
+  <th>Adset</th><th class="name">Campaign</th>
+  <th class="num">Spend</th><th class="num">Inc. Reach</th><th class="num">Inc. %</th>
+  <th class="num">Overlap</th><th class="num">iCPR</th><th>Verdict</th>
+</tr></thead>
+<tbody>
+<tr><td class="name">Prospecting|ASC|ViewContent</td><td class="name">ASC|ViewContent</td><td class="num">$104.8K</td><td class="num"><strong>6,464,832</strong></td><td class="num">21.6%</td><td class="num">14.8%</td><td class="num">$0.02</td><td><span class="badge badge-best">BEST</span></td></tr>
+<tr><td class="name">Prospecting|CO|IA|Partnership|emily.fauver|26Wk17</td><td class="name">VO|Partnership|Purchase</td><td class="num">$33.8K</td><td class="num"><strong>2,701,384</strong></td><td class="num">9.0%</td><td class="num">16.4%</td><td class="num">$0.01</td><td><span class="badge badge-best">BEST</span></td></tr>
+<tr><td class="name">Prospecting|ASC|Consideration|QuizComplete</td><td class="name">Manual|QuizComplete2</td><td class="num">$120.4K</td><td class="num">1,654,899</td><td class="num">5.5%</td><td class="num">32.5%</td><td class="num">$0.07</td><td><span class="badge badge-best">BEST</span></td></tr>
+<tr><td class="name">Prospecting|ASC|CA|ViewContent</td><td class="name">ASC|ViewContent</td><td class="num">$13.9K</td><td class="num">1,517,904</td><td class="num">5.1%</td><td class="num">13.5%</td><td class="num">$0.01</td><td><span class="badge badge-best">BEST</span></td></tr>
+<tr><td class="name">TestAEB|Prospecting|VO|BAU|Purchase</td><td class="name">ASC|VO|AEB|Purchase</td><td class="num">$213.5K</td><td class="num">1,452,829</td><td class="num">4.9%</td><td class="num">52.9%</td><td class="num">$0.15</td><td><span class="badge badge-good">GOOD</span></td></tr>
+<tr><td class="name">Prospecting|CO|MiracleBalm|IATest|Purchase</td><td class="name">ASC|CO|IA|Purchase</td><td class="num">$127.1K</td><td class="num">1,259,807</td><td class="num">4.2%</td><td class="num">58.8%</td><td class="num">$0.10</td><td><span class="badge badge-good">GOOD</span></td></tr>
+<tr><td class="name">Prospecting|ReelsTrendingAds|AllTopics|Female35+|BlushingStick</td><td class="name">Reels|BlushingStickNew</td><td class="num">$39.3K</td><td class="num">940,388</td><td class="num">3.1%</td><td class="num">23.0%</td><td class="num">$0.04</td><td><span class="badge badge-best">BEST</span></td></tr>
+<tr><td class="name">Prospecting|ASC|LipRecharge|ViewContent</td><td class="name">ASC|ViewContent</td><td class="num">$14.4K</td><td class="num">870,443</td><td class="num">2.9%</td><td class="num">37.4%</td><td class="num">$0.02</td><td><span class="badge badge-best">BEST</span></td></tr>
+<tr><td class="name">Prospecting|ReelsTrendingAds|AllTopics|BlushingStick</td><td class="name">Reels|BlushingStick</td><td class="num">$18.7K</td><td class="num">604,686</td><td class="num">2.0%</td><td class="num">37.1%</td><td class="num">$0.03</td><td><span class="badge badge-best">BEST</span></td></tr>
+<tr><td class="name">Prospecting|ASC|EU|PurchaseNew</td><td class="name">INTL|EU|AUNZ|Purchase</td><td class="num">$18.9K</td><td class="num">358,413</td><td class="num">1.2%</td><td class="num">17.7%</td><td class="num">$0.05</td><td><span class="badge badge-best">BEST</span></td></tr>
+<tr><td class="name">Prospecting|ASC|CA|Consideration|QuizComplete</td><td class="name">Manual|QuizComplete2</td><td class="num">$12.5K</td><td class="num">341,316</td><td class="num">1.1%</td><td class="num">32.4%</td><td class="num">$0.04</td><td><span class="badge badge-best">BEST</span></td></tr>
+<tr><td class="name">Prospecting|CASC|Awareness|BlushingStick</td><td class="name">CASC|BlushingStick</td><td class="num">$2.8K</td><td class="num">219,833</td><td class="num">0.7%</td><td class="num">35.4%</td><td class="num">$0.01</td><td><span class="badge badge-best">BEST</span></td></tr>
+<tr><td class="name">Prospecting|CO|MiracleBalm|Purchase</td><td class="name">ASC|CO|AEB|Purchase</td><td class="num">$19.1K</td><td class="num">318,892</td><td class="num">1.1%</td><td class="num">26.2%</td><td class="num">$0.06</td><td><span class="badge badge-best">BEST</span></td></tr>
+<tr><td class="name">Prospecting|ASC|UK|Purchase (top row)</td><td class="name">INTL|UK|Purchase</td><td class="num">$19.2K</td><td class="num">299,575</td><td class="num">1.0%</td><td class="num">30.0%</td><td class="num">$0.06</td><td><span class="badge badge-good">GOOD</span></td></tr>
+<tr><td class="name">Prospecting|CO|LipRecharge|Purchase</td><td class="name">CO|AEB|LipRecharge</td><td class="num">$53.4K</td><td class="num">287,972</td><td class="num">1.0%</td><td class="num">64.8%</td><td class="num">$0.19</td><td><span class="badge badge-watch">WATCH</span></td></tr>
+</tbody>
+</table>
+
+<h2>Highest-cost redundancy — biggest budget at >80% overlap</h2>
+<p>These adsets are spending real money to reach people other adsets are already reaching. Worth reviewing for consolidation, exclusion targeting, or audience expansion.</p>
+
+<table>
+<thead><tr>
+  <th>Adset</th><th class="num">Spend</th><th class="num">Overlap</th><th class="num">Inc. Reach</th><th class="num">iCPR</th>
+</tr></thead>
+<tbody>
+<tr><td class="name">Prospecting|CO|Partnership|almost_readyblog|Superbloom|26Wk10</td><td class="num">$84.2K</td><td class="num">92.4%</td><td class="num">62,981</td><td class="num">$1.34</td></tr>
+<tr><td class="name">Prospecting|VO|Partnership|ellenorkim|Superbloom|25Wk47</td><td class="num">$82.1K</td><td class="num">83.8%</td><td class="num">152,355</td><td class="num">$0.54</td></tr>
+<tr><td class="name">Prospecting|CO|1DC1DV|Partnership|bethennyfrankel|26Wk12</td><td class="num">$108.6K</td><td class="num">81.6%</td><td class="num">235,926</td><td class="num">$0.46</td></tr>
+<tr><td class="name">Prospecting|Millennial|CO|IA|CostCap|Purchase</td><td class="num">$63.9K</td><td class="num">90.3%</td><td class="num">139,939</td><td class="num">$0.46</td></tr>
+<tr><td class="name">Prospecting|CO|HighAOV|IATest|Purchase</td><td class="num">$57.9K</td><td class="num">92.3%</td><td class="num">87,090</td><td class="num">$0.66</td></tr>
+<tr><td class="name">Prospecting|ASC|VO|CASC|BlushingStick|Purchase</td><td class="num">$30.0K</td><td class="num">93.6%</td><td class="num">18,022</td><td class="num">$1.66</td></tr>
+<tr><td class="name">Prospecting|ASC|VO|IA|Purchase</td><td class="num">$25.1K</td><td class="num">100%</td><td class="num">0</td><td class="num">$0.00</td></tr>
+<tr><td class="name">Reactivation|ASC|VO|TSNK|Returning|Purchase</td><td class="num">$13.0K</td><td class="num">96.0%</td><td class="num">4,507</td><td class="num">$2.88</td></tr>
+</tbody>
+</table>
+
+<h2>Recommended actions</h2>
+
+<h3>Lean in</h3>
+<ul>
+  <li><strong>ASC ViewContent</strong> (campaign + every adset under it): cheapest net-new reach in the account — increase budget, this is the audience flywheel.</li>
+  <li><strong>emily.fauver creator (26Wk17)</strong>: $0.01 iCPR with only 16.4% overlap is an outlier among partnership adsets. Use as the benchmark for which creators get scaled.</li>
+  <li><strong>ReelsTrendingAds Female35+ BlushingStick</strong>: $0.04 iCPR, 23% overlap — best new-product reach driver. Mirror this build for other launches.</li>
+  <li><strong>Manual Consideration QuizComplete2</strong>: 6.9% incremental at $0.06 iCPR. Quiz funnel is reaching genuinely different people than purchase campaigns.</li>
+</ul>
+
+<h3>Investigate / consolidate</h3>
+<ul>
+  <li><strong>ASC|VO|IA|Purchase</strong>, <strong>ASC|INTL|UK|Purchase</strong>, <strong>NCA control cell</strong>: 100% overlap, 0 incremental. Pause or merge unless serving a measurement purpose (the NCA cell is presumably a holdout — confirm with Growth before touching).</li>
+  <li><strong>Partnership Winners campaign</strong>: 84.5% overlap at $204K spend. Worth checking whether it's effectively eating reach from the broader Partnership campaign rather than adding to it.</li>
+  <li><strong>almost_readyblog, ellenorkim, bethennyfrankel</strong> partnership adsets: each spending $80K+ at >80% overlap. Either the audience is saturated or the targeting is too close to other partnership adsets — consider exclusions.</li>
+  <li><strong>Two rows for "Prospecting|ASC|UK|Purchase"</strong> in the adset CSV (rows 28 & 38) — confirm whether this is two different adsets or a duplication artifact in the export.</li>
+</ul>
+
+<p class="legend">
+  <strong>Verdict legend:</strong>
+  <span class="badge badge-best">BEST</span> high inc. reach + low iCPR + low overlap ·
+  <span class="badge badge-good">GOOD</span> meaningful inc. reach, acceptable iCPR ·
+  <span class="badge badge-watch">WATCH</span> overlap >60%, watch efficiency ·
+  <span class="badge badge-cut">REDUNDANT</span> 100% overlap or near-zero net new
+</p>
+
+</div>
+</body>
+</html>
