@@ -1,0 +1,612 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Foundation Stick — Launch Recap (Days 1–6)</title>
+<style>
+  @font-face { font-family: "canela light"; src: url("https://d2zbaikdix1qer.cloudfront.net/fonts/jonesroad.myshopify.com/1772482947421-canela-light.woff2") format("woff2"); font-display: swap; }
+  @font-face { font-family: "ringside wide book"; src: url("https://d2zbaikdix1qer.cloudfront.net/fonts/jonesroad.myshopify.com/1772482940494-ringside-wide-book.woff2") format("woff2"); font-display: swap; }
+  @font-face { font-family: "base mono wide thin"; src: url("https://d2zbaikdix1qer.cloudfront.net/fonts/jonesroad.myshopify.com/1772482930126-base-mono-wide-thin.woff2") format("woff2"); font-display: swap; }
+  @font-face { font-family: "geogrotesque bold"; src: url("https://d2zbaikdix1qer.cloudfront.net/fonts/jonesroad.myshopify.com/1772482935848-geogrotesque-bold.woff2") format("woff2"); font-display: swap; }
+
+  :root {
+    --bg: hsl(0 0% 97%);
+    --surface: #ffffff;
+    --surface-2: hsl(40 31% 94%);
+    --accent: hsl(356 30% 89%);
+    --ink: #000;
+    --ink-soft: #222;
+    --muted: #6b6b6b;
+    --line: hsla(0,0%,0%,0.10);
+    --line-strong: hsla(0,0%,0%,0.18);
+    --good: #1f6b3a;
+    --warn: #8a5b00;
+    --bad: #962020;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "ringside wide book", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    letter-spacing: 0.01em;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 56px 32px 96px; }
+
+  /* Header */
+  header.masthead { border-bottom: 1px solid var(--line); padding-bottom: 28px; margin-bottom: 40px; }
+  .eyebrow {
+    font-family: "base mono wide thin", monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-family: "canela light", Georgia, serif;
+    font-size: 52px;
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: 0.005em;
+    margin: 0 0 14px;
+  }
+  h1 small {
+    display: block;
+    font-family: "canela light", Georgia, serif;
+    font-size: 22px;
+    color: var(--muted);
+    margin-top: 8px;
+    letter-spacing: 0.02em;
+  }
+  .meta-row {
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+    font-family: "base mono wide thin", monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 18px;
+  }
+
+  /* Section headings */
+  h2 {
+    font-family: "canela light", Georgia, serif;
+    font-size: 28px;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    margin: 56px 0 8px;
+  }
+  h2 .num {
+    font-family: "base mono wide thin", monospace;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    color: var(--muted);
+    display: inline-block;
+    margin-right: 14px;
+    vertical-align: middle;
+  }
+  h3 {
+    font-family: "base mono wide thin", monospace;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin: 32px 0 12px;
+  }
+  .section-rule { border: 0; border-top: 1px solid var(--line); margin: 8px 0 24px; }
+
+  p { margin: 0 0 14px; }
+  strong { font-weight: 600; }
+
+  /* Headline callout */
+  .headline {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 28px 30px;
+    margin-bottom: 8px;
+  }
+  .headline .lead {
+    font-family: "canela light", Georgia, serif;
+    font-size: 22px;
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  /* KPI tiles */
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 24px 0 8px;
+  }
+  .kpi {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 20px 18px;
+  }
+  .kpi .label {
+    font-family: "base mono wide thin", monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .kpi .value {
+    font-family: "canela light", Georgia, serif;
+    font-size: 30px;
+    font-weight: 300;
+    letter-spacing: 0.005em;
+    line-height: 1.05;
+  }
+  .kpi .sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+    letter-spacing: 0.02em;
+  }
+
+  .kpi.warn { background: var(--accent); }
+  .kpi.warn .label { color: #5a2929; }
+
+  @media (max-width: 720px) {
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+    h1 { font-size: 36px; }
+    .wrap { padding: 36px 20px 64px; }
+  }
+
+  /* Tables */
+  .tbl-wrap { overflow-x: auto; margin: 12px 0 8px; }
+  table.data {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    font-size: 13px;
+    border: 1px solid var(--line);
+  }
+  table.data th, table.data td {
+    text-align: left;
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  table.data th {
+    font-family: "base mono wide thin", monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 400;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line-strong);
+  }
+  table.data td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  table.data tr:last-child td { border-bottom: 0; }
+  table.data tr.total td { background: var(--bg); font-weight: 600; }
+
+  .delta-up { color: var(--good); }
+  .delta-down { color: var(--bad); }
+  .delta-flat { color: var(--muted); }
+
+  /* Daily bar chart */
+  .bars {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 24px 20px 16px;
+    align-items: end;
+    height: 220px;
+  }
+  .bars .bar {
+    background: var(--ink);
+    width: 100%;
+    position: relative;
+    border-radius: 1px;
+  }
+  .bars .bar .v {
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-variant-numeric: tabular-nums;
+    font-size: 11px;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  .bars-labels {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    margin-top: 6px;
+    padding: 0 20px;
+    font-family: "base mono wide thin", monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  /* Pros/cons two columns */
+  .twocol {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 18px 0 0;
+  }
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 22px 24px;
+  }
+  .panel.good { border-top: 3px solid var(--good); }
+  .panel.bad { border-top: 3px solid var(--bad); }
+  .panel ul { margin: 8px 0 0; padding-left: 18px; }
+  .panel li { margin-bottom: 8px; }
+  @media (max-width: 720px) { .twocol { grid-template-columns: 1fr; } }
+
+  /* Numbered list */
+  ol.findings { list-style: none; padding: 0; margin: 12px 0 0; counter-reset: f; }
+  ol.findings li {
+    counter-increment: f;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 18px 22px 18px 70px;
+    position: relative;
+    margin-bottom: 10px;
+  }
+  ol.findings li::before {
+    content: counter(f, decimal-leading-zero);
+    position: absolute;
+    left: 22px;
+    top: 18px;
+    font-family: "base mono wide thin", monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+  }
+  ol.findings li .title {
+    font-family: "canela light", Georgia, serif;
+    font-size: 18px;
+    letter-spacing: 0.01em;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  /* Recommendations */
+  .recs { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 12px; }
+  .rec {
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    padding: 22px 26px;
+  }
+  .rec .tag {
+    font-family: "base mono wide thin", monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .rec h4 {
+    font-family: "canela light", Georgia, serif;
+    font-size: 20px;
+    font-weight: 300;
+    margin: 0 0 10px;
+    letter-spacing: 0.01em;
+  }
+  .rec ul { margin: 0; padding-left: 18px; }
+  .rec li { margin-bottom: 6px; }
+
+  /* Footer */
+  footer.foot {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+  footer.foot .src-list { margin-top: 10px; }
+  footer.foot strong { color: var(--ink-soft); }
+
+  /* Print */
+  @media print {
+    body { background: white; }
+    .wrap { max-width: none; padding: 24px; }
+    .kpi, .panel, .rec, .headline, table.data, .bars, ol.findings li { box-shadow: none; }
+    h2 { page-break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="eyebrow">Jones Road Beauty · Growth · Launch recap</div>
+    <h1>Foundation Stick
+      <small>Launch days 1–6 · May 12–17, 2026</small>
+    </h1>
+    <div class="meta-row">
+      <span>Prepared 2026-05-18</span>
+      <span>Sources: Slack · Shopify · Meta · Site analytics</span>
+      <span>Status: Behind on acquisition</span>
+    </div>
+  </header>
+
+  <!-- HEADLINE -->
+  <div class="headline">
+    <p class="lead">The product is selling, but acquisition is broken. Foundation Stick is the #1 product on site (21.1% of total store revenue in launch week), but landed 3rd of 4 2026 launches and ~40% behind the JETM 2025 YoY benchmark. Demand exists — day-1 had 21% more orders than Lip Recharge — the gap is <strong>new-customer acquisition</strong>, driven by Paid Social inefficiency (Meta ROAS 0.75, new-visitor CVR -19% PoP) and a slow TikTok start. Trend is improving: ROAS 0.68 → 0.81 across the six days.</p>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="label">Net sales (YSFS)</div><div class="value">$526k</div><div class="sub">21.1% of store revenue · #1 SKU</div></div>
+    <div class="kpi"><div class="label">Units sold</div><div class="value">13,764</div><div class="sub">12,513 orders · 1.10 units / order</div></div>
+    <div class="kpi warn"><div class="label">vs. JETM launch (YoY)</div><div class="value">-40%</div><div class="sub">Gap expected to be smaller at this scale</div></div>
+    <div class="kpi warn"><div class="label">Meta ROAS (6-day)</div><div class="value">0.75</div><div class="sub">Improving: 0.68 → 0.81 · CPA $149 → $115</div></div>
+  </div>
+
+  <!-- SECTION: SALES -->
+  <h2><span class="num">01</span>Sales</h2>
+  <hr class="section-rule"/>
+
+  <h3>Shopify · Foundation Stick, 5/12–5/17</h3>
+  <div class="tbl-wrap">
+    <table class="data">
+      <thead><tr><th>Metric</th><th class="num">Value</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>Net sales</td><td class="num">$526,318</td><td>#1 product on store this week</td></tr>
+        <tr><td>Orders</td><td class="num">12,513</td><td>+21% more orders on day 1 vs Lip Recharge launch</td></tr>
+        <tr><td>Units sold</td><td class="num">13,764</td><td>Behind Lip Recharge (17,858) and Eyeshadow Stick (16,199)</td></tr>
+        <tr><td>Units per order</td><td class="num">1.10</td><td>vs Lip Recharge 1.70 — most of the unit gap</td></tr>
+        <tr><td>% of total store revenue</td><td class="num">21.1%</td><td>Single launch driving 1 in 5 dollars</td></tr>
+        <tr><td>Channel split</td><td class="num">79% / 10%</td><td>Web / retail — in line with other 2026 launches</td></tr>
+        <tr><td>Shade demand</td><td class="num">All 30</td><td>Spread across the range vs concentrating on a few</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Daily units sold</h3>
+  <div class="bars">
+    <div class="bar" style="height: 100%;"><span class="v">4,961</span></div>
+    <div class="bar" style="height: 40.5%;"><span class="v">2,011</span></div>
+    <div class="bar" style="height: 31.9%;"><span class="v">1,581</span></div>
+    <div class="bar" style="height: 28.3%;"><span class="v">1,402</span></div>
+    <div class="bar" style="height: 38.8%;"><span class="v">1,927</span></div>
+    <div class="bar" style="height: 37.9%;"><span class="v">1,882</span></div>
+  </div>
+  <div class="bars-labels">
+    <div>Tue 5/12</div><div>Wed 5/13</div><div>Thu 5/14</div><div>Fri 5/15</div><div>Sat 5/16</div><div>Sun 5/17</div>
+  </div>
+  <p style="font-size:12px;color:var(--muted);margin-top:14px;">Day-1 spike (launch + email), sharp decay through Fri, modest recovery into the weekend. Days 5–6 stabilized near ~1,900 units/day.</p>
+
+  <h3>What it didn't pull from</h3>
+  <p>What The Foundation held $48–$57k/day throughout the week ($318k total), and Miracle Balm SKUs were steady. <strong>No cannibalization signal.</strong> Foundation Stick is adding net new revenue rather than shifting it.</p>
+  <p style="font-size:13px;color:var(--muted);">Face Blending Brush attach: 18% DTC · 40–65% retail · <strong>52.9% via TikTok</strong> (strongest single channel signal).</p>
+
+  <!-- SECTION: ACQUISITION -->
+  <h2><span class="num">02</span>Acquisition</h2>
+  <hr class="section-rule"/>
+  <p>This is where the launch underperformed. Sitewide sessions were up 48% PoP, but site CVR was -1.6% and new-visitor CVR was -19% — existing customers carried the week.</p>
+
+  <h3>Channel breakdown · sitewide · 5/12–5/17</h3>
+  <div class="tbl-wrap">
+    <table class="data">
+      <thead><tr>
+        <th>Channel</th>
+        <th class="num">Sessions</th>
+        <th class="num">Orders</th>
+        <th class="num">Net rev</th>
+        <th class="num">CVR</th>
+        <th class="num">Rev / visitor (PoP)</th>
+      </tr></thead>
+      <tbody>
+        <tr><td><strong>Paid Social</strong></td><td class="num">483,096</td><td class="num">2,332</td><td class="num">$198,256</td><td class="num">0.58%</td><td class="num delta-down">-36%</td></tr>
+        <tr><td>Organic Search</td><td class="num">75,822</td><td class="num">5,943</td><td class="num">$535,793</td><td class="num">9.79%</td><td class="num delta-up">+11%</td></tr>
+        <tr><td>Direct</td><td class="num">101,540</td><td class="num">4,249</td><td class="num">$410,296</td><td class="num">5.21%</td><td class="num delta-up">+18%</td></tr>
+        <tr><td><strong>Email</strong></td><td class="num">84,438</td><td class="num">4,188</td><td class="num">$364,097</td><td class="num">6.71%</td><td class="num delta-up">+89%</td></tr>
+        <tr><td><strong>SMS</strong></td><td class="num">44,675</td><td class="num">1,443</td><td class="num">$120,337</td><td class="num">4.35%</td><td class="num delta-up">+49%</td></tr>
+        <tr><td>Paid Search</td><td class="num">50,277</td><td class="num">416</td><td class="num">$34,195</td><td class="num">0.88%</td><td class="num delta-down">-9%</td></tr>
+        <tr><td>Affiliate</td><td class="num">15,409</td><td class="num">507</td><td class="num">$44,861</td><td class="num">3.53%</td><td class="num delta-up">+6%</td></tr>
+        <tr><td>Organic Social</td><td class="num">9,740</td><td class="num">93</td><td class="num">$7,682</td><td class="num">0.98%</td><td class="num delta-down">-9%</td></tr>
+        <tr class="total"><td>Total</td><td class="num">913,421</td><td class="num">21,899</td><td class="num">$2,001,215</td><td class="num">2.93%</td><td class="num delta-flat">-1%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>New vs. returning</h3>
+  <div class="tbl-wrap">
+    <table class="data">
+      <thead><tr>
+        <th>Segment</th>
+        <th class="num">Sessions</th>
+        <th class="num">Orders</th>
+        <th class="num">Net rev</th>
+        <th class="num">CVR</th>
+        <th class="num">Rev / visitor (PoP)</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>New</td><td class="num">594,142</td><td class="num">9,987</td><td class="num">$868,156</td><td class="num">1.69%</td><td class="num delta-down">-20%</td></tr>
+        <tr><td>Returning</td><td class="num">319,279</td><td class="num">11,912</td><td class="num">$1,133,060</td><td class="num">6.72%</td><td class="num delta-up">+25%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:13px;color:var(--muted);margin-top:10px;">Email and SMS posted the biggest PoP lifts. Paid Social got the eyeballs (53% of all sessions) but converted at 0.58% — the worst paid week PoP across any channel. The acquisition story is here.</p>
+
+  <!-- SECTION: META -->
+  <h2><span class="num">03</span>Paid · Meta</h2>
+  <hr class="section-rule"/>
+
+  <div class="tbl-wrap">
+    <table class="data">
+      <thead><tr>
+        <th>Day</th>
+        <th class="num">Spend</th>
+        <th class="num">Revenue</th>
+        <th class="num">Purchases</th>
+        <th class="num">ROAS</th>
+        <th class="num">CPA</th>
+        <th class="num">CTR</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>Tue 5/12</td><td class="num">$112,788</td><td class="num">$77,039</td><td class="num">755</td><td class="num">0.68</td><td class="num">$149.39</td><td class="num">1.32%</td></tr>
+        <tr><td>Wed 5/13</td><td class="num">$88,969</td><td class="num">$61,734</td><td class="num">640</td><td class="num">0.69</td><td class="num">$139.01</td><td class="num">1.38%</td></tr>
+        <tr><td>Thu 5/14</td><td class="num">$73,017</td><td class="num">$54,065</td><td class="num">527</td><td class="num">0.74</td><td class="num">$138.55</td><td class="num">1.20%</td></tr>
+        <tr><td>Fri 5/15</td><td class="num">$75,712</td><td class="num">$57,966</td><td class="num">602</td><td class="num">0.77</td><td class="num">$125.77</td><td class="num">1.04%</td></tr>
+        <tr><td>Sat 5/16</td><td class="num">$94,316</td><td class="num">$76,028</td><td class="num">791</td><td class="num">0.81</td><td class="num">$119.24</td><td class="num">1.42%</td></tr>
+        <tr><td>Sun 5/17</td><td class="num">$96,966</td><td class="num">$78,283</td><td class="num">840</td><td class="num">0.81</td><td class="num">$115.44</td><td class="num">1.16%</td></tr>
+        <tr class="total"><td>6-day total</td><td class="num">$541,768</td><td class="num">$405,114</td><td class="num">4,155</td><td class="num">0.75</td><td class="num">$130 avg</td><td class="num">1.25%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:13px;color:var(--muted);margin-top:10px;">ROAS sub-1.0 every day on a last-click basis. The trend is right — ROAS climbing, CPA dropping ~$34 from day 1 to day 6 — but if it doesn't cross 1.0 by end of week 2, this needs a structural intervention rather than more scale.</p>
+
+  <!-- SECTION: CREATIVE -->
+  <h2><span class="num">04</span>Creative diagnosis</h2>
+  <hr class="section-rule"/>
+  <p>Early read on what's working in market (Sam → Daria, 5/15).</p>
+
+  <div class="twocol">
+    <div class="panel good">
+      <h3 style="margin-top:0;">Top static patterns</h3>
+      <ul>
+        <li>Invitational / curious hooks — questions, benefit framing</li>
+        <li>"Tell them something they don't know" — listicle, blendability, ingredient callouts</li>
+        <li>Aesthetic, breathable layouts — white background, soft neutrals</li>
+        <li>Product has room to breathe; minimal model focus</li>
+        <li>NO "NEW" badge dominance — credibility &gt; novelty</li>
+      </ul>
+    </div>
+    <div class="panel bad">
+      <h3 style="margin-top:0;">Bottom static patterns</h3>
+      <ul>
+        <li>Defensive hooks — "haters," "foundation has let you down"</li>
+        <li>Cluttered model-heavy compositions, bold colors, pink highlights</li>
+        <li>"NEW / Just Launched" stickers front-and-center</li>
+        <li>Generic claim language ("100% agreed") without ingredient backing</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Video</h3>
+  <p>All top-performing videos so far are from <strong>partnership creators</strong>. Mijo videos and internal videos have not yet broken into the top set — Mijo continues to show strong %-new and CTR, functioning as TOF rather than DR. Plan: graduate strongest partnership ads early into Partnership BAU.</p>
+
+  <h3>Static test queue</h3>
+  <ol class="findings">
+    <li><span class="title">Bobbi founder ad</span>"I made this because I was tired of foundation that…" — trust differentiator we haven't pulled yet.</li>
+    <li><span class="title">Swatch + skin-tone variety</span>Show the formula gliding on different skin tones. Demonstration &gt; claims.</li>
+    <li><span class="title">Use-case ad</span>"The one I throw in my bag before school pickup." "Touch-up between meetings." Specific persona moments.</li>
+    <li><span class="title">Review-quote static</span>Surface the positive feedback we know exists.</li>
+    <li><span class="title">Drop "haters" framing</span>Test desirable-situation angles on net-new statics.</li>
+  </ol>
+
+  <!-- SECTION: PACING CONTEXT -->
+  <h2><span class="num">05</span>Pacing context</h2>
+  <hr class="section-rule"/>
+  <p>Foundation Stick was meant to help close the May NC gap. Whitney's pacing update (5/18) frames the stakes:</p>
+
+  <div class="kpis">
+    <div class="kpi"><div class="label">May gross rev</div><div class="value">$6.8M</div><div class="sub delta-down">-12% vs forecast</div></div>
+    <div class="kpi"><div class="label">Spend</div><div class="value">$1.9M</div><div class="sub delta-down">-15% vs forecast</div></div>
+    <div class="kpi"><div class="label">aMER</div><div class="value">1.31</div><div class="sub delta-down">-6% vs forecast</div></div>
+    <div class="kpi warn"><div class="label">NC revenue</div><div class="value">$2.5M</div><div class="sub delta-down">-20% vs forecast</div></div>
+  </div>
+
+  <!-- SECTION: WORKING -->
+  <h2><span class="num">06</span>What's working</h2>
+  <hr class="section-rule"/>
+  <ul style="margin:8px 0 0;">
+    <li>Product feedback "reportedly very positive" (Natalie) — strongest building block for what comes next</li>
+    <li><strong>NBCU expressed interest in Foundation Stick for 2026 Beauty Awards</strong> (Kenzie, Paul Street) — launch-week earned momentum</li>
+    <li>Yahoo wants more organic placements due to JRB's strong conversion</li>
+    <li>Featured in 8 new publications during launch week (Page Six, etc.)</li>
+    <li>Day-1 orders +21% vs Lip Recharge launch — demand is there</li>
+    <li>Retail brush attach 40–65%, retail teams converting well at point of sale</li>
+    <li>ROAS trajectory improving every day, CPA falling ~$34 from day 1 to day 6</li>
+    <li>WTF and Miracle Balm sales steady — no cannibalization</li>
+  </ul>
+
+  <!-- SECTION: BROKEN -->
+  <h2><span class="num">07</span>What's broken — root causes</h2>
+  <hr class="section-rule"/>
+  <ol class="findings">
+    <li><span class="title">New-customer acquisition</span>Paid Social CVR collapsed (-32% PoP) even as sessions ballooned (+80%). Meta got the eyeballs but the funnel doesn't convert.</li>
+    <li><span class="title">TikTok slow out of gate</span>Historically the best new-customer channel for JRB, underperforming. The 52.9% brush attach signal suggests the audience is high-intent when they do convert — volume is the issue.</li>
+    <li><span class="title">Units-per-order ceiling</span>1.10 vs Lip Recharge 1.70. One-shade-one-stick category. Roughly half the unit gap to JETM is category math, not execution.</li>
+    <li><span class="title">Day-1 email delay</span>Technical issue pushed the launch email later than planned, costing a known peak hour.</li>
+    <li><span class="title">Memorial Day timing</span>Launching the week before MDW — customers historically defer spend ahead of holiday discounting.</li>
+    <li><span class="title">30-shade decision load at $38</span>More considered purchase than most launches. Some users likely browsing for days rather than buying immediately.</li>
+    <li><span class="title">Internal video creative not landing</span>Only partnership videos are in the top performers. Mijo + internal video need work to break into DR.</li>
+  </ol>
+
+  <!-- SECTION: RECOMMENDATIONS -->
+  <h2><span class="num">08</span>Recommendations · next 7 days</h2>
+  <hr class="section-rule"/>
+
+  <div class="recs">
+    <div class="rec">
+      <div class="tag">Acquisition</div>
+      <h4>Concentrate Meta spend on what's working; restructure if ROAS &lt; 1.0 by end of week 2</h4>
+      <ul>
+        <li>Kill defensive-hook and "NEW badge" creative. Push spend toward top statics and partnership video.</li>
+        <li>Launch the Bobbi founder ad, swatch demo, and use-case angles into testing this week.</li>
+        <li>Re-evaluate TikTok plan — budget allocation, creator brief, or paid amplification of the partnership videos already performing.</li>
+        <li>Daily ROAS / CPA monitoring through 5/24. If ROAS doesn't cross 1.0, restructure rather than scale.</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <div class="tag">Conversion</div>
+      <h4>Lower the friction on the 30-shade decision; bundle the brush</h4>
+      <ul>
+        <li>Run a shade-finder / quiz prompt on the FS PDP — explicit CRO test candidate to ease 30-shade decision drag.</li>
+        <li>Test Face Blending Brush as a default add-on at cart for FS purchases. DTC attach is 18%; retail proves the ceiling is 40–65%.</li>
+        <li>Treat TikTok-attributed sessions as a brush-bundling treatment group given their 52.9% attach signal.</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <div class="tag">Retention &amp; momentum</div>
+      <h4>Lean into the channels that overperformed</h4>
+      <ul>
+        <li>Email and SMS posted +88% and +117% revenue PoP. Plan a 5/19 winback flight to anyone who clicked FS but didn't buy.</li>
+        <li>Memorial Day comms — bundle FS into the holiday set rather than discounting the hero.</li>
+      </ul>
+    </div>
+
+    <div class="rec">
+      <div class="tag">Reporting</div>
+      <h4>Tighten the read</h4>
+      <ul>
+        <li>Pull Motion deep-dive segmentation (persona / agency vs internal / partnership vs branded / angle / format) — Huzaifa is on it.</li>
+        <li>Daily pacing review through 5/24 to validate ROAS / CPA trajectory and trigger restructure decision.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="foot">
+    <div><strong>Sources</strong></div>
+    <div class="src-list">
+      Slack — #product-launches (Natalie Lopez recap, 5/18), #growth-creative (early ad learnings, 5/15), #growth (Whitney pacing, 5/15 &amp; 5/18), #ad-ops, #jonesroadbeauty-paulstreet (NBCU / Yahoo), #newform (biweekly creative report). Shopify (Intelligems) — YSFS revenue, orders, units, daily timeseries, top 15 products, channel breakdown, new vs returning segmentation. Meta Ads warehouse — 6-day spend / revenue / ROAS / CPA timeseries.
+    </div>
+    <div style="margin-top:18px;">Prepared by Sam Brady · Jones Road Beauty Growth · 2026-05-18</div>
+  </footer>
+
+</div>
+</body>
+</html>
