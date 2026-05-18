@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foundation Stick — Incremental Reach Analysis</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
+<style>
+  @font-face {
+    font-family: 'Canela';
+    src: url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light-Trial.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'GeogrotesqueCondBoldWeb';
+    src: url('https://jrb-fonts-cdn.vercel.app/fonts/GeogrotesqueCondBold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'RingsideWideWeb';
+    src: url('https://jrb-fonts-cdn.vercel.app/fonts/Ringside-Wide-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'BaseMonoWideWeb';
+    src: url('https://jrb-fonts-cdn.vercel.app/fonts/BaseMonoWide-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  :root { color-scheme: light; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'RingsideWideWeb', system-ui, -apple-system, sans-serif;
+    color: #000;
+    background: #fff;
+    line-height: 1.5;
+    font-size: 14px;
+  }
+
+  .utility-bar {
+    background: #f6f2eb;
+    padding: 10px 60px;
+    font-family: 'BaseMonoWideWeb', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ebebeb;
+  }
+
+  .hero {
+    padding: 60px 60px 40px;
+    border-bottom: 1px solid #ebebeb;
+  }
+
+  .eyebrow {
+    font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 12px;
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-family: 'Canela', Georgia, serif;
+    font-weight: 300;
+    font-size: 48px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+  }
+
+  .hero-subtitle {
+    font-family: 'RingsideWideWeb', sans-serif;
+    font-size: 14px;
+    max-width: 720px;
+    line-height: 1.6;
+  }
+
+  .section {
+    padding: 60px;
+    border-bottom: 1px solid #ebebeb;
+  }
+
+  .section--alt { background: #f8f8f8; }
+
+  .section-header { margin-bottom: 32px; }
+
+  h2 {
+    font-family: 'Canela', Georgia, serif;
+    font-weight: 300;
+    font-size: 32px;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .section-subtitle {
+    font-size: 13px;
+    max-width: 720px;
+  }
+
+  /* ============ SNAPSHOT COMPARISON ============ */
+  .snapshot {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: #ebebeb;
+    border: 1px solid #ebebeb;
+  }
+
+  .snapshot-col {
+    background: #fff;
+    padding: 28px 32px;
+  }
+
+  .snapshot-col--highlight { background: #000; color: #fff; }
+
+  .snapshot-col-header {
+    font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 11px;
+    margin-bottom: 6px;
+    opacity: 0.6;
+  }
+
+  .snapshot-col-name {
+    font-family: 'Canela', Georgia, serif;
+    font-weight: 300;
+    font-size: 22px;
+    margin-bottom: 20px;
+    line-height: 1.2;
+  }
+
+  .snapshot-metric {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    padding: 14px 0;
+    border-top: 1px solid #ebebeb;
+  }
+
+  .snapshot-col--highlight .snapshot-metric { border-top: 1px solid #333; }
+
+  .snapshot-metric-label {
+    font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 10px;
+    opacity: 0.7;
+  }
+
+  .snapshot-metric-value {
+    font-family: 'BaseMonoWideWeb', monospace;
+    font-size: 20px;
+    text-transform: uppercase;
+  }
+
+  /* ============ VERTICAL BAR CHARTS GRID ============ */
+  .chart-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 16px;
+  }
+
+  .chart-grid--3 { grid-template-columns: repeat(3, 1fr); }
+
+  .chart-card {
+    background: #fff;
+    border: 1px solid #ebebeb;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chart-card-label {
+    font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 10px;
+    margin-bottom: 4px;
+    opacity: 0.7;
+  }
+
+  .chart-card-title {
+    font-family: 'Canela', Georgia, serif;
+    font-weight: 300;
+    font-size: 16px;
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+
+  .chart-canvas-wrap {
+    position: relative;
+    height: 220px;
+    width: 100%;
+  }
+
+  .chart-legend {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 14px;
+    font-family: 'BaseMonoWideWeb', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .chart-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .chart-legend-swatch {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+  }
+
+  /* ============ TABLES ============ */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border: 1px solid #ebebeb;
+    margin-top: 24px;
+  }
+
+  .data-table th {
+    background: #f8f8f8;
+    text-align: left;
+    padding: 14px 18px;
+    font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 10px;
+    border-bottom: 1px solid #ebebeb;
+  }
+
+  .data-table td {
+    padding: 14px 18px;
+    border-bottom: 1px solid #ebebeb;
+    font-size: 13px;
+  }
+
+  .data-table tr:last-child td { border-bottom: none; }
+
+  .data-table .numeric {
+    font-family: 'BaseMonoWideWeb', monospace;
+    text-align: right;
+    text-transform: uppercase;
+  }
+
+  .data-table tr.highlight { background: #fdf8e8; }
+  .data-table tr.highlight td { font-weight: 500; }
+
+  .rank-badge {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    background: #000;
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 22px;
+    font-family: 'BaseMonoWideWeb', monospace;
+    font-size: 10px;
+  }
+
+  /* ============ INSIGHTS ============ */
+  .insights {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .insight-card {
+    border-left: 3px solid #000;
+    padding: 20px 28px;
+    background: #fff;
+  }
+
+  .insight-card--accent { border-left: 3px solid #c19a4d; }
+
+  .insight-label {
+    font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 10px;
+    margin-bottom: 10px;
+  }
+
+  .insight-headline {
+    font-family: 'Canela', Georgia, serif;
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 1.3;
+    margin-bottom: 10px;
+  }
+
+  .insight-body {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  /* ============ NOTE BOX ============ */
+  .note-box {
+    background: #fdf8e8;
+    border-left: 3px solid #c19a4d;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .note-box strong {
+    font-family: 'GeogrotesqueCondBoldWeb', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 10px;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* ============ FOOTER ============ */
+  .footer {
+    padding: 36px 60px;
+    background: #000;
+    color: #fff;
+    font-family: 'BaseMonoWideWeb', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin-bottom: 20px;
+  }
+
+  .footer-section-title { opacity: 0.5; margin-bottom: 6px; }
+</style>
+</head>
+<body>
+
+<div class="utility-bar">
+  <span>Jones Road Beauty · Growth Analysis</span>
+  <span>Pulled May 18, 2026</span>
+</div>
+
+<div class="hero">
+  <div class="eyebrow">Meta Ads · Incremental Reach</div>
+  <h1>Foundation Stick vs. all other campaigns.</h1>
+  <p class="hero-subtitle">A side-by-side incremental reach and audience overlap snapshot across the active prospecting stack. AUNZ, UK, Returning, and Retargeting excluded. MOF-only check below isolates funnel-position bias.</p>
+</div>
+
+<!-- ============ AT-A-GLANCE SNAPSHOT ============ -->
+<div class="section">
+  <div class="section-header">
+    <div class="eyebrow">At-a-Glance Snapshot</div>
+    <h2>The headline numbers</h2>
+    <p class="section-subtitle">Two campaign groups, four metrics. Foundation Stick wins on every measure of incrementality.</p>
+  </div>
+
+  <div class="snapshot">
+    <div class="snapshot-col snapshot-col--highlight">
+      <div class="snapshot-col-header">Group A · 2 Campaigns</div>
+      <div class="snapshot-col-name">Foundation Stick</div>
+      <div class="snapshot-metric">
+        <span class="snapshot-metric-label">Avg Incremental Reach %</span>
+        <span class="snapshot-metric-value">10.5%</span>
+      </div>
+      <div class="snapshot-metric">
+        <span class="snapshot-metric-label">Avg Audience Overlap</span>
+        <span class="snapshot-metric-value">37.6%</span>
+      </div>
+      <div class="snapshot-metric">
+        <span class="snapshot-metric-label">Avg iCPR</span>
+        <span class="snapshot-metric-value">$0.04</span>
+      </div>
+      <div class="snapshot-metric">
+        <span class="snapshot-metric-label">Total Net New Reach</span>
+        <span class="snapshot-metric-value">2.97M</span>
+      </div>
+    </div>
+    <div class="snapshot-col">
+      <div class="snapshot-col-header">Group B · 13 Campaigns</div>
+      <div class="snapshot-col-name">All Others</div>
+      <div class="snapshot-metric">
+        <span class="snapshot-metric-label">Avg Incremental Reach %</span>
+        <span class="snapshot-metric-value">2.8%</span>
+      </div>
+      <div class="snapshot-metric">
+        <span class="snapshot-metric-label">Avg Audience Overlap</span>
+        <span class="snapshot-metric-value">62.2%</span>
+      </div>
+      <div class="snapshot-metric">
+        <span class="snapshot-metric-label">Avg iCPR</span>
+        <span class="snapshot-metric-value">$0.10</span>
+      </div>
+      <div class="snapshot-metric">
+        <span class="snapshot-metric-label">Total Net New Reach</span>
+        <span class="snapshot-metric-value">5.11M</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4 VERTICAL BAR CHARTS, SIDE BY SIDE -->
+  <div class="chart-grid" style="margin-top: 32px;">
+    <div class="chart-card">
+      <div class="chart-card-label">Higher is better</div>
+      <div class="chart-card-title">Incremental Reach %</div>
+      <div class="chart-canvas-wrap"><canvas id="chart-ir"></canvas></div>
+      <div class="chart-legend">
+        <div class="chart-legend-item"><span class="chart-legend-swatch" style="background:#c19a4d"></span>Foundation Stick</div>
+        <div class="chart-legend-item"><span class="chart-legend-swatch" style="background:#000"></span>All Others</div>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-label">Lower is better</div>
+      <div class="chart-card-title">Audience Overlap %</div>
+      <div class="chart-canvas-wrap"><canvas id="chart-overlap"></canvas></div>
+      <div class="chart-legend">
+        <div class="chart-legend-item"><span class="chart-legend-swatch" style="background:#c19a4d"></span>Foundation Stick</div>
+        <div class="chart-legend-item"><span class="chart-legend-swatch" style="background:#000"></span>All Others</div>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-label">Lower is better</div>
+      <div class="chart-card-title">iCPR</div>
+      <div class="chart-canvas-wrap"><canvas id="chart-icpr"></canvas></div>
+      <div class="chart-legend">
+        <div class="chart-legend-item"><span class="chart-legend-swatch" style="background:#c19a4d"></span>Foundation Stick</div>
+        <div class="chart-legend-item"><span class="chart-legend-swatch" style="background:#000"></span>All Others</div>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-label">Net new accounts</div>
+      <div class="chart-card-title">Total Incremental Reach</div>
+      <div class="chart-canvas-wrap"><canvas id="chart-total"></canvas></div>
+      <div class="chart-legend">
+        <div class="chart-legend-item"><span class="chart-legend-swatch" style="background:#c19a4d"></span>Foundation Stick</div>
+        <div class="chart-legend-item"><span class="chart-legend-swatch" style="background:#000"></span>All Others</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TOP 5 NET NEW ============ -->
+<div class="section section--alt">
+  <div class="section-header">
+    <div class="eyebrow">Top 5 · Net New Reach</div>
+    <h2>The campaigns adding the most new accounts</h2>
+    <p class="section-subtitle">Both Foundation Stick campaigns land in the top 5. CASC is #1 by a wide margin.</p>
+  </div>
+
+  <div class="chart-card" style="background:#fff;">
+    <div class="chart-canvas-wrap" style="height: 360px;"><canvas id="chart-top5"></canvas></div>
+    <div class="chart-legend">
+      <div class="chart-legend-item"><span class="chart-legend-swatch" style="background:#c19a4d"></span>Foundation Stick</div>
+      <div class="chart-legend-item"><span class="chart-legend-swatch" style="background:#000"></span>Other</div>
+    </div>
+  </div>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th style="width: 60px;">Rank</th>
+        <th>Campaign</th>
+        <th class="numeric">Net New Reach</th>
+        <th class="numeric">IR %</th>
+        <th class="numeric">Overlap</th>
+        <th class="numeric">iCPR</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="highlight">
+        <td><span class="rank-badge">1</span></td>
+        <td>CASC FoundationStick AwarenessSales</td>
+        <td class="numeric">2,246,056</td>
+        <td class="numeric">15.8%</td>
+        <td class="numeric">27.3%</td>
+        <td class="numeric">$0.01</td>
+      </tr>
+      <tr>
+        <td><span class="rank-badge">2</span></td>
+        <td>ASC CO IA Partnership Purchase</td>
+        <td class="numeric">1,748,929</td>
+        <td class="numeric">12.3%</td>
+        <td class="numeric">51.6%</td>
+        <td class="numeric">$0.10</td>
+      </tr>
+      <tr>
+        <td><span class="rank-badge">3</span></td>
+        <td>ASC ViewContent</td>
+        <td class="numeric">1,307,975</td>
+        <td class="numeric">9.2%</td>
+        <td class="numeric">29.4%</td>
+        <td class="numeric">$0.03</td>
+      </tr>
+      <tr class="highlight">
+        <td><span class="rank-badge">4</span></td>
+        <td>ASC CO IA FoundationStick Purchase</td>
+        <td class="numeric">721,429</td>
+        <td class="numeric">5.1%</td>
+        <td class="numeric">47.8%</td>
+        <td class="numeric">$0.06</td>
+      </tr>
+      <tr>
+        <td><span class="rank-badge">5</span></td>
+        <td>Manual Consideration QuizComplete2</td>
+        <td class="numeric">523,888</td>
+        <td class="numeric">3.7%</td>
+        <td class="numeric">35.7%</td>
+        <td class="numeric">$0.06</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============ MOF-ONLY CHECK ============ -->
+<div class="section">
+  <div class="section-header">
+    <div class="eyebrow">MOF-Only · Apples to Apples</div>
+    <h2>CASC vs. ViewContent vs. QuizComplete2</h2>
+    <p class="section-subtitle">All three campaigns sit in the middle of the funnel. Isolating them controls for funnel-position bias — CASC still wins on every metric.</p>
+  </div>
+
+  <div class="note-box">
+    <strong>Why this comparison matters</strong>
+    MOF campaigns typically pull higher incremental reach than BOF Purchase campaigns simply because they sit further up the funnel. This section confirms CASC's edge isn't just funnel-position bias.
+  </div>
+
+  <!-- 3 vertical bar charts side by side -->
+  <div class="chart-grid chart-grid--3">
+    <div class="chart-card">
+      <div class="chart-card-label">Higher is better</div>
+      <div class="chart-card-title">Incremental Reach %</div>
+      <div class="chart-canvas-wrap"><canvas id="chart-mof-ir"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-label">Lower is better</div>
+      <div class="chart-card-title">Audience Overlap %</div>
+      <div class="chart-canvas-wrap"><canvas id="chart-mof-overlap"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-label">Lower is better</div>
+      <div class="chart-card-title">iCPR</div>
+      <div class="chart-canvas-wrap"><canvas id="chart-mof-icpr"></canvas></div>
+    </div>
+  </div>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Campaign</th>
+        <th class="numeric">Reach</th>
+        <th class="numeric">Spend</th>
+        <th class="numeric">Net New</th>
+        <th class="numeric">IR %</th>
+        <th class="numeric">Overlap</th>
+        <th class="numeric">iCPR</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="highlight">
+        <td>CASC FoundationStick AwarenessSales</td>
+        <td class="numeric">3,090,964</td>
+        <td class="numeric">$23,168</td>
+        <td class="numeric">2,246,056</td>
+        <td class="numeric">15.8%</td>
+        <td class="numeric">27.3%</td>
+        <td class="numeric">$0.01</td>
+      </tr>
+      <tr>
+        <td>ASC ViewContent</td>
+        <td class="numeric">1,853,704</td>
+        <td class="numeric">$42,217</td>
+        <td class="numeric">1,307,975</td>
+        <td class="numeric">9.2%</td>
+        <td class="numeric">29.4%</td>
+        <td class="numeric">$0.03</td>
+      </tr>
+      <tr>
+        <td>Manual Consideration QuizComplete2</td>
+        <td class="numeric">814,192</td>
+        <td class="numeric">$33,254</td>
+        <td class="numeric">523,888</td>
+        <td class="numeric">3.7%</td>
+        <td class="numeric">35.7%</td>
+        <td class="numeric">$0.06</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============ INSIGHTS ============ -->
+<div class="section section--alt">
+  <div class="section-header">
+    <div class="eyebrow">Strategic Analysis</div>
+    <h2>What the data tells us</h2>
+  </div>
+
+  <div class="insights">
+    <div class="insight-card insight-card--accent">
+      <div class="insight-label">Headline Finding</div>
+      <div class="insight-headline">CASC FoundationStick is the single most efficient incremental reach campaign in the account.</div>
+      <div class="insight-body">15.8% incremental reach, 27.3% overlap, $0.01 iCPR. 1.7x the net new reach of ViewContent at ~half the spend; 3x the iCPR efficiency.</div>
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-label">Funnel-Position Check</div>
+      <div class="insight-headline">CASC's edge isn't just because it's MOF.</div>
+      <div class="insight-body">Even when isolating the three MOF campaigns, CASC wins on every metric — reach, IR%, overlap, and iCPR. Funnel position matters but doesn't explain the gap.</div>
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-label">Audience Overlap</div>
+      <div class="insight-headline">Foundation Stick averages ~25 pts less overlap than the rest of the stack.</div>
+      <div class="insight-body">37.6% vs 62.2% across all other campaigns. Strong signal that Foundation Stick is reaching a meaningfully different audience pool.</div>
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-label">Implication</div>
+      <div class="insight-headline">Consider scaling CASC FoundationStick spend.</div>
+      <div class="insight-body">$23K driving 2.25M net new accounts — likely room to push more budget without dramatically degrading efficiency. Pair with conversion lift to confirm purchase impact.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<div class="footer">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-section-title">Data Source</div>
+      <div>Meta Ads Manager · Incremental Reach</div>
+      <div>act_788856061928226</div>
+    </div>
+    <div>
+      <div class="footer-section-title">Pull Date</div>
+      <div>May 18, 2026</div>
+    </div>
+    <div>
+      <div class="footer-section-title">Exclusions</div>
+      <div>AUNZ · UK · Returning · Retargeting</div>
+    </div>
+  </div>
+  <div style="opacity: 0.5; max-width: 720px; line-height: 1.6;">
+    Incremental reach = unique accounts reached by a campaign not reached by any other active campaign in the same period. Audience overlap = inverse. iCPR = spend / incremental reach. This report does not measure conversion lift — pair with a lift test to confirm reach translates to revenue.
+  </div>
+</div>
+
+<script>
+  // Global chart config
+  Chart.defaults.font.family = 'BaseMonoWideWeb, monospace';
+  Chart.defaults.font.size = 10;
+  Chart.defaults.color = '#000';
+
+  const baseOpts = (yLabel, formatter) => ({
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => formatter ? formatter(ctx.parsed.y) : ctx.parsed.y
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: { color: '#ebebeb' },
+        ticks: {
+          color: '#000',
+          font: { size: 9 },
+          callback: (v) => formatter ? formatter(v) : v
+        }
+      },
+      x: {
+        grid: { display: false },
+        ticks: { color: '#000', font: { size: 10 } }
+      }
+    }
+  });
+
+  const fmtPct = (v) => v + '%';
+  const fmtUsd = (v) => '$' + Number(v).toFixed(2);
+  const fmtM = (v) => (v / 1000000).toFixed(2) + 'M';
+  const fmtK = (v) => v >= 1000000 ? (v/1000000).toFixed(1)+'M' : (v/1000).toFixed(0)+'K';
+
+  // ===== HEADLINE CHARTS (Foundation Stick vs All Others) =====
+  const headlineLabels = ['Foundation\nStick', 'All\nOthers'];
+  const headlineColors = ['#c19a4d', '#000'];
+
+  new Chart(document.getElementById('chart-ir'), {
+    type: 'bar',
+    data: {
+      labels: headlineLabels,
+      datasets: [{
+        data: [10.5, 2.8],
+        backgroundColor: headlineColors,
+        borderWidth: 0,
+        maxBarThickness: 60
+      }]
+    },
+    options: baseOpts('%', fmtPct)
+  });
+
+  new Chart(document.getElementById('chart-overlap'), {
+    type: 'bar',
+    data: {
+      labels: headlineLabels,
+      datasets: [{
+        data: [37.6, 62.2],
+        backgroundColor: headlineColors,
+        borderWidth: 0,
+        maxBarThickness: 60
+      }]
+    },
+    options: baseOpts('%', fmtPct)
+  });
+
+  new Chart(document.getElementById('chart-icpr'), {
+    type: 'bar',
+    data: {
+      labels: headlineLabels,
+      datasets: [{
+        data: [0.04, 0.10],
+        backgroundColor: headlineColors,
+        borderWidth: 0,
+        maxBarThickness: 60
+      }]
+    },
+    options: baseOpts('$', fmtUsd)
+  });
+
+  new Chart(document.getElementById('chart-total'), {
+    type: 'bar',
+    data: {
+      labels: headlineLabels,
+      datasets: [{
+        data: [2967485, 5113702],
+        backgroundColor: headlineColors,
+        borderWidth: 0,
+        maxBarThickness: 60
+      }]
+    },
+    options: baseOpts('M', fmtM)
+  });
+
+  // ===== TOP 5 CHART =====
+  new Chart(document.getElementById('chart-top5'), {
+    type: 'bar',
+    data: {
+      labels: ['CASC\nFoundationStick', 'ASC\nPartnership', 'ASC\nViewContent', 'ASC\nFoundationStick', 'Manual\nQuizComplete2'],
+      datasets: [{
+        data: [2246056, 1748929, 1307975, 721429, 523888],
+        backgroundColor: ['#c19a4d', '#000', '#000', '#c19a4d', '#000'],
+        borderWidth: 0,
+        maxBarThickness: 80
+      }]
+    },
+    options: baseOpts('Reach', fmtK)
+  });
+
+  // ===== MOF CHARTS =====
+  const mofLabels = ['CASC\nFoundation', 'View\nContent', 'Quiz\nComplete2'];
+  const mofColors = ['#c19a4d', '#000', '#000'];
+
+  new Chart(document.getElementById('chart-mof-ir'), {
+    type: 'bar',
+    data: {
+      labels: mofLabels,
+      datasets: [{
+        data: [15.8, 9.2, 3.7],
+        backgroundColor: mofColors,
+        borderWidth: 0,
+        maxBarThickness: 60
+      }]
+    },
+    options: baseOpts('%', fmtPct)
+  });
+
+  new Chart(document.getElementById('chart-mof-overlap'), {
+    type: 'bar',
+    data: {
+      labels: mofLabels,
+      datasets: [{
+        data: [27.3, 29.4, 35.7],
+        backgroundColor: mofColors,
+        borderWidth: 0,
+        maxBarThickness: 60
+      }]
+    },
+    options: baseOpts('%', fmtPct)
+  });
+
+  new Chart(document.getElementById('chart-mof-icpr'), {
+    type: 'bar',
+    data: {
+      labels: mofLabels,
+      datasets: [{
+        data: [0.01, 0.03, 0.06],
+        backgroundColor: mofColors,
+        borderWidth: 0,
+        maxBarThickness: 60
+      }]
+    },
+    options: baseOpts('$', fmtUsd)
+  });
+</script>
+
+</body>
+</html>
