@@ -136,7 +136,7 @@
         <span>Seed from</span>
         <button data-seed="u">Unconstrained</button>
         <button data-seed="c">Conservative</button>
-        <button data-seed="m">Manual</button>
+        <button data-seed="m">Aggressive</button>
         <button data-seed="act">Current spend</button>
         <button data-seed="zero">Blank</button>
       </div>
@@ -172,8 +172,8 @@ var DATA = {
         desc:"Haus's raw optimum with no guardrails — highest projected revenue, but moves money freely (zeroes AppLovin, Meta Upper, Pinterest; pushes Linear to 9.5%)."},
       conservative:{label:"Conservative ±20%", roas:0.98, rev:2939627, key:"c",
         desc:"Haus optimum constrained to ±20% reallocation per channel — the most defensible 'don't rock the boat' option."},
-      manual:{label:"Manual", roas:0.99, rev:2978412, key:"m",
-        desc:"Hand-adjusted mix with business context layered onto the Haus model."},
+      manual:{label:"Aggressive reallocation", roas:0.99, rev:2978412, key:"m",
+        desc:"Haus's aggressive reallocation scenario — moves spend more sharply toward the model's preferred mix than Conservative (e.g. pushes Meta Lower funnel to 57%)."},
       final:{label:"Final recommendation", roas:null, rev:null, key:"f",
         desc:"The actual deliverable to Cody — not modeled in Haus (no revenue projection). Blends the models with iTest locks, seasonality, and channel conviction."}
     },
@@ -275,7 +275,7 @@ function showDetail(c,id){
 }
 
 function renderCompare(){
-  var keys=["u","c","m","f"], labels=["Unconstrained","Conservative","Manual","Final rec"];
+  var keys=["u","c","m","f"], labels=["Unconstrained","Conservative","Aggressive","Final rec"];
   var t=document.getElementById("cmpTable");
   var head='<thead><tr><th>Channel</th><th>Current<br>(L30D)</th>'+
     labels.map(function(l,i){return '<th'+(i===3?' class="col-hi"':'')+'>'+l+'</th>';}).join("")+'</tr></thead>';
@@ -303,7 +303,7 @@ function renderCompare(){
       var v=pctFor(c,D.scenarios[active].key), dd=v-c.act;
       document.getElementById("detail2").innerHTML=
         '<div class="dn">'+c.n+'</div>'+
-        '<div class="dm">Current '+c.act.toFixed(2)+'% · Unconstrained '+c.u.toFixed(2)+'% · Conservative '+c.c.toFixed(2)+'% · Manual '+c.m.toFixed(2)+'% · Final '+c.f.toFixed(2)+'%</div>'+
+        '<div class="dm">Current '+c.act.toFixed(2)+'% · Unconstrained '+c.u.toFixed(2)+'% · Conservative '+c.c.toFixed(2)+'% · Aggressive '+c.m.toFixed(2)+'% · Final '+c.f.toFixed(2)+'%</div>'+
         '<div>'+c.note+'</div>';
     };
   });
@@ -395,7 +395,7 @@ function renderBuild(){
     card.innerHTML=
       '<div class="top">'+
         '<div><div class="bn">'+c.n+'</div>'+
-          '<div class="refs">Haus — <b>U</b> '+c.u.toFixed(1)+'% · <b>C</b> '+c.c.toFixed(1)+'% · <b>M</b> '+c.m.toFixed(1)+'% &nbsp;|&nbsp; now '+c.act.toFixed(1)+'%</div></div>'+
+          '<div class="refs">Haus — <b>U</b> '+c.u.toFixed(1)+'% · <b>C</b> '+c.c.toFixed(1)+'% · <b>A</b> '+c.m.toFixed(1)+'% &nbsp;|&nbsp; now '+c.act.toFixed(1)+'%</div></div>'+
         '<input class="pct" type="text" inputmode="decimal" value="'+c.f.toFixed(2)+'" aria-label="'+escapeAttr(c.n)+' percent" />'+
         '<div class="dol">'+usd(c.f/100*budget)+'</div>'+
         '<div class="dlt" style="color:'+col+'">'+arr+'</div>'+
