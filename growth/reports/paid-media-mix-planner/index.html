@@ -267,11 +267,16 @@ function showDetail(c,id){
   var key=D.scenarios[active].key, v=pctFor(c,key), dd=v-c.act;
   var dir=Math.abs(dd)<0.05?"holds at":(dd>0?"increases to":"decreases to");
   var m=dollars(v), d=m/DAYS, w=d*7;
+  var reason = active==="final"
+    ? (String(c.note||"").trim()
+        ? '<div>'+escapeHtml(c.note)+'</div>'
+        : '<div style="color:var(--hint)">No reasoning yet — add it on this channel in the Build recommendation tab.</div>')
+    : '<div style="color:var(--hint)"><i class="ti ti-info-circle"></i> Haus model output — your reasoning lives on the Final recommendation (Build tab).</div>';
   document.getElementById(id).innerHTML=
     '<div class="dn">'+c.n+'</div>'+
     '<div class="dm">'+D.scenarios[active].label+' '+dir+' <b>'+v.toFixed(2)+'%</b> · current spend '+c.act.toFixed(2)+'% ('+usd(dollars(c.act))+'/mo)</div>'+
     '<div class="dm">'+usd(m)+'/mo &nbsp;·&nbsp; '+usd(w)+'/wk &nbsp;·&nbsp; '+usd(d)+'/day <span style="color:var(--hint)">('+DAYS+'-day month)</span></div>'+
-    '<div>'+c.note+'</div>';
+    reason;
 }
 
 function renderCompare(){
@@ -304,7 +309,7 @@ function renderCompare(){
       document.getElementById("detail2").innerHTML=
         '<div class="dn">'+c.n+'</div>'+
         '<div class="dm">Current '+c.act.toFixed(2)+'% · Unconstrained '+c.u.toFixed(2)+'% · Conservative '+c.c.toFixed(2)+'% · Aggressive '+c.m.toFixed(2)+'% · Final '+c.f.toFixed(2)+'%</div>'+
-        '<div>'+c.note+'</div>';
+        (String(c.note||"").trim() ? '<div style="font-size:11.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--hint); margin-bottom:3px;">Your reasoning (Final rec)</div><div>'+escapeHtml(c.note)+'</div>' : '');
     };
   });
 }
