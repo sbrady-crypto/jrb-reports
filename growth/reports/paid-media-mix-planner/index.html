@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Paid Media Mix Planner — JRB</title>
+<style>
+  :root{
+    --bg:#fbfaf7; --surface:#ffffff; --line:#e7e4db; --line2:#d8d4c8;
+    --ink:#1f1e1b; --muted:#6b6862; --hint:#9a968d;
+    --accent:#2f6db0; --accent-bg:#eaf1fa;
+    --up:#2e7d32; --down:#c0392b; --flat:#9a968d;
+    --hi:#fcf6e9; --hi-line:#e8d9b0;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:15px; line-height:1.55; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1080px; margin:0 auto; padding:28px 22px 60px;}
+  h1{font-size:24px; font-weight:600; margin:0;}
+  .sub{color:var(--muted); font-size:13.5px; margin-top:3px;}
+  .controls{display:flex; flex-wrap:wrap; gap:18px; align-items:flex-end; margin:22px 0 8px;}
+  .ctl label{display:block; font-size:11.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--hint); margin-bottom:6px;}
+  .seg{display:inline-flex; background:var(--surface); border:1px solid var(--line); border-radius:9px; padding:3px; gap:2px;}
+  .seg button{border:0; background:transparent; font:inherit; font-size:13px; color:var(--muted); padding:6px 12px; border-radius:7px; cursor:pointer;}
+  .seg button.on{background:var(--accent); color:#fff;}
+  .budget input{font:inherit; font-size:14px; border:1px solid var(--line2); border-radius:8px; padding:7px 10px; width:140px; background:var(--surface); color:var(--ink);}
+  .scenstrip{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px; margin:18px 0;}
+  .scard{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:12px 14px; cursor:pointer; transition:border-color .12s;}
+  .scard:hover{border-color:var(--line2);}
+  .scard.on{border:2px solid var(--accent); padding:11px 13px;}
+  .scard .nm{font-size:13px; font-weight:600;}
+  .scard .rev{font-size:21px; font-weight:600; margin-top:6px;}
+  .scard .roas{font-size:12.5px; color:var(--muted); margin-top:2px;}
+  .scard.on .nm{color:var(--accent);}
+  .legend{display:flex; gap:18px; align-items:center; font-size:12px; color:var(--muted); margin:14px 2px 10px;}
+  .legend i{display:inline-block; vertical-align:middle; margin-right:5px;}
+  .swatch{width:22px; height:9px; border-radius:2px; background:var(--accent);}
+  .tick{width:2px; height:14px; background:var(--ink);}
+  .row{display:grid; grid-template-columns:170px 1fr 92px 70px; align-items:center; gap:12px; padding:7px 8px; border-radius:8px; cursor:pointer;}
+  .row:hover{background:var(--surface);}
+  .row .nm{font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .track{position:relative; height:18px; background:#efece4; border-radius:3px;}
+  .fill{position:absolute; left:0; top:0; bottom:0; background:var(--accent); border-radius:3px;}
+  .mark{position:absolute; top:-2px; bottom:-2px; width:2px; background:var(--ink);}
+  .val{font-size:13px; font-weight:600; text-align:right;}
+  .delta{font-size:11.5px; text-align:right;}
+  .detail{margin-top:14px; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:14px 16px; font-size:13.5px; color:var(--muted); line-height:1.55;}
+  .detail .dn{font-size:15px; font-weight:600; color:var(--ink); margin-bottom:4px;}
+  .detail .dm{color:var(--ink); margin-bottom:6px;}
+  table.cmp{width:100%; border-collapse:collapse; font-size:13px; margin-top:6px;}
+  table.cmp th, table.cmp td{padding:8px 10px; text-align:right; border-bottom:1px solid var(--line);}
+  table.cmp th:first-child, table.cmp td:first-child{text-align:left;}
+  table.cmp thead th{font-size:11.5px; text-transform:uppercase; letter-spacing:.03em; color:var(--hint); font-weight:600; border-bottom:1px solid var(--line2);}
+  table.cmp .metric td{color:var(--muted); font-size:12px; background:#f5f3ec;}
+  table.cmp .col-hi{background:var(--hi);}
+  table.cmp th.col-hi{background:var(--hi); border-bottom-color:var(--hi-line);}
+  .cellpct{font-weight:600; color:var(--ink);}
+  .cellsub{font-size:11px; color:var(--down);}
+  .cellsub.up{color:var(--up);}
+  .cellsub.flat{color:var(--flat);}
+  .foot{margin-top:30px; font-size:11.5px; color:var(--hint); border-top:1px solid var(--line); padding-top:14px; line-height:1.6;}
+  .hide{display:none;}
+  /* build mode */
+  .bbar{display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:space-between; position:sticky; top:0; background:var(--bg); padding:12px 14px; margin:6px 0 14px; border:1px solid var(--line); border-radius:12px; z-index:5;}
+  .bbar .seed{display:flex; gap:6px; align-items:center; flex-wrap:wrap;}
+  .bbar .seed span{font-size:11.5px; color:var(--hint); text-transform:uppercase; letter-spacing:.04em; margin-right:2px;}
+  .bbar .seed button{font:inherit; font-size:12.5px; padding:5px 10px; border:1px solid var(--line2); background:var(--surface); border-radius:7px; cursor:pointer; color:var(--ink);}
+  .bbar .seed button:hover{border-color:var(--accent);}
+  .totbox{text-align:right; font-size:13px;}
+  .totbox .tnum{font-size:20px; font-weight:600;}
+  .totbox.ok .tnum{color:var(--up);} .totbox.off .tnum{color:var(--down);}
+  .totbox .tsub{font-size:11.5px; color:var(--muted);}
+  .totbox button{font:inherit; font-size:12px; margin-left:8px; padding:5px 9px; border:1px solid var(--line2); background:var(--surface); border-radius:7px; cursor:pointer; color:var(--ink);}
+  .bch{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:10px 12px; margin-bottom:8px;}
+  .bch .top{display:grid; grid-template-columns:1fr 96px 96px 74px; gap:10px; align-items:center;}
+  .bch .bn{font-size:13.5px; font-weight:600;}
+  .bch .refs{font-size:11px; color:var(--hint); margin-top:2px;}
+  .bch .refs b{color:var(--muted); font-weight:600;}
+  .bch input.pct{font:inherit; font-size:14px; text-align:right; width:100%; padding:6px 8px; border:1px solid var(--line2); border-radius:7px; background:#fff; color:var(--ink);}
+  .bch input.pct:focus{outline:none; border-color:var(--accent);}
+  .bch .dol{font-size:12px; color:var(--muted); text-align:right;}
+  .bch .dlt{font-size:11.5px; text-align:right;}
+  .bch input.note{font:inherit; font-size:12.5px; width:100%; margin-top:8px; padding:6px 8px; border:1px solid var(--line); border-radius:7px; background:#fcfbf8; color:var(--ink);}
+  .bch input.note::placeholder{color:var(--hint);}
+  .exprow{display:flex; flex-wrap:wrap; gap:8px; margin:16px 0 6px;}
+  .exprow button{font:inherit; font-size:13px; padding:8px 13px; border:1px solid var(--line2); background:var(--surface); border-radius:8px; cursor:pointer; color:var(--ink);}
+  .exprow button:hover{border-color:var(--accent); color:var(--accent);}
+  #expOut{width:100%; height:150px; margin-top:10px; font-family:ui-monospace,Menlo,monospace; font-size:11.5px; border:1px solid var(--line2); border-radius:8px; padding:10px; background:#fff; color:var(--ink); white-space:pre; overflow:auto;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Paid media mix planner</h1>
+  <div class="sub" id="subline">June 2026 · Haus CMMM scenario modeling</div>
+
+  <div class="controls">
+    <div class="ctl"><label>View</label>
+      <div class="seg" id="segView">
+        <button data-v="pct" class="on">% mix</button>
+        <button data-v="usd">Dollars</button>
+      </div>
+    </div>
+    <div class="ctl"><label>Mode</label>
+      <div class="seg" id="segMode">
+        <button data-m="single" class="on">Single scenario</button>
+        <button data-m="compare">Compare all</button>
+        <button data-m="build">Build recommendation</button>
+      </div>
+    </div>
+    <div class="ctl budget"><label>Monthly budget</label>
+      <input id="budget" type="text" value="$3,000,000" />
+    </div>
+  </div>
+
+  <div class="scenstrip" id="scenstrip"></div>
+
+  <div id="singleView">
+    <div class="legend">
+      <span><span class="swatch" style="display:inline-block"></span>&nbsp;Selected scenario</span>
+      <span><span class="tick" style="display:inline-block"></span>&nbsp;Current spend (L30D)</span>
+      <span style="color:var(--up)">▲ increase</span><span style="color:var(--down)">▼ decrease vs now</span>
+    </div>
+    <div id="rows"></div>
+    <div class="detail" id="detail">Click any channel to see the rationale behind its recommendation.</div>
+  </div>
+
+  <div id="compareView" class="hide">
+    <table class="cmp" id="cmpTable"></table>
+    <div class="detail" id="detail2" style="margin-top:14px;">Click any channel row to read your rationale. Highlighted column is the final recommendation.</div>
+  </div>
+
+  <div id="buildView" class="hide">
+    <div class="bbar">
+      <div class="seed">
+        <span>Seed from</span>
+        <button data-seed="u">Unconstrained</button>
+        <button data-seed="c">Conservative</button>
+        <button data-seed="m">Manual</button>
+        <button data-seed="act">Current spend</button>
+        <button data-seed="zero">Blank</button>
+      </div>
+      <div class="totbox" id="totbox">
+        <div class="tnum" id="totNum">100.00%</div>
+        <div class="tsub" id="totSub">balanced<button id="normBtn">Normalize to 100%</button></div>
+      </div>
+    </div>
+    <div id="buildRows"></div>
+    <div class="exprow">
+      <button id="expSheet"><i class="ti ti-table"></i> Copy for Google Sheet</button>
+      <button id="expJson">Copy data block (for refresh)</button>
+      <button id="expCsv">Download CSV</button>
+      <button id="resetReco" style="margin-left:auto; color:var(--down)">Clear my edits</button>
+    </div>
+    <textarea id="expOut" class="hide" readonly></textarea>
+  </div>
+
+  <div class="foot" id="foot"></div>
+</div>
+
+<script>
+var DATA = {
+  "June 2026": {
+    asOf: "Refreshed from the JUNE CMMM PLAN tab",
+    budget: 3000000,
+    scenarios: {
+      unconstrained:{label:"Unconstrained", roas:1.02, rev:3073748, key:"u",
+        desc:"Haus's raw optimum with no guardrails — highest projected revenue, but moves money freely (zeroes AppLovin, Meta Upper, Pinterest; pushes Linear to 9.5%)."},
+      conservative:{label:"Conservative ±20%", roas:0.98, rev:2939627, key:"c",
+        desc:"Haus optimum constrained to ±20% reallocation per channel — the most defensible 'don't rock the boat' option."},
+      manual:{label:"Manual", roas:0.99, rev:2978412, key:"m",
+        desc:"Hand-adjusted mix with business context layered onto the Haus model."},
+      final:{label:"Final recommendation", roas:null, rev:null, key:"f",
+        desc:"The actual deliverable to Cody — not modeled in Haus (no revenue projection). Blends the models with iTest locks, seasonality, and channel conviction."}
+    },
+    channels:[
+      {n:"Meta Lower funnel", u:52.50,c:52.51,m:56.98,f:55.00,act:60.62, note:"Decrease slightly for seasonality + recent lower Meta efficiency; bump channels we have conviction in while we sort out issues."},
+      {n:"Google/YT: Demand Gen", u:8.24,c:8.35,m:8.41,f:12.00,act:9.48, note:"Locked for iTest. Adjust post-test based on scale-up results."},
+      {n:"Meta Mid Funnel", u:8.52,c:8.52,m:8.63,f:8.00,act:8.11, note:"Hold a bit lower given Upper Funnel + IA will add new users to the funnel. New iTest needed for ideal TOF/MOF/BOF mix; some testable with CLS."},
+      {n:"Podcast", u:6.02,c:6.02,m:6.14,f:6.00,act:4.35, note:"April slow (shows went live late), strong May. Comfortable pushing $180–200k. cMMM + Architect both say increase."},
+      {n:"CTV", u:7.86,c:7.86,m:7.00,f:4.50,act:4.25, note:"Haus recommends higher off strong Oct UA test only. Keep near current until we have an incrementality read; prioritize a test in late June (here or Linear)."},
+      {n:"Linear TV", u:9.53,c:4.97,m:6.00,f:4.50,act:3.00, note:"Haus likes Linear. Stay at our higher level; prove out incrementality before significant scale-up."},
+      {n:"TikTok", u:0.55,c:2.09,m:1.00,f:1.50,act:2.05, note:"Keep low. Stronger Sale efficiency — lean in during seasonal moments. Prefer TTS where we've seen early performance over TT ads."},
+      {n:"AppLovin", u:0.00,c:1.90,m:0.55,f:1.25,act:2.00, note:"No level of spend where Haus sees a decent iROAS — significantly de-prioritize until they improve their model."},
+      {n:"Meta Upper Funnel", u:0.00,c:2.15,m:0.00,f:3.00,act:1.48, note:"Locked for iTest. Adjust post-test based on scale-up results."},
+      {n:"Google Search NonBrand", u:2.38,c:2.16,m:2.41,f:1.80,act:1.40, note:"Both cMMM and Architect like NB. Marginal increase without an iTest given source alignment; keep relatively low until proven."},
+      {n:"Google PMAX", u:1.06,c:1.16,m:1.16,f:1.25,act:1.25, note:"Haus lower post-iTest, but stronger 2nd-half performance + paused PMax Body (hero makeup only) gives more conviction. Keep higher."},
+      {n:"Google Shopping NonBrand", u:1.67,c:1.32,m:1.73,f:1.70,act:1.02, note:"Increase — we appear in JRB searches but rarely in sponsored Shopping placements. Need more coverage."},
+      {n:"Pinterest", u:0.00,c:0.99,m:0.00,f:0.00,act:0.99, note:"Haus re-read after removing a dated iTest. Likely not worth the effort at this spend — propose a pause to free resources for stronger bets."},
+      {n:"Google/YT: Shorts", u:0.74,c:0.00,m:0.00,f:0.00,act:0.00, note:"Recommend holding."},
+      {n:"Twitter", u:0.93,c:0.00,m:0.00,f:0.00,act:0.00, note:"Recommend holding."}
+    ]
+  }
+};
+
+var MONTH = "June 2026";
+var D = DATA[MONTH];
+function monthDays(label){
+  var m={january:31,february:28,march:31,april:30,may:31,june:30,july:31,august:31,september:30,october:31,november:30,december:31};
+  var p=String(label).toLowerCase().split(/\s+/), name=p[0], yr=parseInt(p[1],10), d=m[name]||30;
+  if(name==="february" && yr%4===0 && (yr%100!==0||yr%400===0)) d=29;
+  return d;
+}
+var DAYS = monthDays(MONTH);
+var view = "pct";      // pct | usd
+var mode = "single";   // single | compare
+var active = "manual";
+var budget = D.budget;
+var MAXBAR = 62;
+
+function pctFor(c,key){ return key==="u"?c.u : key==="c"?c.c : key==="m"?c.m : c.f; }
+function usd(v){ return "$"+Math.round(v).toLocaleString(); }
+function dollars(pct){ return pct/100*budget; }
+function fmtCell(pct){ return view==="pct" ? pct.toFixed(2)+"%" : usd(dollars(pct)); }
+
+function parseBudget(str){
+  var n = parseFloat(String(str).replace(/[^0-9.]/g,""));
+  return isNaN(n)||n<=0 ? D.budget : Math.round(n);
+}
+
+function renderStrip(){
+  var el=document.getElementById("scenstrip"); el.innerHTML="";
+  Object.keys(D.scenarios).forEach(function(k){
+    var s=D.scenarios[k], on=(k===active);
+    var d=document.createElement("div");
+    d.className="scard"+(on?" on":"");
+    d.innerHTML='<div class="nm">'+s.label+'</div>'+
+      '<div class="rev">'+(s.rev==null?"Not modeled":usd(s.rev))+'</div>'+
+      '<div class="roas">'+(s.roas==null?"no Haus projection":"iROAS $"+s.roas.toFixed(2))+'</div>';
+    d.onclick=function(){ active=k; renderAll(); };
+    el.appendChild(d);
+  });
+}
+
+function renderRows(){
+  var key=D.scenarios[active].key;
+  var box=document.getElementById("rows"); box.innerHTML="";
+  var sorted=D.channels.slice().sort(function(a,b){return pctFor(b,key)-pctFor(a,key);});
+  sorted.forEach(function(c){
+    var v=pctFor(c,key), dd=v-c.act;
+    var row=document.createElement("div"); row.className="row";
+    var col=Math.abs(dd)<0.05?"var(--flat)":(dd>0?"var(--up)":"var(--down)");
+    var arr=Math.abs(dd)<0.05?"flat":((dd>0?"▲ ":"▼ ")+Math.abs(dd).toFixed(1));
+    var valTxt = view==="pct" ? v.toFixed(2)+"%" : usd(dollars(v));
+    row.innerHTML=
+      '<div class="nm">'+c.n+'</div>'+
+      '<div class="track"><div class="fill" style="width:'+(v/MAXBAR*100)+'%"></div>'+
+        '<div class="mark" style="left:'+(c.act/MAXBAR*100)+'%"></div></div>'+
+      '<div class="val">'+valTxt+'</div>'+
+      '<div class="delta" style="color:'+col+'">'+arr+'</div>';
+    row.onclick=function(){ showDetail(c,"detail"); };
+    box.appendChild(row);
+  });
+}
+
+function showDetail(c,id){
+  var key=D.scenarios[active].key, v=pctFor(c,key), dd=v-c.act;
+  var dir=Math.abs(dd)<0.05?"holds at":(dd>0?"increases to":"decreases to");
+  var m=dollars(v), d=m/DAYS, w=d*7;
+  document.getElementById(id).innerHTML=
+    '<div class="dn">'+c.n+'</div>'+
+    '<div class="dm">'+D.scenarios[active].label+' '+dir+' <b>'+v.toFixed(2)+'%</b> · current spend '+c.act.toFixed(2)+'% ('+usd(dollars(c.act))+'/mo)</div>'+
+    '<div class="dm">'+usd(m)+'/mo &nbsp;·&nbsp; '+usd(w)+'/wk &nbsp;·&nbsp; '+usd(d)+'/day <span style="color:var(--hint)">('+DAYS+'-day month)</span></div>'+
+    '<div>'+c.note+'</div>';
+}
+
+function renderCompare(){
+  var keys=["u","c","m","f"], labels=["Unconstrained","Conservative","Manual","Final rec"];
+  var t=document.getElementById("cmpTable");
+  var head='<thead><tr><th>Channel</th><th>Current<br>(L30D)</th>'+
+    labels.map(function(l,i){return '<th'+(i===3?' class="col-hi"':'')+'>'+l+'</th>';}).join("")+'</tr></thead>';
+  var sc=D.scenarios;
+  var metricRows=
+    '<tr class="metric"><td>Projected inc. revenue</td><td>—</td>'+
+      '<td>'+usd(sc.unconstrained.rev)+'</td><td>'+usd(sc.conservative.rev)+'</td><td>'+usd(sc.manual.rev)+'</td><td class="col-hi">—</td></tr>'+
+    '<tr class="metric"><td>Projected iROAS</td><td>—</td>'+
+      '<td>$'+sc.unconstrained.roas.toFixed(2)+'</td><td>$'+sc.conservative.roas.toFixed(2)+'</td><td>$'+sc.manual.roas.toFixed(2)+'</td><td class="col-hi">—</td></tr>';
+  var sorted=D.channels.slice().sort(function(a,b){return b.act-a.act;});
+  var body=sorted.map(function(c){
+    var cells=keys.map(function(k,i){
+      var v=pctFor(c,k), dd=v-c.act;
+      var cls=Math.abs(dd)<0.05?"flat":(dd>0?"up":"");
+      var sub=Math.abs(dd)<0.05?"flat":((dd>0?"▲":"▼")+Math.abs(dd).toFixed(1));
+      return '<td'+(i===3?' class="col-hi"':'')+'><span class="cellpct">'+fmtCell(v)+'</span><br><span class="cellsub '+cls+'">'+sub+'</span></td>';
+    }).join("");
+    return '<tr data-ch="'+c.n+'" style="cursor:pointer"><td>'+c.n+'</td><td>'+fmtCell(c.act)+'</td>'+cells+'</tr>';
+  }).join("");
+  t.innerHTML=head+'<tbody>'+metricRows+body+'</tbody>';
+  Array.prototype.forEach.call(t.querySelectorAll("tr[data-ch]"),function(tr){
+    tr.onclick=function(){
+      var c=D.channels.filter(function(x){return x.n===tr.getAttribute("data-ch");})[0];
+      // show against currently active scenario in compare detail
+      var v=pctFor(c,D.scenarios[active].key), dd=v-c.act;
+      document.getElementById("detail2").innerHTML=
+        '<div class="dn">'+c.n+'</div>'+
+        '<div class="dm">Current '+c.act.toFixed(2)+'% · Unconstrained '+c.u.toFixed(2)+'% · Conservative '+c.c.toFixed(2)+'% · Manual '+c.m.toFixed(2)+'% · Final '+c.f.toFixed(2)+'%</div>'+
+        '<div>'+c.note+'</div>';
+    };
+  });
+}
+
+function renderAll(){
+  document.getElementById("subline").textContent = MONTH+" · Haus CMMM scenario modeling";
+  renderStrip();
+  document.getElementById("singleView").className = mode==="single"?"":"hide";
+  document.getElementById("compareView").className = mode==="compare"?"":"hide";
+  document.getElementById("buildView").className = mode==="build"?"":"hide";
+  if(mode==="single") renderRows();
+  else if(mode==="compare") renderCompare();
+  else renderBuild();
+  document.getElementById("foot").innerHTML =
+    D.asOf+". Scenarios exported from Haus (app.haus.io). The three modeled scenarios total a $3.0M plan budget; current actuals (L30D) run higher, so channels are compared on % mix. Dollar view scales the selected % mix to the monthly budget set above. Final recommendation is not a Haus-modeled scenario, so it has no revenue/iROAS projection.";
+}
+
+document.getElementById("segView").addEventListener("click",function(e){
+  if(e.target.tagName!=="BUTTON")return;
+  view=e.target.getAttribute("data-v");
+  Array.prototype.forEach.call(this.children,function(b){b.className=b.getAttribute("data-v")===view?"on":"";});
+  renderAll();
+});
+document.getElementById("segMode").addEventListener("click",function(e){
+  if(e.target.tagName!=="BUTTON")return;
+  mode=e.target.getAttribute("data-m");
+  Array.prototype.forEach.call(this.children,function(b){b.className=b.getAttribute("data-m")===mode?"on":"";});
+  renderAll();
+});
+var bIn=document.getElementById("budget");
+function applyBudget(){ budget=parseBudget(bIn.value); bIn.value=usd(budget); saveReco(); renderAll(); }
+bIn.addEventListener("change",applyBudget);
+bIn.addEventListener("keydown",function(e){ if(e.key==="Enter")applyBudget(); });
+
+/* ---------- Build recommendation ---------- */
+function escapeAttr(s){ return String(s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;"); }
+function recoKey(){ return "jrb-mix-reco::"+MONTH; }
+function saveReco(){
+  try{ localStorage.setItem(recoKey(), JSON.stringify({
+    f:D.channels.map(function(c){return c.f;}),
+    notes:D.channels.map(function(c){return c.note;}),
+    budget:budget
+  })); }catch(e){}
+}
+function loadReco(){
+  try{
+    var raw=localStorage.getItem(recoKey()); if(!raw) return;
+    var o=JSON.parse(raw);
+    if(o.f) D.channels.forEach(function(c,i){ if(typeof o.f[i]==="number") c.f=o.f[i]; });
+    if(o.notes) D.channels.forEach(function(c,i){ if(o.notes[i]!=null) c.note=o.notes[i]; });
+    if(o.budget>0) budget=o.budget;
+  }catch(e){}
+}
+function recoTotal(){ var s=0; D.channels.forEach(function(c){ s+=(c.f||0); }); return s; }
+function updateTotbox(){
+  var s=recoTotal(), ok=Math.abs(s-100)<0.05, diff=s-100;
+  document.getElementById("totbox").className="totbox "+(ok?"ok":"off");
+  document.getElementById("totNum").textContent=s.toFixed(2)+"%";
+  var msg = ok ? ("balanced · "+usd(s/100*budget))
+              : ((diff>0?"over by ":"under by ")+Math.abs(diff).toFixed(2)+"pt · "+usd(s/100*budget));
+  document.getElementById("totSub").innerHTML = msg+' <button id="normBtn">Normalize to 100%</button>';
+  document.getElementById("normBtn").onclick=normalize;
+}
+function normalize(){
+  var s=recoTotal(); if(s<=0) return;
+  var f=100/s;
+  D.channels.forEach(function(c){ c.f=Math.round(c.f*f*100)/100; });
+  var drift=Math.round((100-recoTotal())*100)/100;
+  if(Math.abs(drift)>=0.01){ var big=D.channels.slice().sort(function(a,b){return b.f-a.f;})[0]; big.f=Math.round((big.f+drift)*100)/100; }
+  saveReco(); renderBuild();
+}
+function seedFrom(key){
+  D.channels.forEach(function(c){
+    c.f = key==="zero"?0 : key==="act"?c.act : (key==="u"?c.u : key==="c"?c.c : c.m);
+  });
+  saveReco(); renderBuild();
+}
+function renderBuild(){
+  var box=document.getElementById("buildRows"); box.innerHTML="";
+  var sorted=D.channels.slice().sort(function(a,b){return b.act-a.act;});
+  sorted.forEach(function(c){
+    var card=document.createElement("div"); card.className="bch";
+    var dd=c.f-c.act, col=Math.abs(dd)<0.05?"var(--flat)":(dd>0?"var(--up)":"var(--down)");
+    var arr=Math.abs(dd)<0.05?"flat":((dd>0?"▲ ":"▼ ")+Math.abs(dd).toFixed(1));
+    card.innerHTML=
+      '<div class="top">'+
+        '<div><div class="bn">'+c.n+'</div>'+
+          '<div class="refs">Haus — <b>U</b> '+c.u.toFixed(1)+'% · <b>C</b> '+c.c.toFixed(1)+'% · <b>M</b> '+c.m.toFixed(1)+'% &nbsp;|&nbsp; now '+c.act.toFixed(1)+'%</div></div>'+
+        '<input class="pct" type="text" inputmode="decimal" value="'+c.f.toFixed(2)+'" aria-label="'+escapeAttr(c.n)+' percent" />'+
+        '<div class="dol">'+usd(c.f/100*budget)+'</div>'+
+        '<div class="dlt" style="color:'+col+'">'+arr+'</div>'+
+      '</div>'+
+      '<input class="note" type="text" placeholder="Why this differs from Haus…" value="'+escapeAttr(c.note)+'" />';
+    var pct=card.querySelector(".pct"), dol=card.querySelector(".dol"), dlt=card.querySelector(".dlt"), note=card.querySelector(".note");
+    pct.addEventListener("input",function(){
+      var v=parseFloat(pct.value.replace(/[^0-9.\-]/g,"")); if(isNaN(v)) v=0; c.f=v;
+      dol.textContent=usd(c.f/100*budget);
+      var d2=c.f-c.act, cc=Math.abs(d2)<0.05?"var(--flat)":(d2>0?"var(--up)":"var(--down)");
+      dlt.style.color=cc; dlt.textContent=Math.abs(d2)<0.05?"flat":((d2>0?"▲ ":"▼ ")+Math.abs(d2).toFixed(1));
+      updateTotbox(); saveReco();
+    });
+    pct.addEventListener("blur",function(){ c.f=Math.round((c.f||0)*100)/100; pct.value=c.f.toFixed(2); saveReco(); });
+    note.addEventListener("input",function(){ c.note=note.value; saveReco(); });
+    box.appendChild(card);
+  });
+  updateTotbox();
+}
+function buildTSV(){
+  var L=["Channel\tMonthly\tWeekly\tDaily\t%\tNotes"];
+  D.channels.forEach(function(c){ var m=c.f/100*budget,d=m/DAYS,w=d*7;
+    L.push([c.n,Math.round(m),Math.round(w),Math.round(d),c.f.toFixed(2)+"%",(c.note||"").replace(/\t/g," ")].join("\t")); });
+  var t=recoTotal()/100*budget;
+  L.push(["Total",Math.round(t),Math.round(t/DAYS*7),Math.round(t/DAYS),recoTotal().toFixed(2)+"%",""].join("\t"));
+  return L.join("\n");
+}
+function buildJSON(){ return JSON.stringify(D.channels.map(function(c){return {n:c.n,f:c.f,note:c.note};}),null,2); }
+function showExport(text){
+  var ta=document.getElementById("expOut"); ta.className=""; ta.value=text; ta.focus(); ta.select();
+  try{ navigator.clipboard.writeText(text); }catch(e){} try{ document.execCommand("copy"); }catch(e){}
+}
+function downloadCSV(){
+  var rows=[["Channel","Monthly","Weekly","Daily","Percent","Notes"]];
+  D.channels.forEach(function(c){ var m=c.f/100*budget,d=m/DAYS,w=d*7;
+    rows.push([c.n,Math.round(m),Math.round(w),Math.round(d),c.f.toFixed(2),'"'+(c.note||"").replace(/"/g,'""')+'"']); });
+  var csv=rows.map(function(r){return r.join(",");}).join("\n");
+  var a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));
+  a.download="JRB-final-recommendation-"+MONTH.replace(/\s+/g,"-")+".csv"; a.click();
+}
+function resetReco(){
+  D.channels.forEach(function(c,i){ c.f=ORIG[i].f; c.note=ORIG[i].note; });
+  budget=D.budget; bIn.value=usd(budget);
+  try{ localStorage.removeItem(recoKey()); }catch(e){}
+  document.getElementById("expOut").className="hide"; renderBuild();
+}
+document.querySelector(".seed").addEventListener("click",function(e){ if(e.target.tagName==="BUTTON") seedFrom(e.target.getAttribute("data-seed")); });
+document.getElementById("expSheet").onclick=function(){ showExport(buildTSV()); };
+document.getElementById("expJson").onclick=function(){ showExport(buildJSON()); };
+document.getElementById("expCsv").onclick=downloadCSV;
+document.getElementById("resetReco").onclick=resetReco;
+
+var ORIG = D.channels.map(function(c){ return {f:c.f, note:c.note}; });
+loadReco();
+bIn.value = usd(budget);
+renderAll();
+</script>
+</body>
+</html>
