@@ -145,6 +145,10 @@
         <div class="tsub" id="totSub">balanced<button id="normBtn">Normalize to 100%</button></div>
       </div>
     </div>
+    <div style="margin:0 0 16px;">
+      <label style="display:block; font-size:11.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--hint); margin-bottom:6px;">Overall reasoning &amp; comments</label>
+      <textarea id="recoSummary" placeholder="Top-line reasoning for this month's plan — the context behind the moves (seasonality, efficiency reads, iTest locks, business priorities)…" style="width:100%; min-height:92px; font:inherit; font-size:13.5px; line-height:1.55; padding:10px 12px; border:1px solid var(--line2); border-radius:9px; background:#fcfbf8; color:var(--ink); resize:vertical;"></textarea>
+    </div>
     <div id="buildRows"></div>
     <div class="exprow">
       <button id="expSheet"><i class="ti ti-table"></i> Copy for Google Sheet</button>
@@ -235,6 +239,12 @@ function renderStrip(){
 function renderRows(){
   var key=D.scenarios[active].key;
   var box=document.getElementById("rows"); box.innerHTML="";
+  if(active==="final" && (D.summary||"").trim()){
+    var sm=document.createElement("div");
+    sm.style.cssText="background:var(--hi); border:1px solid var(--hi-line); border-radius:10px; padding:12px 14px; margin-bottom:14px; font-size:13.5px; line-height:1.55; color:var(--ink);";
+    sm.innerHTML='<div style="font-size:11.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin-bottom:5px;"><i class="ti ti-message-2"></i> Reasoning</div>'+escapeHtml(D.summary);
+    box.appendChild(sm);
+  }
   var sorted=D.channels.slice().sort(function(a,b){return pctFor(b,key)-pctFor(a,key);});
   sorted.forEach(function(c){
     var v=pctFor(c,key), dd=v-c.act;
@@ -331,11 +341,13 @@ bIn.addEventListener("keydown",function(e){ if(e.key==="Enter")applyBudget(); })
 
 /* ---------- Build recommendation ---------- */
 function escapeAttr(s){ return String(s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;"); }
+function escapeHtml(s){ return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>"); }
 function recoKey(){ return "jrb-mix-reco::"+MONTH; }
 function saveReco(){
   try{ localStorage.setItem(recoKey(), JSON.stringify({
     f:D.channels.map(function(c){return c.f;}),
     notes:D.channels.map(function(c){return c.note;}),
+    summary:D.summary,
     budget:budget
   })); }catch(e){}
 }
@@ -345,6 +357,7 @@ function loadReco(){
     var o=JSON.parse(raw);
     if(o.f) D.channels.forEach(function(c,i){ if(typeof o.f[i]==="number") c.f=o.f[i]; });
     if(o.notes) D.channels.forEach(function(c,i){ if(o.notes[i]!=null) c.note=o.notes[i]; });
+    if(o.summary!=null) D.summary=o.summary;
     if(o.budget>0) budget=o.budget;
   }catch(e){}
 }
@@ -400,6 +413,7 @@ function renderBuild(){
     note.addEventListener("input",function(){ c.note=note.value; saveReco(); });
     box.appendChild(card);
   });
+  document.getElementById("recoSummary").value = D.summary||"";
   updateTotbox();
 }
 function buildTSV(){
@@ -408,9 +422,10 @@ function buildTSV(){
     L.push([c.n,Math.round(m),Math.round(w),Math.round(d),c.f.toFixed(2)+"%",(c.note||"").replace(/\t/g," ")].join("\t")); });
   var t=recoTotal()/100*budget;
   L.push(["Total",Math.round(t),Math.round(t/DAYS*7),Math.round(t/DAYS),recoTotal().toFixed(2)+"%",""].join("\t"));
+  if((D.summary||"").trim()){ L.push(""); L.push("Reasoning / comments:\t"+(D.summary||"").replace(/\t/g," ").replace(/\r?\n/g," / ")); }
   return L.join("\n");
 }
-function buildJSON(){ return JSON.stringify(D.channels.map(function(c){return {n:c.n,f:c.f,note:c.note};}),null,2); }
+function buildJSON(){ return JSON.stringify({month:MONTH, summary:D.summary||"", channels:D.channels.map(function(c){return {n:c.n,f:c.f,note:c.note};})},null,2); }
 function showExport(text){
   var ta=document.getElementById("expOut"); ta.className=""; ta.value=text; ta.focus(); ta.select();
   try{ navigator.clipboard.writeText(text); }catch(e){} try{ document.execCommand("copy"); }catch(e){}
@@ -419,12 +434,14 @@ function downloadCSV(){
   var rows=[["Channel","Monthly","Weekly","Daily","Percent","Notes"]];
   D.channels.forEach(function(c){ var m=c.f/100*budget,d=m/DAYS,w=d*7;
     rows.push([c.n,Math.round(m),Math.round(w),Math.round(d),c.f.toFixed(2),'"'+(c.note||"").replace(/"/g,'""')+'"']); });
+  if((D.summary||"").trim()){ rows.push([]); rows.push(["Reasoning / comments",'"'+(D.summary||"").replace(/"/g,'""')+'"']); }
   var csv=rows.map(function(r){return r.join(",");}).join("\n");
   var a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));
   a.download="JRB-final-recommendation-"+MONTH.replace(/\s+/g,"-")+".csv"; a.click();
 }
 function resetReco(){
   D.channels.forEach(function(c,i){ c.f=ORIG[i].f; c.note=ORIG[i].note; });
+  D.summary=ORIG_SUMMARY;
   budget=D.budget; bIn.value=usd(budget);
   try{ localStorage.removeItem(recoKey()); }catch(e){}
   document.getElementById("expOut").className="hide"; renderBuild();
@@ -435,9 +452,14 @@ document.getElementById("expJson").onclick=function(){ showExport(buildJSON()); 
 document.getElementById("expCsv").onclick=downloadCSV;
 document.getElementById("resetReco").onclick=resetReco;
 
+if(D.summary==null) D.summary="";
 var ORIG = D.channels.map(function(c){ return {f:c.f, note:c.note}; });
+var ORIG_SUMMARY = D.summary;
+var sumEl=document.getElementById("recoSummary");
+sumEl.addEventListener("input",function(){ D.summary=sumEl.value; saveReco(); });
 loadReco();
 bIn.value = usd(budget);
+sumEl.value = D.summary||"";
 renderAll();
 </script>
 </body>
