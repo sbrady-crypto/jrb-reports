@@ -29,6 +29,8 @@
   .scard{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:12px 14px; cursor:pointer; transition:border-color .12s;}
   .scard:hover{border-color:var(--line2);}
   .scard.on{border:2px solid var(--accent); padding:11px 13px;}
+  .scard.actual{background:#f5f3ec; border-style:dashed;}
+  .scard.actual.on{border-style:solid;}
   .scard .nm{font-size:13px; font-weight:600;}
   .scard .rev{font-size:21px; font-weight:600; margin-top:6px;}
   .scard .roas{font-size:12.5px; color:var(--muted); margin-top:2px;}
@@ -167,7 +169,10 @@ var DATA = {
   "June 2026": {
     asOf: "Refreshed from the JUNE CMMM PLAN tab",
     budget: 3000000,
+    actualBudget: 3792898,
     scenarios: {
+      actuals:{label:"Current actuals", roas:null, rev:null, key:"act", isActual:true,
+        desc:"Where spend actually landed over the last 30 days — the baseline every scenario is measured against (totals ~$3.79M/mo, above the $3.0M plan)."},
       unconstrained:{label:"Unconstrained", roas:1.02, rev:3073748, key:"u",
         desc:"Haus's raw optimum with no guardrails — highest projected revenue, but moves money freely (zeroes AppLovin, Meta Upper, Pinterest; pushes Linear to 9.5%)."},
       conservative:{label:"Conservative ±20%", roas:0.98, rev:2939627, key:"c",
@@ -212,10 +217,11 @@ var active = "manual";
 var budget = D.budget;
 var MAXBAR = 62;
 
-function pctFor(c,key){ return key==="u"?c.u : key==="c"?c.c : key==="m"?c.m : c.f; }
+function pctFor(c,key){ return key==="u"?c.u : key==="c"?c.c : key==="m"?c.m : key==="act"?c.act : c.f; }
 function usd(v){ return "$"+Math.round(v).toLocaleString(); }
-function dollars(pct){ return pct/100*budget; }
-function fmtCell(pct){ return view==="pct" ? pct.toFixed(2)+"%" : usd(dollars(pct)); }
+function budgetFor(key){ return key==="act" ? D.actualBudget : budget; }
+function dollarsFor(pct,key){ return pct/100*budgetFor(key); }
+function fmtCell(pct,key){ return view==="pct" ? pct.toFixed(2)+"%" : usd(dollarsFor(pct,key)); }
 
 function parseBudget(str){
   var n = parseFloat(String(str).replace(/[^0-9.]/g,""));
@@ -227,10 +233,11 @@ function renderStrip(){
   Object.keys(D.scenarios).forEach(function(k){
     var s=D.scenarios[k], on=(k===active);
     var d=document.createElement("div");
-    d.className="scard"+(on?" on":"");
-    d.innerHTML='<div class="nm">'+s.label+'</div>'+
-      '<div class="rev">'+(s.rev==null?"Not modeled":usd(s.rev))+'</div>'+
-      '<div class="roas">'+(s.roas==null?"no Haus projection":"iROAS $"+s.roas.toFixed(2))+'</div>';
+    d.className="scard"+(on?" on":"")+(s.isActual?" actual":"");
+    var body = s.isActual
+      ? '<div class="rev">'+usd(D.actualBudget)+'</div><div class="roas">spend · last 30 days ('+usd(D.actualBudget/DAYS)+'/day)</div>'
+      : '<div class="rev">'+(s.rev==null?"Not modeled":usd(s.rev))+'</div><div class="roas">'+(s.roas==null?"no Haus projection":"iROAS $"+s.roas.toFixed(2))+'</div>';
+    d.innerHTML='<div class="nm">'+s.label+'</div>'+body;
     d.onclick=function(){ active=k; renderAll(); };
     el.appendChild(d);
   });
@@ -251,7 +258,7 @@ function renderRows(){
     var row=document.createElement("div"); row.className="row";
     var col=Math.abs(dd)<0.05?"var(--flat)":(dd>0?"var(--up)":"var(--down)");
     var arr=Math.abs(dd)<0.05?"flat":((dd>0?"▲ ":"▼ ")+Math.abs(dd).toFixed(1));
-    var valTxt = view==="pct" ? v.toFixed(2)+"%" : usd(dollars(v));
+    var valTxt = view==="pct" ? v.toFixed(2)+"%" : usd(dollarsFor(v,key));
     row.innerHTML=
       '<div class="nm">'+c.n+'</div>'+
       '<div class="track"><div class="fill" style="width:'+(v/MAXBAR*100)+'%"></div>'+
@@ -265,16 +272,18 @@ function renderRows(){
 
 function showDetail(c,id){
   var key=D.scenarios[active].key, v=pctFor(c,key), dd=v-c.act;
-  var dir=Math.abs(dd)<0.05?"holds at":(dd>0?"increases to":"decreases to");
-  var m=dollars(v), d=m/DAYS, w=d*7;
+  var m=dollarsFor(v,key), d=m/DAYS, w=d*7;
+  var headline = active==="actuals"
+    ? 'Current spend <b>'+v.toFixed(2)+'%</b> of the L30D mix'
+    : D.scenarios[active].label+' '+(Math.abs(dd)<0.05?"holds at":(dd>0?"increases to":"decreases to"))+' <b>'+v.toFixed(2)+'%</b> · current spend '+c.act.toFixed(2)+'% ('+usd(dollarsFor(c.act,"act"))+'/mo)';
   var reason = active==="final"
     ? (String(c.note||"").trim()
         ? '<div>'+escapeHtml(c.note)+'</div>'
         : '<div style="color:var(--hint)">No reasoning yet — add it on this channel in the Build recommendation tab.</div>')
-    : '<div style="color:var(--hint)"><i class="ti ti-info-circle"></i> Haus model output — your reasoning lives on the Final recommendation (Build tab).</div>';
+    : '<div style="color:var(--hint)"><i class="ti ti-info-circle"></i> '+(active==="actuals"?"What we actually spent — the baseline for every scenario.":"Haus model output.")+' Your reasoning lives on the Final recommendation (Build tab).</div>';
   document.getElementById(id).innerHTML=
     '<div class="dn">'+c.n+'</div>'+
-    '<div class="dm">'+D.scenarios[active].label+' '+dir+' <b>'+v.toFixed(2)+'%</b> · current spend '+c.act.toFixed(2)+'% ('+usd(dollars(c.act))+'/mo)</div>'+
+    '<div class="dm">'+headline+'</div>'+
     '<div class="dm">'+usd(m)+'/mo &nbsp;·&nbsp; '+usd(w)+'/wk &nbsp;·&nbsp; '+usd(d)+'/day <span style="color:var(--hint)">('+DAYS+'-day month)</span></div>'+
     reason;
 }
@@ -296,9 +305,9 @@ function renderCompare(){
       var v=pctFor(c,k), dd=v-c.act;
       var cls=Math.abs(dd)<0.05?"flat":(dd>0?"up":"");
       var sub=Math.abs(dd)<0.05?"flat":((dd>0?"▲":"▼")+Math.abs(dd).toFixed(1));
-      return '<td'+(i===3?' class="col-hi"':'')+'><span class="cellpct">'+fmtCell(v)+'</span><br><span class="cellsub '+cls+'">'+sub+'</span></td>';
+      return '<td'+(i===3?' class="col-hi"':'')+'><span class="cellpct">'+fmtCell(v,k)+'</span><br><span class="cellsub '+cls+'">'+sub+'</span></td>';
     }).join("");
-    return '<tr data-ch="'+c.n+'" style="cursor:pointer"><td>'+c.n+'</td><td>'+fmtCell(c.act)+'</td>'+cells+'</tr>';
+    return '<tr data-ch="'+c.n+'" style="cursor:pointer"><td>'+c.n+'</td><td>'+fmtCell(c.act,"act")+'</td>'+cells+'</tr>';
   }).join("");
   t.innerHTML=head+'<tbody>'+metricRows+body+'</tbody>';
   Array.prototype.forEach.call(t.querySelectorAll("tr[data-ch]"),function(tr){
@@ -324,7 +333,7 @@ function renderAll(){
   else if(mode==="compare") renderCompare();
   else renderBuild();
   document.getElementById("foot").innerHTML =
-    D.asOf+". Scenarios exported from Haus (app.haus.io). The three modeled scenarios total a $3.0M plan budget; current actuals (L30D) run higher, so channels are compared on % mix. Dollar view scales the selected % mix to the monthly budget set above. Final recommendation is not a Haus-modeled scenario, so it has no revenue/iROAS projection.";
+    D.asOf+". Current actuals (L30D, leftmost card) total ~"+usd(D.actualBudget)+"/mo and are the baseline every scenario is measured against. The three Haus scenarios total the $3.0M plan budget, so channels are compared on % mix; their dollar view scales to the plan budget above, while the actuals dollar view scales to real spend. Final recommendation is not a Haus-modeled scenario, so it has no revenue/iROAS projection.";
 }
 
 document.getElementById("segView").addEventListener("click",function(e){
