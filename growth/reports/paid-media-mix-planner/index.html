@@ -167,12 +167,13 @@
 <script>
 var DATA = {
   "June 2026": {
-    asOf: "Refreshed from the JUNE CMMM PLAN tab",
+    asOf: "Haus scenarios from the June CMMM plan; Current actuals pulled live from Northbeam (May 27 – Jun 25, 2026)",
     budget: 3000000,
-    actualBudget: 3792898,
+    actualBudget: 2259646,
+    actualsWindow: "May 27 – Jun 25, 2026 · live from Northbeam",
     scenarios: {
       actuals:{label:"Current actuals", roas:null, rev:null, key:"act", isActual:true,
-        desc:"Where spend actually landed over the last 30 days — the baseline every scenario is measured against (totals ~$3.79M/mo, above the $3.0M plan)."},
+        desc:"Actual spend over the trailing 30 days (May 27 – Jun 25, 2026), pulled live from Northbeam — the baseline every scenario is measured against. Running ~$2.26M/mo, well below the $3.0M plan. Meta funnel split: viewcontent + quizcomplete + awareness = Mid; all purchase = Lower; no Upper-funnel spend in window."},
       unconstrained:{label:"Unconstrained", roas:1.02, rev:3073748, key:"u",
         desc:"Haus's raw optimum with no guardrails — highest projected revenue, but moves money freely (zeroes AppLovin, Meta Upper, Pinterest; pushes Linear to 9.5%)."},
       conservative:{label:"Conservative ±20%", roas:0.98, rev:2939627, key:"c",
@@ -183,19 +184,19 @@ var DATA = {
         desc:"The actual deliverable to Cody — not modeled in Haus (no revenue projection). Blends the models with iTest locks, seasonality, and channel conviction."}
     },
     channels:[
-      {n:"Meta Lower funnel", u:52.50,c:52.51,m:56.98,f:55.00,act:60.62, note:"Decrease slightly for seasonality + recent lower Meta efficiency; bump channels we have conviction in while we sort out issues."},
-      {n:"Google/YT: Demand Gen", u:8.24,c:8.35,m:8.41,f:12.00,act:9.48, note:"Locked for iTest. Adjust post-test based on scale-up results."},
-      {n:"Meta Mid Funnel", u:8.52,c:8.52,m:8.63,f:8.00,act:8.11, note:"Hold a bit lower given Upper Funnel + IA will add new users to the funnel. New iTest needed for ideal TOF/MOF/BOF mix; some testable with CLS."},
-      {n:"Podcast", u:6.02,c:6.02,m:6.14,f:6.00,act:4.35, note:"April slow (shows went live late), strong May. Comfortable pushing $180–200k. cMMM + Architect both say increase."},
-      {n:"CTV", u:7.86,c:7.86,m:7.00,f:4.50,act:4.25, note:"Haus recommends higher off strong Oct UA test only. Keep near current until we have an incrementality read; prioritize a test in late June (here or Linear)."},
-      {n:"Linear TV", u:9.53,c:4.97,m:6.00,f:4.50,act:3.00, note:"Haus likes Linear. Stay at our higher level; prove out incrementality before significant scale-up."},
-      {n:"TikTok", u:0.55,c:2.09,m:1.00,f:1.50,act:2.05, note:"Keep low. Stronger Sale efficiency — lean in during seasonal moments. Prefer TTS where we've seen early performance over TT ads."},
-      {n:"AppLovin", u:0.00,c:1.90,m:0.55,f:1.25,act:2.00, note:"No level of spend where Haus sees a decent iROAS — significantly de-prioritize until they improve their model."},
-      {n:"Meta Upper Funnel", u:0.00,c:2.15,m:0.00,f:3.00,act:1.48, note:"Locked for iTest. Adjust post-test based on scale-up results."},
-      {n:"Google Search NonBrand", u:2.38,c:2.16,m:2.41,f:1.80,act:1.40, note:"Both cMMM and Architect like NB. Marginal increase without an iTest given source alignment; keep relatively low until proven."},
-      {n:"Google PMAX", u:1.06,c:1.16,m:1.16,f:1.25,act:1.25, note:"Haus lower post-iTest, but stronger 2nd-half performance + paused PMax Body (hero makeup only) gives more conviction. Keep higher."},
-      {n:"Google Shopping NonBrand", u:1.67,c:1.32,m:1.73,f:1.70,act:1.02, note:"Increase — we appear in JRB searches but rarely in sponsored Shopping placements. Need more coverage."},
-      {n:"Pinterest", u:0.00,c:0.99,m:0.00,f:0.00,act:0.99, note:"Haus re-read after removing a dated iTest. Likely not worth the effort at this spend — propose a pause to free resources for stronger bets."},
+      {n:"Meta Lower funnel", u:52.50,c:52.51,m:56.98,f:55.00,act:65.11, note:"Decrease slightly for seasonality + recent lower Meta efficiency; bump channels we have conviction in while we sort out issues."},
+      {n:"Google/YT: Demand Gen", u:8.24,c:8.35,m:8.41,f:12.00,act:12.13, note:"Locked for iTest. Adjust post-test based on scale-up results."},
+      {n:"Meta Mid Funnel", u:8.52,c:8.52,m:8.63,f:8.00,act:9.74, note:"Hold a bit lower given Upper Funnel + IA will add new users to the funnel. New iTest needed for ideal TOF/MOF/BOF mix; some testable with CLS."},
+      {n:"Podcast", u:6.02,c:6.02,m:6.14,f:6.00,act:1.21, note:"April slow (shows went live late), strong May. Comfortable pushing $180–200k. cMMM + Architect both say increase."},
+      {n:"CTV", u:7.86,c:7.86,m:7.00,f:4.50,act:2.05, note:"Haus recommends higher off strong Oct UA test only. Keep near current until we have an incrementality read; prioritize a test in late June (here or Linear)."},
+      {n:"Linear TV", u:9.53,c:4.97,m:6.00,f:4.50,act:0.54, note:"Haus likes Linear. Stay at our higher level; prove out incrementality before significant scale-up."},
+      {n:"TikTok", u:0.55,c:2.09,m:1.00,f:1.50,act:1.72, note:"Keep low. Stronger Sale efficiency — lean in during seasonal moments. Prefer TTS where we've seen early performance over TT ads."},
+      {n:"AppLovin", u:0.00,c:1.90,m:0.55,f:1.25,act:2.06, note:"No level of spend where Haus sees a decent iROAS — significantly de-prioritize until they improve their model."},
+      {n:"Meta Upper Funnel", u:0.00,c:2.15,m:0.00,f:3.00,act:0.00, note:"Locked for iTest. Adjust post-test based on scale-up results."},
+      {n:"Google Search NonBrand", u:2.38,c:2.16,m:2.41,f:1.80,act:1.91, note:"Both cMMM and Architect like NB. Marginal increase without an iTest given source alignment; keep relatively low until proven."},
+      {n:"Google PMAX", u:1.06,c:1.16,m:1.16,f:1.25,act:1.84, note:"Haus lower post-iTest, but stronger 2nd-half performance + paused PMax Body (hero makeup only) gives more conviction. Keep higher."},
+      {n:"Google Shopping NonBrand", u:1.67,c:1.32,m:1.73,f:1.70,act:1.55, note:"Increase — we appear in JRB searches but rarely in sponsored Shopping placements. Need more coverage."},
+      {n:"Pinterest", u:0.00,c:0.99,m:0.00,f:0.00,act:0.15, note:"Haus re-read after removing a dated iTest. Likely not worth the effort at this spend — propose a pause to free resources for stronger bets."},
       {n:"Google/YT: Shorts", u:0.74,c:0.00,m:0.00,f:0.00,act:0.00, note:"Recommend holding."},
       {n:"Twitter", u:0.93,c:0.00,m:0.00,f:0.00,act:0.00, note:"Recommend holding."}
     ]
@@ -215,7 +216,7 @@ var view = "pct";      // pct | usd
 var mode = "single";   // single | compare
 var active = "manual";
 var budget = D.budget;
-var MAXBAR = 62;
+var MAXBAR = 66;
 
 function pctFor(c,key){ return key==="u"?c.u : key==="c"?c.c : key==="m"?c.m : key==="act"?c.act : c.f; }
 function usd(v){ return "$"+Math.round(v).toLocaleString(); }
@@ -235,7 +236,7 @@ function renderStrip(){
     var d=document.createElement("div");
     d.className="scard"+(on?" on":"")+(s.isActual?" actual":"");
     var body = s.isActual
-      ? '<div class="rev">'+usd(D.actualBudget)+'</div><div class="roas">spend · last 30 days ('+usd(D.actualBudget/DAYS)+'/day)</div>'
+      ? '<div class="rev">'+usd(D.actualBudget)+'</div><div class="roas">'+(D.actualsWindow||"spend · last 30 days")+' · '+usd(D.actualBudget/DAYS)+'/day</div>'
       : '<div class="rev">'+(s.rev==null?"Not modeled":usd(s.rev))+'</div><div class="roas">'+(s.roas==null?"no Haus projection":"iROAS $"+s.roas.toFixed(2))+'</div>';
     d.innerHTML='<div class="nm">'+s.label+'</div>'+body;
     d.onclick=function(){ active=k; renderAll(); };
