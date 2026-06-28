@@ -133,6 +133,7 @@
   </div>
 
   <div id="buildView" class="hide">
+    <div id="saveStatus"></div>
     <div class="bbar">
       <div class="seed">
         <span>Seed from</span>
@@ -215,6 +216,7 @@ var mode = "single";   // single | compare
 var active = "manual";
 var budget = D.budget;
 var MAXBAR = 66;
+var SAVED_TO_FILE = "Jun 28, 2026";
 
 function pctFor(c,key){ return key==="u"?c.u : key==="c"?c.c : key==="m"?c.m : key==="act"?c.act : c.f; }
 function usd(v){ return "$"+Math.round(v).toLocaleString(); }
@@ -334,7 +336,7 @@ function renderAll(){
   else if(mode==="compare") renderCompare();
   else renderBuild();
   document.getElementById("foot").innerHTML =
-    D.asOf+". Current actuals (L30D, leftmost card) total ~"+usd(D.actualBudget)+"/mo and are the baseline every scenario is measured against. The three Haus scenarios total the $3.07M plan budget, so channels are compared on % mix; their dollar view scales to the plan budget above, while the actuals dollar view scales to real spend. Final recommendation is not a Haus-modeled scenario, so it has no revenue/iROAS projection.";
+    D.asOf+". Current actuals (L30D, leftmost card) total ~"+usd(D.actualBudget)+"/mo and are the baseline every scenario is measured against. The three Haus scenarios total the $3.07M plan budget, so channels are compared on % mix; their dollar view scales to the plan budget above, while the actuals dollar view scales to real spend. Final recommendation is not a Haus-modeled scenario, so it has no revenue/iROAS projection. Final recommendation last saved to file: "+SAVED_TO_FILE+".";
 }
 
 document.getElementById("segView").addEventListener("click",function(e){
@@ -357,6 +359,24 @@ bIn.addEventListener("keydown",function(e){ if(e.key==="Enter")applyBudget(); })
 /* ---------- Build recommendation ---------- */
 function escapeAttr(s){ return String(s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;"); }
 function escapeHtml(s){ return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>"); }
+function isDirty(){
+  if((D.summary||"") !== (ORIG_SUMMARY||"")) return true;
+  for(var i=0;i<D.channels.length;i++){
+    if(Math.abs((D.channels[i].f||0)-(ORIG[i].f||0))>0.001) return true;
+    if((D.channels[i].note||"") !== (ORIG[i].note||"")) return true;
+  }
+  return false;
+}
+function updateSavedStatus(){
+  var el=document.getElementById("saveStatus"); if(!el) return;
+  if(isDirty()){
+    el.style.cssText="font-size:12.5px; line-height:1.5; padding:9px 12px; border-radius:9px; margin-bottom:14px; background:var(--hi); border:1px solid var(--hi-line); color:#7a5b14;";
+    el.innerHTML="● <b>Unsaved local edits</b> — these live in this browser only. To make them permanent, click “Copy data block (for refresh)” below and paste it to Claude. Last saved to file: "+SAVED_TO_FILE+".";
+  } else {
+    el.style.cssText="font-size:12.5px; line-height:1.5; padding:9px 12px; border-radius:9px; margin-bottom:14px; background:#eef6ee; border:1px solid #cfe3cf; color:#2f5d3a;";
+    el.innerHTML="✓ <b>Saved to file</b> ("+SAVED_TO_FILE+") — your recommendation is permanent. New edits here stay browser-only until you send Claude the data block.";
+  }
+}
 function recoKey(){ return "jrb-mix-reco::"+MONTH; }
 function saveReco(){
   try{ localStorage.setItem(recoKey(), JSON.stringify({
@@ -365,6 +385,7 @@ function saveReco(){
     summary:D.summary,
     budget:budget
   })); }catch(e){}
+  updateSavedStatus();
 }
 function loadReco(){
   try{
@@ -430,6 +451,7 @@ function renderBuild(){
   });
   document.getElementById("recoSummary").value = D.summary||"";
   updateTotbox();
+  updateSavedStatus();
 }
 function buildTSV(){
   var L=["Channel\tMonthly\tWeekly\tDaily\t%\tNotes"];
