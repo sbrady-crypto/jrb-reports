@@ -47,8 +47,13 @@
   .legend i{display:inline-block; vertical-align:middle; margin-right:5px;}
   .swatch{width:22px; height:9px; border-radius:2px; background:var(--accent);}
   .tick{width:3px; height:15px; background:var(--bg); box-shadow:0 0 0 1px rgba(27,27,27,.65); border-radius:1px;}
-  .row{display:grid; grid-template-columns:170px 1fr 92px 70px; align-items:center; gap:12px; padding:7px 8px; border-radius:8px; cursor:pointer;}
+  .row{display:grid; grid-template-columns:170px 1fr 92px 70px 16px; align-items:center; gap:12px; padding:7px 8px; border-radius:8px; cursor:pointer;}
   .row:hover{background:var(--surface);}
+  .row.open{background:var(--surface);}
+  .caret{font-size:11px; color:var(--hint); text-align:center;}
+  .rowdetail{margin:1px 8px 9px; padding:12px 14px; background:var(--cream); border:1px solid var(--line); border-radius:10px; font-size:13.5px; color:var(--muted); line-height:1.55;}
+  .rowdetail .dn{font-size:15px; font-weight:600; color:var(--ink); margin-bottom:4px;}
+  .rowdetail .dm{color:var(--ink); margin-bottom:6px;}
   .row .nm{font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   .track{position:relative; height:18px; background:var(--soft); border-radius:3px;}
   .fill{position:absolute; left:0; top:0; bottom:0; background:var(--accent); border-radius:3px;}
@@ -139,7 +144,7 @@
     </div>
     <div id="moves"></div>
     <div id="rows"></div>
-    <div class="detail" id="detail">Click any channel to see the rationale behind its recommendation.</div>
+    <div id="detailHint" style="font-size:12px; color:var(--hint); margin:12px 2px 0;">Click any channel to expand its spend split and reasoning.</div>
   </div>
 
   <div id="compareView" class="hide">
@@ -272,6 +277,7 @@ function renderRows(){
   var sorted=D.channels.slice().sort(function(a,b){return pctFor(b,key)-pctFor(a,key);});
   sorted.forEach(function(c){
     var v=pctFor(c,key), dd=v-c.act;
+    var wrap=document.createElement("div");
     var row=document.createElement("div"); row.className="row";
     var col=Math.abs(dd)<0.05?"var(--flat)":(dd>0?"var(--up)":"var(--down)");
     var arr=Math.abs(dd)<0.05?"flat":((dd>0?"▲ ":"▼ ")+Math.abs(dd).toFixed(1));
@@ -281,13 +287,21 @@ function renderRows(){
       '<div class="track"><div class="fill" style="width:'+(v/MAXBAR*100)+'%"></div>'+
         '<div class="mark" style="left:'+(c.act/MAXBAR*100)+'%"></div></div>'+
       '<div class="val">'+valTxt+'</div>'+
-      '<div class="delta" style="color:'+col+'">'+arr+'</div>';
-    row.onclick=function(){ showDetail(c,"detail"); };
-    box.appendChild(row);
+      '<div class="delta" style="color:'+col+'">'+arr+'</div>'+
+      '<div class="caret">▸</div>';
+    var det=document.createElement("div"); det.className="rowdetail hide"; det.innerHTML=detailHTML(c);
+    row.onclick=function(){
+      var willOpen=det.classList.contains("hide");
+      Array.prototype.forEach.call(box.querySelectorAll(".rowdetail"),function(x){x.classList.add("hide");});
+      Array.prototype.forEach.call(box.querySelectorAll(".row"),function(r){r.classList.remove("open"); var cc=r.querySelector(".caret"); if(cc)cc.textContent="▸";});
+      if(willOpen){ det.classList.remove("hide"); row.classList.add("open"); row.querySelector(".caret").textContent="▾"; }
+    };
+    wrap.appendChild(row); wrap.appendChild(det);
+    box.appendChild(wrap);
   });
 }
 
-function showDetail(c,id){
+function detailHTML(c){
   var key=D.scenarios[active].key, v=pctFor(c,key), dd=v-c.act;
   var m=dollarsFor(v,key), d=m/DAYS, w=d*7;
   var headline = active==="actuals"
@@ -297,9 +311,8 @@ function showDetail(c,id){
     ? (String(c.note||"").trim()
         ? '<div>'+escapeHtml(c.note)+'</div>'
         : '<div style="color:var(--hint)">No reasoning yet — add it on this channel in the Build recommendation tab.</div>')
-    : '<div style="color:var(--hint)"><i class="ti ti-info-circle"></i> '+(active==="actuals"?"What we actually spent — the baseline for every scenario.":"Haus model output.")+' Your reasoning lives on the Final recommendation (Build tab).</div>';
-  document.getElementById(id).innerHTML=
-    '<div class="dn">'+c.n+'</div>'+
+    : '<div style="color:var(--hint)">'+(active==="actuals"?"What we actually spent — the baseline for every scenario.":"Haus model output.")+' Your reasoning lives on the Final recommendation (Build tab).</div>';
+  return '<div class="dn">'+c.n+'</div>'+
     '<div class="dm">'+headline+'</div>'+
     '<div class="dm">'+usd(m)+'/mo &nbsp;·&nbsp; '+usd(w)+'/wk &nbsp;·&nbsp; '+usd(d)+'/day <span style="color:var(--hint)">('+DAYS+'-day month)</span></div>'+
     reason;
