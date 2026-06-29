@@ -82,8 +82,12 @@
   .stacklegend{display:flex; flex-wrap:wrap; gap:14px; font-size:12px; color:var(--muted); margin-bottom:14px;}
   .stacklegend span{display:flex; align-items:center; gap:6px;}
   .stacklegend i{width:11px; height:11px; border-radius:3px; display:inline-block;}
-  .stackrow{display:grid; grid-template-columns:118px 1fr; align-items:center; gap:12px; margin-bottom:8px;}
+  .stackrow{display:grid; grid-template-columns:118px 1fr; align-items:center; gap:12px; margin-bottom:8px; cursor:grab; padding:2px; border-radius:6px;}
+  .stackrow:active{cursor:grabbing;}
+  .stackrow.dragging{opacity:.4;}
+  .stackrow.dragover{outline:2px dashed var(--moss); outline-offset:2px;}
   .stackrow .slabel{font-size:12.5px; color:var(--ink);}
+  .grip{display:inline-block; margin-right:7px; color:var(--hint); letter-spacing:1px;}
   .stack{display:flex; height:22px; border-radius:5px; overflow:hidden; background:var(--soft);}
   .stack>div{height:100%;}
   .stack>div + div{border-left:2px solid var(--bg);}
@@ -265,16 +269,32 @@ var GROUPS=[
 function groupTotals(scenKey){
   return GROUPS.map(function(g){ var s=0; D.channels.forEach(function(c){ if(g.names.indexOf(c.n)>=0) s+=pctFor(c,scenKey); }); return {key:g.key,color:g.color,pct:s}; });
 }
-function stackBar(label, scenKey){
+var STACK_ROWS={act:"Current (L30D)",u:"Baseline",c:"Conservative",m:"Aggressive",f:"Final rec"};
+var STACK_DEFAULT=["act","u","c","m","f"];
+function getStackOrder(){
+  try{ var a=JSON.parse(localStorage.getItem("jrb-mix-stackorder")); if(Array.isArray(a)&&a.length===STACK_DEFAULT.length&&STACK_DEFAULT.every(function(k){return a.indexOf(k)>=0;})) return a; }catch(e){}
+  return STACK_DEFAULT.slice();
+}
+function saveStackOrder(a){ try{ localStorage.setItem("jrb-mix-stackorder",JSON.stringify(a)); }catch(e){} }
+function stackBar(scenKey){
   var gts=groupTotals(scenKey), tot=gts.reduce(function(a,b){return a+b.pct;},0)||1;
   var segs=gts.map(function(g){ var w=g.pct/tot*100; return w<=0?"":'<div title="'+g.key+' '+w.toFixed(1)+'%" style="width:'+w+'%; background:'+g.color+';"></div>'; }).join("");
-  return '<div class="stackrow"><div class="slabel">'+label+'</div><div class="stack">'+segs+'</div></div>';
+  return '<div class="stackrow" draggable="true" data-skey="'+scenKey+'"><div class="slabel"><span class="grip" aria-hidden="true">⠿</span>'+STACK_ROWS[scenKey]+'</div><div class="stack">'+segs+'</div></div>';
 }
 function renderStacks(){
   var el=document.getElementById("cmpStacks"); if(!el) return;
+  var order=getStackOrder();
   var legend='<div class="stacklegend">'+GROUPS.map(function(g){return '<span><i style="background:'+g.color+'"></i>'+g.key+'</span>';}).join("")+'</div>';
-  var rows=stackBar("Current (L30D)","act")+stackBar("Baseline","u")+stackBar("Conservative","c")+stackBar("Aggressive","m")+stackBar("Final rec","f");
-  el.innerHTML='<div class="slabelhd">Mix composition by platform — current vs proposed</div>'+legend+rows;
+  var rows=order.map(function(k){return stackBar(k);}).join("");
+  el.innerHTML='<div class="slabelhd">Mix composition by platform <span style="font-family:var(--sans); font-size:12px; font-weight:400; color:var(--hint);">— drag rows to reorder</span></div>'+legend+rows;
+  var dragKey=null, rowsEls=el.querySelectorAll(".stackrow");
+  Array.prototype.forEach.call(rowsEls,function(r){
+    r.addEventListener("dragstart",function(e){ dragKey=r.getAttribute("data-skey"); r.classList.add("dragging"); e.dataTransfer.effectAllowed="move"; try{e.dataTransfer.setData("text/plain",dragKey);}catch(_){} });
+    r.addEventListener("dragend",function(){ Array.prototype.forEach.call(rowsEls,function(x){x.classList.remove("dragging");x.classList.remove("dragover");}); });
+    r.addEventListener("dragover",function(e){ e.preventDefault(); e.dataTransfer.dropEffect="move"; r.classList.add("dragover"); });
+    r.addEventListener("dragleave",function(){ r.classList.remove("dragover"); });
+    r.addEventListener("drop",function(e){ e.preventDefault(); var tk=r.getAttribute("data-skey"); if(!dragKey||dragKey===tk) return; var o=getStackOrder(); o.splice(o.indexOf(dragKey),1); o.splice(o.indexOf(tk),0,dragKey); saveStackOrder(o); renderStacks(); });
+  });
 }
 
 function pctFor(c,key){ return key==="u"?c.u : key==="c"?c.c : key==="m"?c.m : key==="act"?c.act : c.f; }
