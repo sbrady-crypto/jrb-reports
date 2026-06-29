@@ -177,7 +177,7 @@
       <button id="expSheet"><i class="ti ti-table"></i> Copy for Google Sheet</button>
       <button id="expJson">Copy data block (for refresh)</button>
       <button id="expCsv">Download CSV</button>
-      <button id="resetReco" style="margin-left:auto; color:var(--down)">Clear my edits</button>
+      <button id="resetReco" style="margin-left:auto; color:var(--down)">Revert to saved version</button>
     </div>
     <textarea id="expOut" class="hide" readonly></textarea>
   </div>
@@ -413,8 +413,9 @@ function isDirty(){
 function updateSavedStatus(){
   var el=document.getElementById("saveStatus"); if(!el) return;
   if(isDirty()){
-    el.style.cssText="font-size:12.5px; line-height:1.5; padding:9px 12px; border-radius:9px; margin-bottom:14px; background:var(--hi); border:1px solid var(--hi-line); color:#9A4632;";
-    el.innerHTML="● <b>Unsaved local edits</b> — these live in this browser only. To make them permanent, click “Copy data block (for refresh)” below and paste it to Claude. Last saved to file: "+SAVED_TO_FILE+".";
+    el.style.cssText="font-size:12.5px; line-height:1.7; padding:9px 12px; border-radius:9px; margin-bottom:14px; background:var(--hi); border:1px solid var(--hi-line); color:#9A4632;";
+    el.innerHTML="● <b>Unsaved local edits</b> — these live in this browser only. Make permanent by clicking “Copy data block (for refresh)” below and pasting to Claude — or discard them: <button id=\"discardBtn\" style=\"font:inherit; font-size:12px; padding:3px 10px; margin-left:2px; border:1px solid #9A4632; background:transparent; color:#9A4632; border-radius:7px; cursor:pointer;\">Discard &amp; restore saved</button> <span style=\"color:var(--muted)\">· last saved "+SAVED_TO_FILE+"</span>";
+    var db=document.getElementById("discardBtn"); if(db) db.onclick=function(){ if(confirm("Discard your local edits and restore the last saved version ("+SAVED_TO_FILE+")? This can't be undone.")) resetReco(); };
   } else {
     el.style.cssText="font-size:12.5px; line-height:1.5; padding:9px 12px; border-radius:9px; margin-bottom:14px; background:#ECF4EE; border:1px solid #C6DDCD; color:#1C6B3F;";
     el.innerHTML="✓ <b>Saved to file</b> ("+SAVED_TO_FILE+") — your recommendation is permanent. New edits here stay browser-only until you send Claude the data block.";
