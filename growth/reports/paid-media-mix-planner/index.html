@@ -74,6 +74,19 @@
   .cellsub{font-size:11px; color:var(--down);}
   .cellsub.up{color:var(--up);}
   .cellsub.flat{color:var(--flat);}
+  .mtabs{display:flex; gap:5px; flex-wrap:wrap; margin:16px 0 0; border-bottom:1px solid var(--line); padding-bottom:0;}
+  .mtabs button{font:inherit; font-size:13px; padding:8px 15px; border:1px solid var(--line); border-bottom:none; background:var(--cream); color:var(--muted); border-radius:9px 9px 0 0; cursor:pointer; position:relative; top:1px;}
+  .mtabs button.on{background:var(--accent); color:var(--bg); border-color:var(--accent);}
+  .stackwrap{margin:2px 0 22px;}
+  .slabelhd{font-family:var(--serif); font-size:18px; font-weight:500; color:var(--accent); margin-bottom:12px;}
+  .stacklegend{display:flex; flex-wrap:wrap; gap:14px; font-size:12px; color:var(--muted); margin-bottom:14px;}
+  .stacklegend span{display:flex; align-items:center; gap:6px;}
+  .stacklegend i{width:11px; height:11px; border-radius:3px; display:inline-block;}
+  .stackrow{display:grid; grid-template-columns:118px 1fr; align-items:center; gap:12px; margin-bottom:8px;}
+  .stackrow .slabel{font-size:12.5px; color:var(--ink);}
+  .stack{display:flex; height:22px; border-radius:5px; overflow:hidden; background:var(--soft);}
+  .stack>div{height:100%;}
+  .stack>div + div{border-left:2px solid var(--bg);}
   #moves{margin:0 2px 14px; padding:11px 13px; background:var(--cream); border:1px solid var(--line); border-radius:10px; font-size:12.5px; line-height:1.9;}
   #moves .mlabel{font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:var(--moss); margin-right:8px;}
   .mchip{display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:20px; font-size:12px; margin:0 6px 4px 0; white-space:nowrap;}
@@ -114,6 +127,7 @@
   <p class="eyebrow">Growth · Jones Road Beauty</p>
   <h1>Paid media mix planner</h1>
   <div class="sub" id="subline">June 2026 · Haus CMMM scenario modeling</div>
+  <div id="monthtabs" class="mtabs"></div>
 
   <div class="controls">
     <div class="ctl"><label>View</label>
@@ -148,6 +162,7 @@
   </div>
 
   <div id="compareView" class="hide">
+    <div id="cmpStacks" class="stackwrap"></div>
     <table class="cmp" id="cmpTable"></table>
     <div class="detail" id="detail2" style="margin-top:14px;">Click any channel row to read your rationale. Highlighted column is the final recommendation.</div>
   </div>
@@ -190,6 +205,7 @@ var DATA = {
   "June 2026": {
     asOf: "Haus scenarios (Baseline / Conservative / Aggressive) imported from the Haus scenario-planner CSV exports; Current actuals pulled live from Polar (blended platform ad spend, May 27 – Jun 25, 2026)",
     budget: 3072001,
+    savedAt: "Jun 28, 2026",
     actualBudget: 2572659,
     actualsWindow: "May 27 – Jun 25, 2026 · Polar + manual TV/podcast",
     scenarios: {
@@ -237,6 +253,27 @@ var active = "manual";
 var budget = D.budget;
 var MAXBAR = 66;
 var SAVED_TO_FILE = "Jun 28, 2026";
+var GROUPS=[
+  {key:"Meta", color:"#20344E", names:["Meta Lower funnel (ASC + Prospecting)","Meta Mid funnel","Meta Upper funnel"]},
+  {key:"Google & YouTube", color:"#2E8C9E", names:["Google/Youtube: Demand Gen and VAC","Google PMAX","Google Search NonBrand","Google Shopping NonBrand","Google/Youtube: Shorts"]},
+  {key:"TV", color:"#6E8CA8", names:["CTV","Linear TV"]},
+  {key:"Audio (Podcast)", color:"#355C78", names:["Podcast"]},
+  {key:"Other", color:"#C9C2B5", names:["TikTok Conversions","AppLovin","Pinterest"]}
+];
+function groupTotals(scenKey){
+  return GROUPS.map(function(g){ var s=0; D.channels.forEach(function(c){ if(g.names.indexOf(c.n)>=0) s+=pctFor(c,scenKey); }); return {key:g.key,color:g.color,pct:s}; });
+}
+function stackBar(label, scenKey){
+  var gts=groupTotals(scenKey), tot=gts.reduce(function(a,b){return a+b.pct;},0)||1;
+  var segs=gts.map(function(g){ var w=g.pct/tot*100; return w<=0?"":'<div title="'+g.key+' '+w.toFixed(1)+'%" style="width:'+w+'%; background:'+g.color+';"></div>'; }).join("");
+  return '<div class="stackrow"><div class="slabel">'+label+'</div><div class="stack">'+segs+'</div></div>';
+}
+function renderStacks(){
+  var el=document.getElementById("cmpStacks"); if(!el) return;
+  var legend='<div class="stacklegend">'+GROUPS.map(function(g){return '<span><i style="background:'+g.color+'"></i>'+g.key+'</span>';}).join("")+'</div>';
+  var rows=stackBar("Current (L30D)","act")+stackBar("Baseline","u")+stackBar("Conservative","c")+stackBar("Aggressive","m")+stackBar("Final rec","f");
+  el.innerHTML='<div class="slabelhd">Mix composition by platform — current vs proposed</div>'+legend+rows;
+}
 
 function pctFor(c,key){ return key==="u"?c.u : key==="c"?c.c : key==="m"?c.m : key==="act"?c.act : c.f; }
 function usd(v){ return "$"+Math.round(v).toLocaleString(); }
@@ -319,6 +356,7 @@ function detailHTML(c){
 }
 
 function renderCompare(){
+  renderStacks();
   var keys=["u","c","m","f"], labels=["Baseline","Conservative","Aggressive","Final rec"];
   var t=document.getElementById("cmpTable");
   var head='<thead><tr><th>Channel</th><th>Current<br>(L30D)</th>'+
@@ -533,15 +571,28 @@ document.getElementById("expJson").onclick=function(){ showExport(buildJSON()); 
 document.getElementById("expCsv").onclick=downloadCSV;
 document.getElementById("resetReco").onclick=resetReco;
 
-if(D.summary==null) D.summary="";
-var ORIG = D.channels.map(function(c){ return {f:c.f, note:c.note}; });
-var ORIG_SUMMARY = D.summary;
+var ORIG=[], ORIG_SUMMARY="";
 var sumEl=document.getElementById("recoSummary");
 sumEl.addEventListener("input",function(){ D.summary=sumEl.value; saveReco(); });
-loadReco();
-bIn.value = usd(budget);
-sumEl.value = D.summary||"";
-renderAll();
+function renderTabs(){
+  var el=document.getElementById("monthtabs"); if(!el) return;
+  var months=Object.keys(DATA);
+  el.innerHTML=months.map(function(m){return '<button data-month="'+m+'"'+(m===MONTH?' class="on"':'')+'>'+m+'</button>';}).join("");
+  Array.prototype.forEach.call(el.querySelectorAll("button"),function(b){ b.onclick=function(){ var m=b.getAttribute("data-month"); if(m!==MONTH) initMonth(m); }; });
+}
+function initMonth(m){
+  MONTH=m; D=DATA[MONTH]; DAYS=monthDays(MONTH); budget=D.budget;
+  if(D.summary==null) D.summary="";
+  SAVED_TO_FILE=D.savedAt||"—";
+  ORIG=D.channels.map(function(c){ return {f:c.f, note:c.note}; });
+  ORIG_SUMMARY=D.summary;
+  loadReco();
+  bIn.value=usd(budget);
+  sumEl.value=D.summary||"";
+  renderTabs();
+  renderAll();
+}
+initMonth(MONTH);
 </script>
 </body>
 </html>
