@@ -5,35 +5,43 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Paid Media Mix Planner — JRB</title>
 <style>
+  @font-face{font-family:'Canela';src:url('https://jrb-fonts-cdn.vercel.app/fonts/Canela-Light.otf') format('opentype');font-weight:300 600;font-display:swap;}
+  @font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Regular.otf') format('opentype');font-weight:400;font-display:swap;}
+  @font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-Medium.otf') format('opentype');font-weight:500;font-display:swap;}
+  @font-face{font-family:'ArticulatCF';src:url('https://jrb-fonts-cdn.vercel.app/fonts/ArticulatCF-DemiBold.otf') format('opentype');font-weight:600;font-display:swap;}
   :root{
-    --bg:#fbfaf7; --surface:#ffffff; --line:#e7e4db; --line2:#d8d4c8;
-    --ink:#1f1e1b; --muted:#6b6862; --hint:#9a968d;
-    --accent:#2f6db0; --accent-bg:#eaf1fa;
-    --up:#2e7d32; --down:#c0392b; --flat:#9a968d;
-    --hi:#fcf6e9; --hi-line:#e8d9b0;
+    --bg:#FAF7F2; --surface:#FFFFFF; --cream:#F5EFE6; --soft:#EEEAE0;
+    --line:#E4DDD0; --line2:#D8CFBE;
+    --ink:#1B1B1B; --muted:#6E6960; --hint:#A39C8E;
+    --accent:#20344E; --accent-bg:#EAEDF1; --moss:#355C78; --teal:#2E8C9E;
+    --up:#15A85C; --down:#B65A4E; --flat:#A39C8E;
+    --hi:#F5EFE6; --hi-line:#E4DDD0;
+    --serif:'Canela',Georgia,'Times New Roman',serif;
+    --sans:'ArticulatCF',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
   }
   *{box-sizing:border-box;}
   body{margin:0; background:var(--bg); color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    font-family:var(--sans);
     font-size:15px; line-height:1.55; -webkit-font-smoothing:antialiased;}
   .wrap{max-width:1080px; margin:0 auto; padding:28px 22px 60px;}
-  h1{font-size:24px; font-weight:600; margin:0;}
-  .sub{color:var(--muted); font-size:13.5px; margin-top:3px;}
+  h1{font-family:var(--serif); font-size:31px; font-weight:500; letter-spacing:.2px; color:var(--accent); margin:0;}
+  .eyebrow{font-size:11px; text-transform:uppercase; letter-spacing:.12em; color:var(--moss); margin:0 0 4px;}
+  .sub{color:var(--muted); font-size:13.5px; margin-top:5px;}
   .controls{display:flex; flex-wrap:wrap; gap:18px; align-items:flex-end; margin:22px 0 8px;}
   .ctl label{display:block; font-size:11.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--hint); margin-bottom:6px;}
   .seg{display:inline-flex; background:var(--surface); border:1px solid var(--line); border-radius:9px; padding:3px; gap:2px;}
   .seg button{border:0; background:transparent; font:inherit; font-size:13px; color:var(--muted); padding:6px 12px; border-radius:7px; cursor:pointer;}
-  .seg button.on{background:var(--accent); color:#fff;}
+  .seg button.on{background:var(--accent); color:var(--bg);}
   .budget input{font:inherit; font-size:14px; border:1px solid var(--line2); border-radius:8px; padding:7px 10px; width:140px; background:var(--surface); color:var(--ink);}
   .scenstrip{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px; margin:18px 0;}
   .scard{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:12px 14px; cursor:pointer; transition:border-color .12s;}
   .scard:hover{border-color:var(--line2);}
   .scard.on{border:2px solid var(--accent); padding:11px 13px;}
-  .scard.actual{background:#f5f3ec; border-style:dashed;}
+  .scard.actual{background:var(--cream); border-style:dashed;}
   .scard.actual.on{border-style:solid;}
-  .scard .nm{font-size:13px; font-weight:600;}
-  .scard .rev{font-size:21px; font-weight:600; margin-top:6px;}
-  .scard .roas{font-size:12.5px; color:var(--muted); margin-top:2px;}
+  .scard .nm{font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.07em; color:var(--muted);}
+  .scard .rev{font-family:var(--serif); font-size:27px; font-weight:500; margin-top:7px; color:var(--ink); line-height:1.1;}
+  .scard .roas{font-size:12px; color:var(--muted); margin-top:5px;}
   .scard.on .nm{color:var(--accent);}
   .legend{display:flex; gap:18px; align-items:center; font-size:12px; color:var(--muted); margin:14px 2px 10px;}
   .legend i{display:inline-block; vertical-align:middle; margin-right:5px;}
@@ -42,7 +50,7 @@
   .row{display:grid; grid-template-columns:170px 1fr 92px 70px; align-items:center; gap:12px; padding:7px 8px; border-radius:8px; cursor:pointer;}
   .row:hover{background:var(--surface);}
   .row .nm{font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-  .track{position:relative; height:18px; background:#efece4; border-radius:3px;}
+  .track{position:relative; height:18px; background:var(--soft); border-radius:3px;}
   .fill{position:absolute; left:0; top:0; bottom:0; background:var(--accent); border-radius:3px;}
   .mark{position:absolute; top:-2px; bottom:-2px; width:2px; background:var(--ink);}
   .val{font-size:13px; font-weight:600; text-align:right;}
@@ -54,13 +62,18 @@
   table.cmp th, table.cmp td{padding:8px 10px; text-align:right; border-bottom:1px solid var(--line);}
   table.cmp th:first-child, table.cmp td:first-child{text-align:left;}
   table.cmp thead th{font-size:11.5px; text-transform:uppercase; letter-spacing:.03em; color:var(--hint); font-weight:600; border-bottom:1px solid var(--line2);}
-  table.cmp .metric td{color:var(--muted); font-size:12px; background:#f5f3ec;}
+  table.cmp .metric td{color:var(--muted); font-size:12px; background:var(--cream);}
   table.cmp .col-hi{background:var(--hi);}
   table.cmp th.col-hi{background:var(--hi); border-bottom-color:var(--hi-line);}
   .cellpct{font-weight:600; color:var(--ink);}
   .cellsub{font-size:11px; color:var(--down);}
   .cellsub.up{color:var(--up);}
   .cellsub.flat{color:var(--flat);}
+  #moves{margin:0 2px 14px; padding:11px 13px; background:var(--cream); border:1px solid var(--line); border-radius:10px; font-size:12.5px; line-height:1.9;}
+  #moves .mlabel{font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:var(--moss); margin-right:8px;}
+  .mchip{display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:20px; font-size:12px; margin:0 6px 4px 0; white-space:nowrap;}
+  .mchip.up{background:#E6F3EC; color:#136B3E;}
+  .mchip.down{background:#F6E7E3; color:#9A4632;}
   .foot{margin-top:30px; font-size:11.5px; color:var(--hint); border-top:1px solid var(--line); padding-top:14px; line-height:1.6;}
   .hide{display:none;}
   /* build mode */
@@ -79,20 +92,21 @@
   .bch .bn{font-size:13.5px; font-weight:600;}
   .bch .refs{font-size:11px; color:var(--hint); margin-top:2px;}
   .bch .refs b{color:var(--muted); font-weight:600;}
-  .bch input.pct{font:inherit; font-size:14px; text-align:right; width:100%; padding:6px 8px; border:1px solid var(--line2); border-radius:7px; background:#fff; color:var(--ink);}
+  .bch input.pct{font:inherit; font-size:14px; text-align:right; width:100%; padding:6px 8px; border:1px solid var(--line2); border-radius:7px; background:var(--surface); color:var(--ink);}
   .bch input.pct:focus{outline:none; border-color:var(--accent);}
   .bch .dol{font-size:12px; color:var(--muted); text-align:right;}
   .bch .dlt{font-size:11.5px; text-align:right;}
-  .bch input.note{font:inherit; font-size:12.5px; width:100%; margin-top:8px; padding:6px 8px; border:1px solid var(--line); border-radius:7px; background:#fcfbf8; color:var(--ink);}
+  .bch input.note{font:inherit; font-size:12.5px; width:100%; margin-top:8px; padding:6px 8px; border:1px solid var(--line); border-radius:7px; background:var(--cream); color:var(--ink);}
   .bch input.note::placeholder{color:var(--hint);}
   .exprow{display:flex; flex-wrap:wrap; gap:8px; margin:16px 0 6px;}
   .exprow button{font:inherit; font-size:13px; padding:8px 13px; border:1px solid var(--line2); background:var(--surface); border-radius:8px; cursor:pointer; color:var(--ink);}
   .exprow button:hover{border-color:var(--accent); color:var(--accent);}
-  #expOut{width:100%; height:150px; margin-top:10px; font-family:ui-monospace,Menlo,monospace; font-size:11.5px; border:1px solid var(--line2); border-radius:8px; padding:10px; background:#fff; color:var(--ink); white-space:pre; overflow:auto;}
+  #expOut{width:100%; height:150px; margin-top:10px; font-family:ui-monospace,Menlo,monospace; font-size:11.5px; border:1px solid var(--line2); border-radius:8px; padding:10px; background:var(--surface); color:var(--ink); white-space:pre; overflow:auto;}
 </style>
 </head>
 <body>
 <div class="wrap">
+  <p class="eyebrow">Growth · Jones Road Beauty</p>
   <h1>Paid media mix planner</h1>
   <div class="sub" id="subline">June 2026 · Haus CMMM scenario modeling</div>
 
@@ -123,6 +137,7 @@
       <span><span class="tick" style="display:inline-block"></span>&nbsp;Current spend (L30D)</span>
       <span style="color:var(--up)">▲ increase</span><span style="color:var(--down)">▼ decrease vs now</span>
     </div>
+    <div id="moves"></div>
     <div id="rows"></div>
     <div class="detail" id="detail">Click any channel to see the rationale behind its recommendation.</div>
   </div>
@@ -150,7 +165,7 @@
     </div>
     <div style="margin:0 0 16px;">
       <label style="display:block; font-size:11.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--hint); margin-bottom:6px;">Overall reasoning &amp; comments</label>
-      <textarea id="recoSummary" placeholder="Top-line reasoning for this month's plan — the context behind the moves (seasonality, efficiency reads, iTest locks, business priorities)…" style="width:100%; min-height:92px; font:inherit; font-size:13.5px; line-height:1.55; padding:10px 12px; border:1px solid var(--line2); border-radius:9px; background:#fcfbf8; color:var(--ink); resize:vertical;"></textarea>
+      <textarea id="recoSummary" placeholder="Top-line reasoning for this month's plan — the context behind the moves (seasonality, efficiency reads, iTest locks, business priorities)…" style="width:100%; min-height:92px; font:inherit; font-size:13.5px; line-height:1.55; padding:10px 12px; border:1px solid var(--line2); border-radius:9px; background:var(--cream); color:var(--ink); resize:vertical;"></textarea>
     </div>
     <div id="buildRows"></div>
     <div class="exprow">
@@ -246,6 +261,7 @@ function renderStrip(){
 
 function renderRows(){
   var key=D.scenarios[active].key;
+  renderMoves(key);
   var box=document.getElementById("rows"); box.innerHTML="";
   if(active==="final" && (D.summary||"").trim()){
     var sm=document.createElement("div");
@@ -359,6 +375,20 @@ bIn.addEventListener("keydown",function(e){ if(e.key==="Enter")applyBudget(); })
 /* ---------- Build recommendation ---------- */
 function escapeAttr(s){ return String(s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;"); }
 function escapeHtml(s){ return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>"); }
+function shortName(n){ return String(n).replace(/\s*\(.*?\)\s*/,"").replace(" and VAC",""); }
+function renderMoves(key){
+  var mv=document.getElementById("moves"); if(!mv) return;
+  if(active==="actuals"){ mv.style.display="none"; return; }
+  mv.style.display="";
+  var deltas=D.channels.map(function(c){return {n:c.n,d:pctFor(c,key)-c.act};}).filter(function(x){return Math.abs(x.d)>=0.1;});
+  var ups=deltas.filter(function(x){return x.d>0;}).sort(function(a,b){return b.d-a.d;}).slice(0,3);
+  var downs=deltas.filter(function(x){return x.d<0;}).sort(function(a,b){return a.d-b.d;}).slice(0,3);
+  function chip(x,cls,arr){return '<span class="mchip '+cls+'">'+arr+' '+Math.abs(x.d).toFixed(1)+' pts · '+shortName(x.n)+'</span>';}
+  var html='<span class="mlabel">Biggest shifts vs current</span>';
+  if(!ups.length && !downs.length){ html+='<span style="color:var(--muted)">In line with current spend.</span>'; }
+  else { html+=ups.map(function(x){return chip(x,"up","▲");}).join("")+downs.map(function(x){return chip(x,"down","▼");}).join(""); }
+  mv.innerHTML=html;
+}
 function isDirty(){
   if((D.summary||"") !== (ORIG_SUMMARY||"")) return true;
   for(var i=0;i<D.channels.length;i++){
@@ -370,10 +400,10 @@ function isDirty(){
 function updateSavedStatus(){
   var el=document.getElementById("saveStatus"); if(!el) return;
   if(isDirty()){
-    el.style.cssText="font-size:12.5px; line-height:1.5; padding:9px 12px; border-radius:9px; margin-bottom:14px; background:var(--hi); border:1px solid var(--hi-line); color:#7a5b14;";
+    el.style.cssText="font-size:12.5px; line-height:1.5; padding:9px 12px; border-radius:9px; margin-bottom:14px; background:var(--hi); border:1px solid var(--hi-line); color:#9A4632;";
     el.innerHTML="● <b>Unsaved local edits</b> — these live in this browser only. To make them permanent, click “Copy data block (for refresh)” below and paste it to Claude. Last saved to file: "+SAVED_TO_FILE+".";
   } else {
-    el.style.cssText="font-size:12.5px; line-height:1.5; padding:9px 12px; border-radius:9px; margin-bottom:14px; background:#eef6ee; border:1px solid #cfe3cf; color:#2f5d3a;";
+    el.style.cssText="font-size:12.5px; line-height:1.5; padding:9px 12px; border-radius:9px; margin-bottom:14px; background:#ECF4EE; border:1px solid #C6DDCD; color:#1C6B3F;";
     el.innerHTML="✓ <b>Saved to file</b> ("+SAVED_TO_FILE+") — your recommendation is permanent. New edits here stay browser-only until you send Claude the data block.";
   }
 }
