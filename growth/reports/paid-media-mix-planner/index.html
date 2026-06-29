@@ -123,7 +123,13 @@
   .exprow{display:flex; flex-wrap:wrap; gap:8px; margin:16px 0 6px;}
   .exprow button{font:inherit; font-size:13px; padding:8px 13px; border:1px solid var(--line2); background:var(--surface); border-radius:8px; cursor:pointer; color:var(--ink);}
   .exprow button:hover{border-color:var(--accent); color:var(--accent);}
-  #expOut{width:100%; height:150px; margin-top:10px; font-family:ui-monospace,Menlo,monospace; font-size:11.5px; border:1px solid var(--line2); border-radius:8px; padding:10px; background:var(--surface); color:var(--ink); white-space:pre; overflow:auto;}
+  .fbch{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:10px 12px; margin-bottom:8px;}
+  .fbhead{font-size:12.5px; margin-bottom:8px; line-height:1.5;}
+  .fbn{font-weight:600; color:var(--ink);}
+  .fbmeta{color:var(--muted);}
+  .fbnote{font:inherit; font-size:12.5px; width:100%; padding:7px 9px; border:1px solid var(--line2); border-radius:7px; background:var(--cream); color:var(--ink);}
+  .fbnote::placeholder{color:var(--hint);}
+  #expOut,#fbOut{width:100%; height:150px; margin-top:10px; font-family:ui-monospace,Menlo,monospace; font-size:11.5px; border:1px solid var(--line2); border-radius:8px; padding:10px; background:var(--surface); color:var(--ink); white-space:pre; overflow:auto;}
 </style>
 </head>
 <body>
@@ -145,6 +151,7 @@
         <button data-m="single" class="on">Single scenario</button>
         <button data-m="compare">Compare all</button>
         <button data-m="build">Build recommendation</button>
+        <button data-m="feedback">Cody's notes</button>
       </div>
     </div>
     <div class="ctl budget"><label>Monthly budget</label>
@@ -201,6 +208,20 @@
     <textarea id="expOut" class="hide" readonly></textarea>
   </div>
 
+  <div id="feedbackView" class="hide">
+    <div style="font-size:13px; color:var(--muted); margin:6px 0 14px;">Cody — leave overall feedback and per-channel notes below. Auto-saved in your browser; click “Copy feedback” to send it to Sam.</div>
+    <label style="display:block; font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:var(--moss); margin-bottom:6px;">Overall notes &amp; feedback</label>
+    <textarea id="fbOverall" placeholder="Top-line reaction to the plan — approvals, questions, concerns…" style="width:100%; min-height:92px; font:inherit; font-size:13.5px; line-height:1.55; padding:10px 12px; border:1px solid var(--line2); border-radius:9px; background:var(--cream); color:var(--ink); resize:vertical; margin-bottom:18px;"></textarea>
+    <div style="font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:var(--moss); margin-bottom:9px;">Per-channel notes</div>
+    <div id="fbRows"></div>
+    <div class="exprow">
+      <button id="fbCopy"><b>Copy feedback</b></button>
+      <button id="fbDownload">Download .txt</button>
+      <button id="fbClear" style="margin-left:auto; color:var(--down)">Clear feedback</button>
+    </div>
+    <textarea id="fbOut" class="hide" readonly></textarea>
+  </div>
+
   <div class="foot" id="foot"></div>
 </div>
 
@@ -208,19 +229,19 @@
 var DATA = {
   "June 2026": {
     asOf: "Haus scenarios (Baseline / Conservative / Aggressive) imported from the Haus scenario-planner CSV exports; Current actuals pulled live from Polar (blended platform ad spend, May 27 – Jun 25, 2026)",
-    budget: 3072001,
+    budget: 3400000,
     savedAt: "Jun 28, 2026",
     actualBudget: 2572659,
     actualsWindow: "May 27 – Jun 25, 2026 · Polar + manual TV/podcast",
     scenarios: {
       actuals:{label:"Current actuals", roas:null, rev:null, key:"act", isActual:true,
-        desc:"Actual spend over the trailing 30 days (May 27 – Jun 25, 2026), pulled live from Polar (blended platform ad spend — what each ad platform reports) — the baseline every scenario is measured against. Running ~$2.57M/mo, below the $3.07M Haus plan. Podcast (~$175k), CTV (~$127k) and Linear TV (~$97k) are manual estimates — TV and podcast buys don't pipe cleanly into Polar. Meta funnel split: viewcontent + quizcomplete = Mid; awareness = Upper; all purchase = Lower."},
+        desc:"Actual spend over the trailing 30 days (May 27 – Jun 25, 2026), pulled live from Polar (blended platform ad spend — what each ad platform reports) — the baseline every scenario is measured against. Running ~$2.57M/mo, below the $3.4M planning budget. Podcast (~$175k), CTV (~$127k) and Linear TV (~$97k) are manual estimates — TV and podcast buys don't pipe cleanly into Polar. Meta funnel split: viewcontent + quizcomplete = Mid; awareness = Upper; all purchase = Lower."},
       unconstrained:{label:"Baseline", roas:0.74, mroas:1.29, rev:2260665, key:"u",
-        desc:"Haus Baseline scenario, exported from the Haus scenario planner. Total $3.07M → projected incremental revenue $2.26M at $0.74 iROAS / $1.29 mROAS (highest marginal efficiency of the three)."},
+        desc:"Haus Baseline scenario, exported from the Haus scenario planner. Haus-projected incremental revenue $2.26M at $0.74 iROAS / $1.29 mROAS (highest marginal efficiency of the three)."},
       conservative:{label:"Conservative", roas:0.75, mroas:1.04, rev:2304126, key:"c",
-        desc:"Haus Conservative reallocation — modest shifts toward higher-return channels. Total $3.07M → projected incremental revenue $2.30M at $0.75 iROAS / $1.04 mROAS."},
+        desc:"Haus Conservative reallocation — modest shifts toward higher-return channels. Haus-projected incremental revenue $2.30M at $0.75 iROAS / $1.04 mROAS."},
       manual:{label:"Aggressive", roas:0.77, mroas:0.73, rev:2350181, key:"m",
-        desc:"Haus Aggressive reallocation — bigger shifts into CTV, Linear and Search/Shopping; less Meta Mid and AppLovin. Total $3.07M → highest projected incremental revenue $2.35M at $0.77 iROAS, but marginal ROAS drops to $0.73 (you're buying the last dollars less efficiently)."},
+        desc:"Haus Aggressive reallocation — bigger shifts into CTV, Linear and Search/Shopping; less Meta Mid and AppLovin. Highest Haus-projected incremental revenue $2.35M at $0.77 iROAS, but marginal ROAS drops to $0.73 (you're buying the last dollars less efficiently)."},
       final:{label:"Final recommendation", roas:null, rev:null, key:"f",
         desc:"The actual deliverable to Cody — not modeled in Haus (no revenue projection). Blends the models with iTest locks, seasonality, and channel conviction."}
     },
@@ -421,11 +442,13 @@ function renderAll(){
   document.getElementById("singleView").className = mode==="single"?"":"hide";
   document.getElementById("compareView").className = mode==="compare"?"":"hide";
   document.getElementById("buildView").className = mode==="build"?"":"hide";
+  document.getElementById("feedbackView").className = mode==="feedback"?"":"hide";
   if(mode==="single") renderRows();
   else if(mode==="compare") renderCompare();
-  else renderBuild();
+  else if(mode==="build") renderBuild();
+  else renderFeedback();
   document.getElementById("foot").innerHTML =
-    D.asOf+". Current actuals (L30D, leftmost card) total ~"+usd(D.actualBudget)+"/mo and are the baseline every scenario is measured against. The three Haus scenarios total the $3.07M plan budget, so channels are compared on % mix; their dollar view scales to the plan budget above, while the actuals dollar view scales to real spend. Final recommendation is not a Haus-modeled scenario, so it has no revenue/iROAS projection. Final recommendation last saved to file: "+SAVED_TO_FILE+".";
+    D.asOf+". Current actuals (L30D, leftmost card) total ~"+usd(D.actualBudget)+"/mo and are the baseline every scenario is measured against. Haus modeled the scenarios at ~$3.07M; here their % mix is scaled to the $3.4M planning budget set above, while the actuals dollar view scales to real L30D spend. Final recommendation is not a Haus-modeled scenario, so it has no revenue/iROAS projection. Final recommendation last saved to file: "+SAVED_TO_FILE+".";
 }
 
 document.getElementById("segView").addEventListener("click",function(e){
@@ -498,7 +521,6 @@ function loadReco(){
     if(o.f) D.channels.forEach(function(c,i){ if(typeof o.f[i]==="number") c.f=o.f[i]; });
     if(o.notes) D.channels.forEach(function(c,i){ if(o.notes[i]!=null) c.note=o.notes[i]; });
     if(o.summary!=null) D.summary=o.summary;
-    if(o.budget>0) budget=o.budget;
   }catch(e){}
 }
 function recoTotal(){ var s=0; D.channels.forEach(function(c){ s+=(c.f||0); }); return s; }
@@ -567,10 +589,31 @@ function buildTSV(){
   return L.join("\n");
 }
 function buildJSON(){ return JSON.stringify({month:MONTH, summary:D.summary||"", channels:D.channels.map(function(c){return {n:c.n,f:c.f,note:c.note};})},null,2); }
-function showExport(text){
-  var ta=document.getElementById("expOut"); ta.className=""; ta.value=text; ta.focus(); ta.select();
+function showExport(text,id){
+  var ta=document.getElementById(id||"expOut"); ta.className=""; ta.value=text; ta.focus(); ta.select();
   try{ navigator.clipboard.writeText(text); }catch(e){} try{ document.execCommand("copy"); }catch(e){}
 }
+var FB={overall:"",ch:{}};
+function feedbackKey(){ return "jrb-mix-feedback::"+MONTH; }
+function loadFeedback(){ try{ var o=JSON.parse(localStorage.getItem(feedbackKey())); if(o&&typeof o==="object") return {overall:o.overall||"", ch:o.ch||{}}; }catch(e){} return {overall:"",ch:{}}; }
+function saveFeedback(){ try{ localStorage.setItem(feedbackKey(), JSON.stringify(FB)); }catch(e){} }
+function renderFeedback(){
+  var ov=document.getElementById("fbOverall"); if(ov) ov.value=FB.overall||"";
+  var box=document.getElementById("fbRows"); if(!box) return; box.innerHTML="";
+  D.channels.slice().sort(function(a,b){return b.f-a.f;}).forEach(function(c){
+    var card=document.createElement("div"); card.className="fbch";
+    card.innerHTML='<div class="fbhead"><span class="fbn">'+c.n+'</span><span class="fbmeta"> · rec '+c.f.toFixed(2)+'%'+(String(c.note||"").trim()?' · Sam: '+escapeHtml(c.note):'')+'</span></div>';
+    var inp=document.createElement("input"); inp.className="fbnote"; inp.type="text"; inp.placeholder="Cody's thoughts / proposed change…"; inp.value=FB.ch[c.n]||"";
+    inp.addEventListener("input",function(){ FB.ch[c.n]=inp.value; saveFeedback(); });
+    card.appendChild(inp); box.appendChild(card);
+  });
+}
+function feedbackText(){
+  var L=["Cody's feedback — Paid media mix, "+MONTH,"","OVERALL:",(FB.overall||"").trim()||"(none)","","PER CHANNEL:"];
+  D.channels.slice().sort(function(a,b){return b.f-a.f;}).forEach(function(c){ var t=(FB.ch[c.n]||"").trim(); if(t) L.push("- "+c.n+" (rec "+c.f.toFixed(2)+"%): "+t); });
+  return L.join("\n");
+}
+function downloadFeedback(){ var a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([feedbackText()],{type:"text/plain"})); a.download="JRB-mix-feedback-"+MONTH.replace(/\s+/g,"-")+".txt"; a.click(); }
 function downloadCSV(){
   var rows=[["Channel","Monthly","Weekly","Daily","Percent","Notes"]];
   D.channels.forEach(function(c){ var m=c.f/100*budget,d=m/DAYS,w=d*7;
@@ -592,6 +635,10 @@ document.getElementById("expSheet").onclick=function(){ showExport(buildTSV()); 
 document.getElementById("expJson").onclick=function(){ showExport(buildJSON()); };
 document.getElementById("expCsv").onclick=downloadCSV;
 document.getElementById("resetReco").onclick=resetReco;
+document.getElementById("fbOverall").addEventListener("input",function(e){ FB.overall=e.target.value; saveFeedback(); });
+document.getElementById("fbCopy").onclick=function(){ showExport(feedbackText(),"fbOut"); };
+document.getElementById("fbDownload").onclick=downloadFeedback;
+document.getElementById("fbClear").onclick=function(){ if(confirm("Clear all of Cody's feedback for "+MONTH+"?")){ FB={overall:"",ch:{}}; try{localStorage.removeItem(feedbackKey());}catch(e){} document.getElementById("fbOut").className="hide"; renderFeedback(); } };
 
 var ORIG=[], ORIG_SUMMARY="";
 var sumEl=document.getElementById("recoSummary");
@@ -609,6 +656,7 @@ function initMonth(m){
   ORIG=D.channels.map(function(c){ return {f:c.f, note:c.note}; });
   ORIG_SUMMARY=D.summary;
   loadReco();
+  FB=loadFeedback();
   bIn.value=usd(budget);
   sumEl.value=D.summary||"";
   renderTabs();
