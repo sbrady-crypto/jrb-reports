@@ -187,8 +187,8 @@ body { font-family: var(--font-body); color: var(--ink); background: var(--paper
       <div class="scorecard-row"><span class="scorecard-metric">Cost / Result<small>Meta last-touch purchases — reference only</small></span><span class="scorecard-value">$107.34</span><span class="scorecard-value"><span class="val-win std">$104.27</span></span><span class="scorecard-value">lower wins</span></div>
     </div>
 
-    <p class="sub-label">Conversion Lift — Incremental Share of Each Objective</p>
-    <p class="section-note" style="margin-top:0;">Each bar shows IA's vs. Standard's share of <em>combined incremental conversions</em> for that objective — &gt;50% navy means IA is the more incremental cell on that objective. Ordered top-of-funnel to bottom.</p>
+    <p class="sub-label">Conversion Lift — Incremental Conversions by Objective</p>
+    <p class="section-note" style="margin-top:0;">Each pair of bars compares IA's and Standard's incremental conversions <em>head-to-head</em> for that objective — these are two independent counts, not parts of a shared total. Log scale, since magnitudes span 60 to 11,467 across objectives. Longer bar wins. Ordered top-of-funnel to bottom.</p>
     <div class="chart-card"><canvas id="clsShareChart"></canvas></div>
 
     <p class="detail-note">Exact Figures</p>
@@ -406,8 +406,8 @@ new Chart(document.getElementById('clsShareChart'), {
   data: {
     labels: ['ViewContent', 'QuizCompletion', 'AddToCart', 'InitiateCheckout', 'AddPaymentInfo', 'Purchase', 'Purchase (NC)'],
     datasets: [
-      { label: 'IA Cell', data: [54.7, 49.5, 51.6, 48.0, 71.2, 50.4, 50.8], backgroundColor: '#20344E', stack: 's' },
-      { label: 'Standard Cell', data: [45.3, 50.5, 48.4, 52.0, 28.8, 49.6, 49.2], backgroundColor: '#2E8C9E', stack: 's' },
+      { label: 'IA Cell', data: [11467, 1205, 3647, 907, 148, 407, 383], backgroundColor: '#20344E' },
+      { label: 'Standard Cell', data: [9506, 1229, 3417, 982, 60, 401, 371], backgroundColor: '#2E8C9E' },
     ]
   },
   options: {
@@ -415,11 +415,11 @@ new Chart(document.getElementById('clsShareChart'), {
     responsive: true,
     plugins: {
       legend: { position: 'top', labels: { font: { family: 'ArticulatCF', size: 12 }, color: '#1B1B1B' } },
-      tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.x.toFixed(1)}% of incremental conversions` } }
+      tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.x.toLocaleString()} incremental conversions` } }
     },
     scales: {
-      x: { stacked: true, min: 0, max: 100, grid: { color: '#E4DDD0' }, ticks: { font: { family: 'ArticulatCF', size: 10 }, color: '#6E6960', callback: v => v + '%' } },
-      y: { stacked: true, grid: { display: false }, ticks: { font: { family: 'ArticulatCF', size: 12 }, color: '#1B1B1B' } }
+      x: { type: 'logarithmic', min: 50, grid: { color: '#E4DDD0' }, ticks: { font: { family: 'ArticulatCF', size: 10 }, color: '#6E6960', callback: v => [100,1000,10000,50].includes(v) ? v.toLocaleString() : '' } },
+      y: { grid: { display: false }, ticks: { font: { family: 'ArticulatCF', size: 12 }, color: '#1B1B1B' } }
     }
   }
 });
