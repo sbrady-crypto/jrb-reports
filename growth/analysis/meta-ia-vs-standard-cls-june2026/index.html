@@ -30,9 +30,11 @@ body { font-family: var(--font-body); color: #000; background: #fff; }
 .section-note { font-family: var(--font-body); font-size: 13px; color: #757575; margin: -16px 0 28px; max-width: 760px; line-height: 1.6; }
 
 .scorecard-grid { border: 1px solid #ebebeb; border-radius: 2px; overflow: hidden; margin-bottom: 12px; }
-.scorecard-header, .scorecard-row { display: grid; grid-template-columns: 2.2fr 1fr 1fr 1fr; padding: 14px 20px; align-items: center; gap: 8px; }
+.scorecard-header, .scorecard-row { display: grid; grid-template-columns: 0.85fr 2fr 1fr 1fr 1fr; padding: 14px 20px; align-items: center; gap: 8px; }
 .scorecard-header { background: #000; }
 .scorecard-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #fff; text-align: right; }
+.scorecard-source { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #757575; }
+.scorecard-source-header { font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #fff; }
 .scorecard-row { border-bottom: 1px solid #ebebeb; }
 .scorecard-row:last-child { border-bottom: none; }
 .scorecard-row:nth-child(even) { background: #f8f8f8; }
@@ -84,7 +86,8 @@ body { font-family: var(--font-body); color: #000; background: #fff; }
   .analysis-hero__headline { font-size: 32px; }
   .analysis-section { padding: 40px 20px; }
   .funnels-wrapper { grid-template-columns: 1fr; }
-  .scorecard-header, .scorecard-row { grid-template-columns: 1.6fr 1fr 1fr 1fr; padding: 12px 14px; }
+  .scorecard-header, .scorecard-row { grid-template-columns: 0.7fr 1.4fr 1fr 1fr 1fr; padding: 12px 14px; }
+  .scorecard-source, .scorecard-source-header { font-size: 9px; }
 }
 </style>
 
@@ -106,51 +109,58 @@ body { font-family: var(--font-body); color: #000; background: #fff; }
   <div class="analysis-section__inner">
     <h2 class="section-eyebrow">Headline Read</h2>
     <h3 class="section-headline">IA wins on incrementality. Standard wins on raw volume. That gap is the whole point of the test.</h3>
-    <p class="section-note">12.5 of 14 test days pulled (study closes 7/1). Scorecards below pull from three independent measurement layers: Meta's own Conversion Lift engine (the gold-standard incrementality read), Northbeam blended attribution, and GA4 on-site behavior.</p>
-    <div class="source-tag">Source: Meta Conversion Lift, Primary objective (Purchase)</div>
+    <p class="section-note">12.5 of 14 test days pulled (study closes 7/1). Rows below run top-of-funnel to bottom-of-funnel and pull from three independent, clearly-tagged sources: <strong>Meta</strong> (media delivery + Meta's own Conversion Lift incrementality engine, the gold-standard read), <strong>Northbeam</strong> (blended multi-touch attribution), and <strong>GA4</strong> (on-site behavior).</p>
     <div class="scorecard-grid">
       <div class="scorecard-header">
-        <span></span><span class="scorecard-label">IA Cell</span><span class="scorecard-label">Standard Cell</span><span class="scorecard-label">Delta</span>
+        <span class="scorecard-source-header">Source</span><span></span><span class="scorecard-label">IA Cell</span><span class="scorecard-label">Standard Cell</span><span class="scorecard-label">Delta</span>
       </div>
       <div class="scorecard-row">
+        <span class="scorecard-source">Meta · Media</span>
+        <span class="scorecard-metric">Blended CPM<small>Top-of-funnel cost to reach</small></span>
+        <span class="scorecard-value">$32.41</span><span class="scorecard-value">$40.13</span>
+        <span class="scorecard-delta delta--positive">▲ 19.2% cheaper</span>
+      </div>
+      <div class="scorecard-row">
+        <span class="scorecard-source">GA4</span>
+        <span class="scorecard-metric">Sessions Driven<small>Cell total, on-site traffic</small></span>
+        <span class="scorecard-value">16,558</span><span class="scorecard-value">20,256</span>
+        <span class="scorecard-delta delta--negative">▼ 18.3% fewer</span>
+      </div>
+      <div class="scorecard-row">
+        <span class="scorecard-source">Meta · Conversion Lift</span>
+        <span class="scorecard-metric">Incremental Conversions<small>Purchase, gold-standard read</small></span>
+        <span class="scorecard-value">407</span><span class="scorecard-value">401</span>
+        <span class="scorecard-delta delta--positive">▲ 1.5%</span>
+      </div>
+      <div class="scorecard-row">
+        <span class="scorecard-source">Meta · Conversion Lift</span>
         <span class="scorecard-metric">Cost per Incremental Conversion<small>Purchase, gold-standard read</small></span>
         <span class="scorecard-value">$138.15</span><span class="scorecard-value">$140.24</span>
         <span class="scorecard-delta delta--positive">▲ 1.5% better</span>
       </div>
       <div class="scorecard-row">
-        <span class="scorecard-metric">Incremental Conversions<small>Purchase</small></span>
-        <span class="scorecard-value">407</span><span class="scorecard-value">401</span>
-        <span class="scorecard-delta delta--positive">▲ 1.5%</span>
-      </div>
-      <div class="scorecard-row">
-        <span class="scorecard-metric">Incremental Sales<small>Purchase</small></span>
-        <span class="scorecard-value">$34,879</span><span class="scorecard-value">$32,865</span>
-        <span class="scorecard-delta delta--positive">▲ 6.1%</span>
-      </div>
-      <div class="scorecard-row">
+        <span class="scorecard-source">Meta · Conversion Lift</span>
         <span class="scorecard-metric">New-Customer Incremental Share<small>Purchase_NC</small></span>
         <span class="scorecard-value">79.8%</span><span class="scorecard-value">77.6%</span>
         <span class="scorecard-delta delta--positive">▲ 2.2 pts</span>
       </div>
       <div class="scorecard-row">
-        <span class="scorecard-metric">Blended ROAS<small>Northbeam, cell total</small></span>
+        <span class="scorecard-source">Meta · Conversion Lift</span>
+        <span class="scorecard-metric">Incremental Sales<small>Purchase</small></span>
+        <span class="scorecard-value">$34,879</span><span class="scorecard-value">$32,865</span>
+        <span class="scorecard-delta delta--positive">▲ 6.1%</span>
+      </div>
+      <div class="scorecard-row">
+        <span class="scorecard-source">Northbeam</span>
+        <span class="scorecard-metric">Conversion Rate<small>Transactions / visits, cell total</small></span>
+        <span class="scorecard-value">1.96%</span><span class="scorecard-value">2.18%</span>
+        <span class="scorecard-delta delta--negative">▼ 10.4% lower</span>
+      </div>
+      <div class="scorecard-row">
+        <span class="scorecard-source">Northbeam</span>
+        <span class="scorecard-metric">Blended ROAS<small>Cell total</small></span>
         <span class="scorecard-value">0.54×</span><span class="scorecard-value">0.59×</span>
         <span class="scorecard-delta delta--negative">▼ 8.6% worse</span>
-      </div>
-      <div class="scorecard-row">
-        <span class="scorecard-metric">On-Site Conversion Rate<small>GA4, cell total</small></span>
-        <span class="scorecard-value">1.37%</span><span class="scorecard-value">1.43%</span>
-        <span class="scorecard-delta delta--negative">▼ 0.07 pts</span>
-      </div>
-      <div class="scorecard-row">
-        <span class="scorecard-metric">Sessions Driven<small>GA4, cell total</small></span>
-        <span class="scorecard-value">16,558</span><span class="scorecard-value">20,256</span>
-        <span class="scorecard-delta delta--negative">▼ 18.3% fewer</span>
-      </div>
-      <div class="scorecard-row">
-        <span class="scorecard-metric">Blended CPM<small>Meta, cell total</small></span>
-        <span class="scorecard-value">$32.41</span><span class="scorecard-value">$40.13</span>
-        <span class="scorecard-delta delta--positive">▲ 19.2% cheaper</span>
       </div>
     </div>
   </div>
@@ -247,18 +257,19 @@ body { font-family: var(--font-body); color: #000; background: #fff; }
 
 <section class="analysis-section analysis-section--alt">
   <div class="analysis-section__inner">
-    <h2 class="section-eyebrow">GA4 On-Site Behavior</h2>
-    <h3 class="section-headline">Standard traffic drove more sessions and converted on-site at a slightly higher rate</h3>
+    <h2 class="section-eyebrow">GA4 — On-Site Behavior Only</h2>
+    <h3 class="section-headline">Standard traffic drove more sessions and engaged slightly longer</h3>
+    <p class="section-note">Strictly on-site engagement signals — no conversion-rate or revenue figures here; those live in the Northbeam table (the source of record for transactions/CVR/ROAS) and the Meta CLS table (incremental sales). Columns run top-of-funnel (sessions) to bottom (add-to-cart rate).</p>
     <div class="lift-table-wrapper">
       <table class="lift-table">
-        <thead><tr><th>Campaign</th><th>Sessions</th><th>Engaged Rate</th><th>Bounce Rate</th><th>ATC Rate</th><th>CVR</th><th>Revenue</th><th>Time / Session</th><th>Pages / Session</th></tr></thead>
+        <thead><tr><th>Campaign</th><th>Sessions</th><th>Bounce Rate</th><th>Engaged Rate</th><th>Pages / Session</th><th>Time / Session</th><th>Add-to-Cart Rate</th></tr></thead>
         <tbody>
-          <tr><td>IA · VO</td><td>4,557</td><td>92.78%</td><td>7.22%</td><td>14.66%</td><td>1.43%</td><td>$5,239</td><td>47s</td><td>2.35</td></tr>
-          <tr><td>IA · CO</td><td>12,001</td><td>91.98%</td><td>8.02%</td><td>13.48%</td><td>1.34%</td><td>$9,190</td><td>48s</td><td>2.64</td></tr>
-          <tr><td>Standard · VO</td><td>8,971</td><td>93.08%</td><td>6.92%</td><td>17.62%</td><td>1.58%</td><td>$10,960</td><td>54s</td><td>2.70</td></tr>
-          <tr><td>Standard · CO</td><td>11,285</td><td>92.35%</td><td>7.65%</td><td>13.69%</td><td>1.31%</td><td>$9,241</td><td>48s</td><td>2.67</td></tr>
-          <tr style="font-weight:700;"><td>IA Cell Total</td><td>16,558</td><td>92.20%</td><td>7.80%</td><td>13.81%</td><td>1.37%</td><td>$14,429</td><td>48s</td><td>2.56</td></tr>
-          <tr style="font-weight:700;"><td>Standard Cell Total</td><td>20,256</td><td>92.69%</td><td>7.33%</td><td>15.43%</td><td>1.43%</td><td>$20,202</td><td>51s</td><td>2.68</td></tr>
+          <tr><td>IA · VO</td><td>4,557</td><td>7.22%</td><td>92.78%</td><td>2.35</td><td>47s</td><td>14.66%</td></tr>
+          <tr><td>IA · CO</td><td>12,001</td><td>8.02%</td><td>91.98%</td><td>2.64</td><td>48s</td><td>13.48%</td></tr>
+          <tr><td>Standard · VO</td><td>8,971</td><td>6.92%</td><td>93.08%</td><td>2.70</td><td>54s</td><td>17.62%</td></tr>
+          <tr><td>Standard · CO</td><td>11,285</td><td>7.65%</td><td>92.35%</td><td>2.67</td><td>48s</td><td>13.69%</td></tr>
+          <tr style="font-weight:700;"><td>IA Cell Total</td><td>16,558</td><td>7.80%</td><td>92.20%</td><td>2.56</td><td>48s</td><td>13.81%</td></tr>
+          <tr style="font-weight:700;"><td>Standard Cell Total</td><td>20,256</td><td>7.33%</td><td>92.69%</td><td>2.68</td><td>51s</td><td>15.43%</td></tr>
         </tbody>
       </table>
     </div>
@@ -272,10 +283,10 @@ body { font-family: var(--font-body); color: #000; background: #fff; }
     <p class="section-note">Pooled across both attribution cells (IA + Standard) per optimization type. This addresses the open question from #meta_jrb: does VO/CO behave differently under IA vs. Standard? Directionally, no — the VO/CO split shows the same pattern inside both attribution cells, which argues against needing a different VO/CO mix by attribution type.</p>
     <div class="lift-table-wrapper">
       <table class="lift-table">
-        <thead><tr><th>Optimization</th><th>Meta Spend</th><th>Cost / Result</th><th>Blended CPM</th><th>NB ROAS</th><th>NB AOV</th><th>NB CPA</th><th>GA4 CVR</th></tr></thead>
+        <thead><tr><th>Optimization</th><th>CPM (Meta)</th><th>Spend (Meta)</th><th>Cost / Result (Meta)</th><th>Conversion Rate (Northbeam)</th><th>CPA (Northbeam)</th><th>AOV (Northbeam)</th><th>ROAS (Northbeam)</th></tr></thead>
         <tbody>
-          <tr><td>CO (pooled)</td><td>$60,209</td><td>$97.90</td><td>$39.91</td><td>0.58×</td><td>$72.74</td><td>$126.12</td><td>1.33%</td></tr>
-          <tr><td>VO (pooled)</td><td>$60,911</td><td>$114.93</td><td>$32.58</td><td>0.54×</td><td>$91.60</td><td>$168.69</td><td>1.53%</td></tr>
+          <tr><td>CO (pooled)</td><td>$39.91</td><td>$60,209</td><td>$97.90</td><td>2.12%</td><td>$126.12</td><td>$72.74</td><td>0.58×</td></tr>
+          <tr><td>VO (pooled)</td><td>$32.58</td><td>$60,911</td><td>$114.93</td><td>2.00%</td><td>$168.69</td><td>$91.60</td><td>0.54×</td></tr>
         </tbody>
       </table>
     </div>
@@ -295,12 +306,12 @@ body { font-family: var(--font-body); color: #000; background: #fff; }
       <div class="insight-card">
         <p class="insight-card__number">02</p>
         <h3 class="insight-card__headline">The attribution-vs-incrementality gap is the actual story</h3>
-        <p class="insight-card__body">Meta CLS says IA wins; Northbeam and GA4 both say Standard looks stronger (more sessions, higher CVR, better blended ROAS). This is the exact dynamic flagged in the May 19 ROAS investigation — IA volume dilutes blended ROAS optically while still being the more incremental dollar. Don't let Northbeam/GA4 numbers alone drive the IA rollout decision.</p>
+        <p class="insight-card__body">Meta CLS says IA wins; Northbeam (higher conversion rate, better blended ROAS) and GA4 (more sessions) both say Standard looks stronger. This is the exact dynamic flagged in the May 19 ROAS investigation — IA volume dilutes blended ROAS optically while still being the more incremental dollar. Don't let Northbeam/GA4 numbers alone drive the IA rollout decision.</p>
       </div>
       <div class="insight-card">
         <p class="insight-card__number">03</p>
         <h3 class="insight-card__headline">IA buys reach ~19% cheaper, but converts clicks less efficiently</h3>
-        <p class="insight-card__body">IA's $32.41 blended CPM vs. Standard's $40.13 confirms the pattern Tommy flagged back in March. But IA's link CTR (1.22%) trails Standard's (1.43%), and on-site CVR is also slightly behind (1.37% vs 1.43%) — IA's cheaper reach is colder, consistent with the View-Through/quality concerns raised in April.</p>
+        <p class="insight-card__body">IA's $32.41 blended CPM (Meta) vs. Standard's $40.13 confirms the pattern Tommy flagged back in March. But IA's link CTR (Meta, 1.22%) trails Standard's (1.43%), and Northbeam's conversion rate is also behind (1.96% vs 2.18%) — IA's cheaper reach is colder, consistent with the View-Through/quality concerns raised in April.</p>
       </div>
       <div class="insight-card">
         <p class="insight-card__number">04</p>
