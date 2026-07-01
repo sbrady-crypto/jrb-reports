@@ -85,10 +85,14 @@ body { font-family: var(--font-body); color: var(--ink); background: var(--paper
 .funnel-shape.ia { background: var(--navy); }
 .funnel-shape.std { background: var(--teal); }
 .funnel-shape { height: 56px; }
-.funnel-info { display: flex; justify-content: space-between; align-items: center; padding: 6px 2px; font-family: var(--font-body); font-size: 11px; letter-spacing: 0.3px; border-bottom: 1px solid var(--border); }
-.funnel-label { text-transform: uppercase; color: var(--stone); font-weight: 600; }
+.funnel-info { display: flex; justify-content: space-between; align-items: center; padding: 6px 2px; font-family: var(--font-body); font-size: 11px; letter-spacing: 0.3px; border-bottom: 1px solid var(--border); gap: 6px; }
+.funnel-label { text-transform: uppercase; color: var(--stone); font-weight: 600; flex: 1; }
 .funnel-value { font-weight: 700; color: var(--ink); }
-.funnel-rate { color: var(--moss); font-weight: 600; }
+.funnel-rate { color: var(--moss); font-weight: 600; white-space: nowrap; }
+.funnel-win-badge { display: inline-block; font-weight: 700; font-size: 10px; letter-spacing: 0.3px; padding: 2px 7px; border-radius: 9px; color: #fff; white-space: nowrap; }
+.funnel-win-badge.ia { background: var(--navy); }
+.funnel-win-badge.std { background: var(--teal); }
+.funnel-legend-note { display: flex; align-items: center; gap: 6px; font-family: var(--font-body); font-size: 11px; color: var(--stone); margin: -14px 0 20px; }
 
 .insights-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 22px; }
 .insight-card { border: 1px solid var(--border); border-radius: 6px; padding: 26px; background: var(--surface); }
@@ -120,7 +124,7 @@ body { font-family: var(--font-body); color: var(--ink); background: var(--paper
 <header class="analysis-hero">
   <div class="analysis-hero__inner">
     <p class="analysis-hero__eyebrow">Growth · Meta Conversion Lift Study</p>
-    <h1 class="analysis-hero__headline">IA drives more true incremental conversions. Standard just looks better everywhere attribution can see it.</h1>
+    <h1 class="analysis-hero__headline">IA drives more true incremental conversions. Standard just looks better on paper — attribution can't see incrementality.</h1>
     <p class="analysis-hero__subtitle">2-cell CLS · 4 campaigns (IA VO, IA CO, Standard VO, Standard CO) · Study ID 1008813194853614</p>
     <p class="analysis-hero__meta">$10K/day combined ($5K/cell) · 4.51% holdout · 90% winning-confidence threshold · primary objective: Purchase · ~12.3 of 14 test days pulled</p>
     <div class="legend-row">
@@ -277,6 +281,7 @@ body { font-family: var(--font-body); color: var(--ink); background: var(--paper
       <p class="section-note" style="margin-top:0;">On-site behavior only — no revenue or conversion-rate figures here (those live in the Northbeam tab and the Meta CLS chart). Bars shrink stage-to-stage to show the true number of sessions remaining at each step.</p>
 
       <p class="sub-label">Session Funnel — Cell Totals</p>
+      <p class="funnel-legend-note">Pill on a stage = which cell is ahead there, and by how much.</p>
       <div class="funnels-wrapper">
         <div class="funnel-col">
           <h3 class="funnel-col__label ia">IA Cell</h3>
@@ -396,35 +401,39 @@ function logScale(value, minVal, maxVal, minW = 22, maxW = 100) {
   const logVal = Math.log10(value + 1);
   return minW + ((logVal - logMin) / (logMax - logMin)) * (maxW - minW);
 }
-function buildFunnel(containerId, stages, colorClass) {
+const funnelStages = [
+  { label: 'Sessions', ia: 17918, std: 21744 },
+  { label: 'Engaged Sessions', ia: 16505, std: 20157, iaRate: '92.1%', stdRate: '92.7%' },
+  { label: 'Add-to-Cart Sessions', ia: 2587, std: 3462, iaRate: '14.4%', stdRate: '15.9%' },
+];
+function buildFunnel(containerId, side) {
   const container = document.getElementById(containerId);
-  const maxVal = Math.max(...stages.map(s => s.value));
-  const minVal = Math.min(...stages.map(s => s.value));
-  stages.forEach((stage, i) => {
-    const topW = logScale(stage.value, minVal, maxVal);
-    const botW = i < stages.length - 1 ? logScale(stages[i+1].value, minVal, maxVal) : topW * 0.85;
+  const values = funnelStages.map(s => side === 'ia' ? s.ia : s.std);
+  const maxVal = Math.max(...values);
+  const minVal = Math.min(...values);
+  funnelStages.forEach((stage, i) => {
+    const value = side === 'ia' ? stage.ia : stage.std;
+    const rate = side === 'ia' ? stage.iaRate : stage.stdRate;
+    const other = side === 'ia' ? stage.std : stage.ia;
+    const isWinner = value > other;
+    const pctDiff = other > 0 ? Math.round(Math.abs(value - other) / other * 100) : 0;
+    const topW = logScale(value, minVal, maxVal);
+    const botW = i < funnelStages.length - 1 ? logScale(side === 'ia' ? funnelStages[i+1].ia : funnelStages[i+1].std, minVal, maxVal) : topW * 0.85;
     const div = document.createElement('div');
     div.className = 'funnel-stage';
     div.innerHTML = `
-      <div class="funnel-shape ${colorClass}" style="clip-path: polygon(${(100-topW)/2}% 0%, ${(100+topW)/2}% 0%, ${(100+botW)/2}% 100%, ${(100-botW)/2}% 100%)"></div>
+      <div class="funnel-shape ${side}" style="clip-path: polygon(${(100-topW)/2}% 0%, ${(100+topW)/2}% 0%, ${(100+botW)/2}% 100%, ${(100-botW)/2}% 100%)"></div>
       <div class="funnel-info">
         <span class="funnel-label">${stage.label}</span>
-        <span class="funnel-value">${stage.value.toLocaleString()}</span>
-        ${stage.rate ? `<span class="funnel-rate">${stage.rateLabel || ''} ${stage.rate}</span>` : ''}
+        <span class="funnel-value">${value.toLocaleString()}</span>
+        ${rate ? `<span class="funnel-rate">${rate}</span>` : ''}
+        ${isWinner ? `<span class="funnel-win-badge ${side}">▲ ${pctDiff}% ahead</span>` : ''}
       </div>`;
     container.appendChild(div);
   });
 }
-buildFunnel('funnel-ia', [
-  { label: 'Sessions', value: 17918 },
-  { label: 'Engaged Sessions', value: 16505, rate: '92.1%', rateLabel: 'of sessions' },
-  { label: 'Add-to-Cart Sessions', value: 2587, rate: '14.4%', rateLabel: 'of sessions' },
-], 'ia');
-buildFunnel('funnel-std', [
-  { label: 'Sessions', value: 21744 },
-  { label: 'Engaged Sessions', value: 20157, rate: '92.7%', rateLabel: 'of sessions' },
-  { label: 'Add-to-Cart Sessions', value: 3462, rate: '15.9%', rateLabel: 'of sessions' },
-], 'std');
+buildFunnel('funnel-ia', 'ia');
+buildFunnel('funnel-std', 'std');
 
 new Chart(document.getElementById('clsShareChart'), {
   type: 'bar',
