@@ -28,7 +28,7 @@ body { font-family: var(--font-body); color: var(--ink); background: var(--paper
 .analysis-hero { background: var(--surface); padding: 60px 40px 44px; border-bottom: 1px solid var(--border); }
 .analysis-hero__inner { max-width: 880px; }
 .analysis-hero__eyebrow { font-family: var(--font-body); font-weight: 600; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--moss); margin-bottom: 14px; }
-.analysis-hero__headline { font-family: var(--font-serif); font-weight: 500; font-size: 44px; line-height: 1.12; color: var(--navy); margin-bottom: 14px; }
+.analysis-hero__headline { font-family: var(--font-serif); font-weight: 500; font-size: 40px; line-height: 1.15; color: var(--navy); margin-bottom: 14px; }
 .analysis-hero__subtitle { font-family: var(--font-body); font-size: 15px; color: var(--ink); margin-bottom: 6px; }
 .analysis-hero__meta { font-family: var(--font-body); font-weight: 500; font-size: 12px; color: var(--stone); letter-spacing: 0.3px; }
 
@@ -37,10 +37,17 @@ body { font-family: var(--font-body); color: var(--ink); background: var(--paper
 .analysis-section__inner { max-width: 1160px; margin: 0 auto; }
 .bucket-eyebrow { display: inline-block; font-family: var(--font-body); font-weight: 700; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #fff; background: var(--navy); padding: 5px 12px; border-radius: 3px; margin-bottom: 14px; }
 .section-eyebrow { font-family: var(--font-body); font-weight: 600; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--moss); margin-bottom: 8px; }
-.section-headline { font-family: var(--font-serif); font-weight: 500; font-size: 26px; color: var(--navy); margin-bottom: 22px; max-width: 760px; }
+.section-headline { font-family: var(--font-serif); font-weight: 500; font-size: 26px; color: var(--navy); margin-bottom: 22px; max-width: 780px; }
 .section-note { font-family: var(--font-body); font-size: 13px; color: var(--stone); margin: -10px 0 24px; max-width: 800px; line-height: 1.6; }
 .sub-label { font-family: var(--font-body); font-weight: 700; font-size: 13px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--navy); margin: 36px 0 14px; }
 .sub-label:first-of-type { margin-top: 0; }
+
+.tab-nav { display: flex; gap: 4px; margin-bottom: 30px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+.tab-btn { padding: 12px 20px; font-family: var(--font-body); font-weight: 700; font-size: 12px; letter-spacing: 0.8px; text-transform: uppercase; color: var(--stone); background: none; border: none; border-bottom: 3px solid transparent; cursor: pointer; margin-bottom: -1px; }
+.tab-btn:hover { color: var(--moss); }
+.tab-btn.active { color: var(--navy); border-bottom-color: var(--navy); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
 
 .scorecard-grid { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-bottom: 8px; background: var(--surface); }
 .scorecard-header, .scorecard-row { display: grid; grid-template-columns: 2.4fr 1fr 1fr 1fr; padding: 13px 20px; align-items: center; gap: 8px; }
@@ -62,6 +69,9 @@ body { font-family: var(--font-body); color: var(--ink); background: var(--paper
 .lift-table td { padding: 10px 16px; border-bottom: 1px solid var(--border); font-size: 13px; font-family: var(--font-body); color: var(--stone); white-space: nowrap; }
 .lift-table td:first-child { color: var(--ink); font-weight: 500; white-space: normal; }
 .lift-table tr:nth-child(even) td { background: var(--cream); }
+.winner-pill { display: inline-block; font-weight: 700; font-size: 11px; padding: 2px 8px; border-radius: 10px; color: #fff; }
+.winner-pill.ia { background: var(--navy); }
+.winner-pill.std { background: var(--teal); }
 .detail-note { font-family: var(--font-body); font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--stone); font-weight: 600; margin-bottom: 10px; }
 
 .chart-card { border: 1px solid var(--border); border-radius: 6px; padding: 24px; background: var(--surface); margin-bottom: 20px; }
@@ -95,7 +105,7 @@ body { font-family: var(--font-body); color: var(--ink); background: var(--paper
 
 @media (max-width: 768px) {
   .analysis-hero { padding: 40px 20px 32px; }
-  .analysis-hero__headline { font-size: 30px; }
+  .analysis-hero__headline { font-size: 28px; }
   .analysis-section { padding: 36px 20px; }
   .funnels-wrapper { grid-template-columns: 1fr; }
   .scorecard-header, .scorecard-row { grid-template-columns: 1.6fr 1fr 1fr 1fr; padding: 11px 14px; }
@@ -104,15 +114,15 @@ body { font-family: var(--font-body); color: var(--ink); background: var(--paper
 
 <div class="utility-bar">
   <span>Jones Road Beauty — Meta CLS Analysis · IA vs. Standard Attribution</span>
-  <span>Window: Jun 18 (4:30p ET launch) – Jun 30, 2026 &nbsp;|&nbsp; Test ends Jul 1, 2026 &nbsp;|&nbsp; Pulled Jun 30, 2026</span>
+  <span>Window: Jun 18 (4:30p ET launch) – Jun 30, 2026 (full day) &nbsp;|&nbsp; Test ends Jul 1, 2026 &nbsp;|&nbsp; Pulled Jul 1, 2026</span>
 </div>
 
 <header class="analysis-hero">
   <div class="analysis-hero__inner">
     <p class="analysis-hero__eyebrow">Growth · Meta Conversion Lift Study</p>
-    <h1 class="analysis-hero__headline">Incremental Attribution vs.<br>Standard Attribution</h1>
+    <h1 class="analysis-hero__headline">IA drives more true incremental conversions. Standard just looks better everywhere attribution can see it.</h1>
     <p class="analysis-hero__subtitle">2-cell CLS · 4 campaigns (IA VO, IA CO, Standard VO, Standard CO) · Study ID 1008813194853614</p>
-    <p class="analysis-hero__meta">$10K/day combined ($5K/cell) · 4.51% holdout · 90% winning-confidence threshold · primary objective: Purchase</p>
+    <p class="analysis-hero__meta">$10K/day combined ($5K/cell) · 4.51% holdout · 90% winning-confidence threshold · primary objective: Purchase · ~12.3 of 14 test days pulled</p>
     <div class="legend-row">
       <span class="legend-item"><span class="legend-dot dot-ia"></span>IA Cell</span>
       <span class="legend-item"><span class="legend-dot dot-std"></span>Standard Cell</span>
@@ -123,45 +133,45 @@ body { font-family: var(--font-body); color: var(--ink); background: var(--paper
 <section class="analysis-section">
   <div class="analysis-section__inner">
     <h2 class="section-eyebrow">Headline Read</h2>
-    <h3 class="section-headline">IA wins on incrementality. Standard wins almost everywhere else. That gap is the whole point of the test.</h3>
-    <p class="section-note">12.5 of 14 test days pulled (study closes 7/1). Follows the user journey: Meta delivery metrics → Northbeam attribution → on-site behavior. Bold pill = the stronger cell on that metric.</p>
+    <h3 class="section-headline">Not a contradiction — two different questions being answered</h3>
+    <p class="section-note">Meta's Conversion Lift engine measures true incrementality (the gold-standard read for "did the ad cause this?"). Northbeam and GA4 measure attributed/observed performance — they can't see incrementality, so they reward whichever cell claims more credit, which is Standard. Rows below run top-of-funnel to bottom-of-funnel; bold pill = the stronger cell on that metric.</p>
     <div class="scorecard-grid">
       <div class="scorecard-header">
         <span></span><span class="scorecard-label">IA Cell</span><span class="scorecard-label">Standard Cell</span><span class="scorecard-label">Source</span>
       </div>
       <div class="scorecard-row">
         <span class="scorecard-metric">Blended CPM<small>Meta · media delivery</small></span>
-        <span class="scorecard-value"><span class="val-win ia">$32.41</span></span><span class="scorecard-value">$40.13</span>
+        <span class="scorecard-value"><span class="val-win ia">$32.30</span></span><span class="scorecard-value">$39.83</span>
         <span class="scorecard-value">Meta</span>
       </div>
       <div class="scorecard-row">
         <span class="scorecard-metric">Sessions Driven<small>GA4 · on-site traffic</small></span>
-        <span class="scorecard-value">16,558</span><span class="scorecard-value"><span class="val-win std">20,256</span></span>
+        <span class="scorecard-value">17,918</span><span class="scorecard-value"><span class="val-win std">21,744</span></span>
         <span class="scorecard-value">GA4</span>
       </div>
       <div class="scorecard-row">
         <span class="scorecard-metric">Incremental Conversions<small>Purchase, gold-standard read</small></span>
-        <span class="scorecard-value"><span class="val-win ia">407</span></span><span class="scorecard-value">401</span>
+        <span class="scorecard-value"><span class="val-win ia">464</span></span><span class="scorecard-value">453</span>
         <span class="scorecard-value">Meta CLS</span>
       </div>
       <div class="scorecard-row">
         <span class="scorecard-metric">Cost / Incremental Conversion<small>Purchase, gold-standard read</small></span>
-        <span class="scorecard-value"><span class="val-win ia">$138.15</span></span><span class="scorecard-value">$140.24</span>
+        <span class="scorecard-value"><span class="val-win ia">$132.74</span></span><span class="scorecard-value">$135.50</span>
         <span class="scorecard-value">Meta CLS</span>
       </div>
       <div class="scorecard-row">
         <span class="scorecard-metric">Incremental Sales<small>Purchase</small></span>
-        <span class="scorecard-value"><span class="val-win ia">$34,879</span></span><span class="scorecard-value">$32,865</span>
+        <span class="scorecard-value"><span class="val-win ia">$39,827</span></span><span class="scorecard-value">$37,976</span>
         <span class="scorecard-value">Meta CLS</span>
       </div>
       <div class="scorecard-row">
         <span class="scorecard-metric">Conversion Rate<small>Transactions / visits</small></span>
-        <span class="scorecard-value">1.96%</span><span class="scorecard-value"><span class="val-win std">2.18%</span></span>
+        <span class="scorecard-value">1.92%</span><span class="scorecard-value"><span class="val-win std">2.19%</span></span>
         <span class="scorecard-value">Northbeam</span>
       </div>
       <div class="scorecard-row">
         <span class="scorecard-metric">Blended ROAS<small>Cell total</small></span>
-        <span class="scorecard-value">0.54×</span><span class="scorecard-value"><span class="val-win std">0.59×</span></span>
+        <span class="scorecard-value">0.53×</span><span class="scorecard-value"><span class="val-win std">0.60×</span></span>
         <span class="scorecard-value">Northbeam</span>
       </div>
     </div>
@@ -170,130 +180,135 @@ body { font-family: var(--font-body); color: var(--ink); background: var(--paper
 
 <section class="analysis-section analysis-section--alt">
   <div class="analysis-section__inner">
-    <span class="bucket-eyebrow">Bucket 1 of 3 · Meta Metrics</span>
-    <h3 class="section-headline">IA buys cheaper, deeper-watched reach. Standard converts the click better — but loses the incrementality read.</h3>
-    <p class="section-note">Everything in this bucket is sourced from Meta (delivery + Meta's own Conversion Lift product). Top-of-funnel → bottom-of-funnel.</p>
+    <h2 class="section-eyebrow">Metrics By Source</h2>
+    <h3 class="section-headline">Meta → Northbeam → Site, in user-journey order</h3>
+    <p class="section-note">Switch tabs to see each layer without scrolling past the others. Each tab is self-contained and clearly sourced.</p>
 
-    <p class="sub-label">Media Delivery — Cell Totals</p>
-    <div class="scorecard-grid">
-      <div class="scorecard-header"><span></span><span class="scorecard-label">IA Cell</span><span class="scorecard-label">Standard Cell</span><span class="scorecard-label"></span></div>
-      <div class="scorecard-row"><span class="scorecard-metric">CPM</span><span class="scorecard-value"><span class="val-win ia">$32.41</span></span><span class="scorecard-value">$40.13</span><span class="scorecard-value">lower wins</span></div>
-      <div class="scorecard-row"><span class="scorecard-metric">Reach<small>summed, not de-duplicated</small></span><span class="scorecard-value">~747,114</span><span class="scorecard-value">~650,153</span><span class="scorecard-value">directional</span></div>
-      <div class="scorecard-row"><span class="scorecard-metric">Impressions</span><span class="scorecard-value">1,871,148</span><span class="scorecard-value">1,506,924</span><span class="scorecard-value">directional</span></div>
-      <div class="scorecard-row"><span class="scorecard-metric">Hook Rate<small>3-second video plays / impr.</small></span><span class="scorecard-value">28.5%</span><span class="scorecard-value"><span class="val-win std">29.3%</span></span><span class="scorecard-value">higher wins</span></div>
-      <div class="scorecard-row"><span class="scorecard-metric">Video Watched 25%</span><span class="scorecard-value"><span class="val-win ia">9.8%</span></span><span class="scorecard-value">9.0%</span><span class="scorecard-value">higher wins</span></div>
-      <div class="scorecard-row"><span class="scorecard-metric">Video Watched 100%</span><span class="scorecard-value"><span class="val-win ia">1.61%</span></span><span class="scorecard-value">1.43%</span><span class="scorecard-value">higher wins</span></div>
-      <div class="scorecard-row"><span class="scorecard-metric">CTR (link clicks)</span><span class="scorecard-value">1.22%</span><span class="scorecard-value"><span class="val-win std">1.43%</span></span><span class="scorecard-value">higher wins</span></div>
-      <div class="scorecard-row"><span class="scorecard-metric">Cost / Result<small>Meta last-touch purchases — reference only</small></span><span class="scorecard-value">$107.34</span><span class="scorecard-value"><span class="val-win std">$104.27</span></span><span class="scorecard-value">lower wins</span></div>
+    <div class="tab-nav">
+      <button class="tab-btn active" data-tab="meta">① Meta Metrics</button>
+      <button class="tab-btn" data-tab="northbeam">② Northbeam Metrics</button>
+      <button class="tab-btn" data-tab="site">③ Site Metrics (GA4)</button>
     </div>
 
-    <p class="sub-label">Conversion Lift — Incremental Conversions by Objective</p>
-    <p class="section-note" style="margin-top:0;">Each pair of bars compares IA's and Standard's incremental conversions <em>head-to-head</em> for that objective — these are two independent counts, not parts of a shared total. Log scale, since magnitudes span 60 to 11,467 across objectives. Longer bar wins. Ordered top-of-funnel to bottom.</p>
-    <div class="chart-card"><canvas id="clsShareChart"></canvas></div>
+    <!-- META TAB -->
+    <div class="tab-panel active" id="tab-meta">
+      <p class="section-note" style="margin-top:0;">IA buys cheaper, deeper-watched reach. Standard converts the click better — but loses the incrementality read (see the chart below).</p>
 
-    <p class="detail-note">Exact Figures</p>
-    <div class="lift-table-wrapper">
-      <table class="lift-table">
-        <thead><tr><th>Objective</th><th>IA Incr. Conv.</th><th>Std Incr. Conv.</th><th>IA Cost/Incr.</th><th>Std Cost/Incr.</th><th>Winner</th></tr></thead>
-        <tbody>
-          <tr><td>ViewContent</td><td>11,467</td><td>9,506</td><td>$4.90</td><td>$5.92</td><td>IA</td></tr>
-          <tr><td>QuizCompletion</td><td>1,205</td><td>1,229</td><td>$46.66</td><td>$45.76</td><td>Standard</td></tr>
-          <tr><td>AddToCart</td><td>3,647</td><td>3,417</td><td>$15.42</td><td>$16.46</td><td>IA</td></tr>
-          <tr><td>InitiateCheckout</td><td>907</td><td>982</td><td>$61.99</td><td>$57.27</td><td>Standard</td></tr>
-          <tr><td>AddPaymentInfo</td><td>148</td><td>60</td><td>$379.91</td><td>$937.28</td><td>IA</td></tr>
-          <tr><td>Purchase (primary)</td><td>407</td><td>401</td><td>$138.15</td><td>$140.24</td><td>IA</td></tr>
-          <tr><td>Purchase — New Customer</td><td>383</td><td>371</td><td>$146.81</td><td>$151.58</td><td>IA</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <p class="detail-note" style="margin-top:24px;">Campaign-Level Detail</p>
-    <div class="lift-table-wrapper">
-      <table class="lift-table">
-        <thead><tr><th>Campaign</th><th>Reach</th><th>Impr.</th><th>CPM</th><th>Freq.</th><th>Hook Rate</th><th>VTR 100%</th><th>CTR</th><th>Spend</th><th>Cost/Result</th></tr></thead>
-        <tbody>
-          <tr><td>IA · VO</td><td>355,582</td><td>1,134,363</td><td>$26.87</td><td>3.19</td><td>27.3%</td><td>1.35%</td><td>0.93%</td><td>$30,479</td><td>$122.41</td></tr>
-          <tr><td>IA · CO</td><td>391,532</td><td>736,785</td><td>$40.94</td><td>1.88</td><td>30.3%</td><td>2.00%</td><td>1.68%</td><td>$30,166</td><td>$95.46</td></tr>
-          <tr><td>Standard · VO</td><td>289,368</td><td>735,055</td><td>$41.40</td><td>2.54</td><td>28.1%</td><td>1.15%</td><td>1.28%</td><td>$30,432</td><td>$108.30</td></tr>
-          <tr><td>Standard · CO</td><td>360,785</td><td>771,869</td><td>$38.92</td><td>2.14</td><td>30.5%</td><td>1.69%</td><td>1.56%</td><td>$30,044</td><td>$100.48</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<section class="analysis-section">
-  <div class="analysis-section__inner">
-    <span class="bucket-eyebrow">Bucket 2 of 3 · Northbeam Metrics</span>
-    <h3 class="section-headline">Standard sweeps the blended-attribution read</h3>
-    <p class="section-note">Everything in this bucket is sourced from Northbeam (multi-touch attribution). Northbeam does not isolate incrementality — it systematically under-credits IA's net-new reach relative to its true incremental contribution (see Meta CLS bucket above for that read).</p>
-
-    <p class="sub-label">Northbeam — Cell Totals</p>
-    <div class="scorecard-grid">
-      <div class="scorecard-header"><span></span><span class="scorecard-label">IA Cell</span><span class="scorecard-label">Standard Cell</span><span class="scorecard-label"></span></div>
-      <div class="scorecard-row"><span class="scorecard-metric">Visits</span><span class="scorecard-value">20,024</span><span class="scorecard-value">18,459</span><span class="scorecard-value">directional</span></div>
-      <div class="scorecard-row"><span class="scorecard-metric">New-Visit Rate</span><span class="scorecard-value"><span class="val-win ia">73.8%</span></span><span class="scorecard-value">73.0%</span><span class="scorecard-value">higher wins</span></div>
-      <div class="scorecard-row"><span class="scorecard-metric">Conversion Rate<small>transactions / visits</small></span><span class="scorecard-value">1.96%</span><span class="scorecard-value"><span class="val-win std">2.18%</span></span><span class="scorecard-value">higher wins</span></div>
-      <div class="scorecard-row"><span class="scorecard-metric">Transactions</span><span class="scorecard-value">392</span><span class="scorecard-value"><span class="val-win std">403</span></span><span class="scorecard-value">higher wins</span></div>
-      <div class="scorecard-row"><span class="scorecard-metric">CPA</span><span class="scorecard-value">$146.66</span><span class="scorecard-value"><span class="val-win std">$142.23</span></span><span class="scorecard-value">lower wins</span></div>
-      <div class="scorecard-row"><span class="scorecard-metric">AOV</span><span class="scorecard-value">$78.49</span><span class="scorecard-value"><span class="val-win std">$83.13</span></span><span class="scorecard-value">higher wins</span></div>
-      <div class="scorecard-row"><span class="scorecard-metric">Revenue</span><span class="scorecard-value">$30,767</span><span class="scorecard-value"><span class="val-win std">$33,511</span></span><span class="scorecard-value">higher wins</span></div>
-      <div class="scorecard-row"><span class="scorecard-metric">ROAS</span><span class="scorecard-value">0.54×</span><span class="scorecard-value"><span class="val-win std">0.59×</span></span><span class="scorecard-value">higher wins</span></div>
-    </div>
-
-    <p class="detail-note" style="margin-top:28px;">Campaign-Level Detail</p>
-    <div class="lift-table-wrapper">
-      <table class="lift-table">
-        <thead><tr><th>Campaign</th><th>Visits</th><th>New-Visit Rate</th><th>Transactions</th><th>CPA</th><th>AOV</th><th>Revenue</th><th>ROAS</th></tr></thead>
-        <tbody>
-          <tr><td>IA · VO</td><td>9,006</td><td>68.0%</td><td>156</td><td>$184.77</td><td>$89.22</td><td>$13,951</td><td>0.48×</td></tr>
-          <tr><td>IA · CO</td><td>11,018</td><td>78.7%</td><td>236</td><td>$121.27</td><td>$71.30</td><td>$16,816</td><td>0.59×</td></tr>
-          <tr><td>Standard · VO</td><td>8,137</td><td>68.9%</td><td>186</td><td>$154.36</td><td>$93.17</td><td>$17,375</td><td>0.60×</td></tr>
-          <tr><td>Standard · CO</td><td>10,322</td><td>76.2%</td><td>217</td><td>$131.34</td><td>$74.28</td><td>$16,137</td><td>0.57×</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<section class="analysis-section analysis-section--alt">
-  <div class="analysis-section__inner">
-    <span class="bucket-eyebrow">Bucket 3 of 3 · Site Metrics (GA4)</span>
-    <h3 class="section-headline">Standard traffic carries deeper into the site funnel</h3>
-    <p class="section-note">On-site behavior only — no revenue or conversion-rate figures here (those live in the Northbeam bucket above and the Meta CLS bucket). Bars shrink stage-to-stage to show the true number of sessions remaining at each step.</p>
-
-    <p class="sub-label">Session Funnel — Cell Totals</p>
-    <div class="funnels-wrapper">
-      <div class="funnel-col">
-        <h3 class="funnel-col__label ia">IA Cell</h3>
-        <div class="funnel-stages" id="funnel-ia"></div>
+      <p class="sub-label">Media Delivery — Cell Totals</p>
+      <div class="scorecard-grid">
+        <div class="scorecard-header"><span></span><span class="scorecard-label">IA Cell</span><span class="scorecard-label">Standard Cell</span><span class="scorecard-label"></span></div>
+        <div class="scorecard-row"><span class="scorecard-metric">CPM</span><span class="scorecard-value"><span class="val-win ia">$32.30</span></span><span class="scorecard-value">$39.83</span><span class="scorecard-value">lower wins</span></div>
+        <div class="scorecard-row"><span class="scorecard-metric">Reach<small>summed, not de-duplicated</small></span><span class="scorecard-value">~760,945</span><span class="scorecard-value">~663,274</span><span class="scorecard-value">directional</span></div>
+        <div class="scorecard-row"><span class="scorecard-metric">Impressions</span><span class="scorecard-value">1,940,226</span><span class="scorecard-value">1,570,413</span><span class="scorecard-value">directional</span></div>
+        <div class="scorecard-row"><span class="scorecard-metric">Hook Rate<small>3-second video plays / impr.</small></span><span class="scorecard-value">28.1%</span><span class="scorecard-value"><span class="val-win std">28.9%</span></span><span class="scorecard-value">higher wins</span></div>
+        <div class="scorecard-row"><span class="scorecard-metric">Video Watched 25%</span><span class="scorecard-value"><span class="val-win ia">9.6%</span></span><span class="scorecard-value">8.8%</span><span class="scorecard-value">higher wins</span></div>
+        <div class="scorecard-row"><span class="scorecard-metric">Video Watched 100%</span><span class="scorecard-value"><span class="val-win ia">1.58%</span></span><span class="scorecard-value">1.40%</span><span class="scorecard-value">higher wins</span></div>
+        <div class="scorecard-row"><span class="scorecard-metric">CTR (link clicks)</span><span class="scorecard-value">1.24%</span><span class="scorecard-value"><span class="val-win std">1.44%</span></span><span class="scorecard-value">higher wins</span></div>
+        <div class="scorecard-row"><span class="scorecard-metric">Cost / Result<small>Meta last-touch purchases — reference only</small></span><span class="scorecard-value">$105.15</span><span class="scorecard-value"><span class="val-win std">$102.71</span></span><span class="scorecard-value">lower wins</span></div>
       </div>
-      <div class="funnel-col">
-        <h3 class="funnel-col__label std">Standard Cell</h3>
-        <div class="funnel-stages" id="funnel-std"></div>
+
+      <p class="sub-label">Conversion Lift — Incremental Conversions by Objective</p>
+      <p class="section-note" style="margin-top:0;">Each pair of bars compares IA's and Standard's incremental conversions <em>head-to-head</em> for that objective — two independent counts, not parts of a shared total. Log scale (values span 70 to 12,589). IA wins 5 of 7 measured objectives (Purchase_RC has no measurable data this cycle).</p>
+      <div class="chart-card"><canvas id="clsShareChart"></canvas></div>
+
+      <p class="detail-note">Exact Figures</p>
+      <div class="lift-table-wrapper">
+        <table class="lift-table">
+          <thead><tr><th>Objective</th><th>IA Incr. Conv.</th><th>Std Incr. Conv.</th><th>IA Cost/Incr.</th><th>Std Cost/Incr.</th><th>Winner</th></tr></thead>
+          <tbody>
+            <tr><td>ViewContent</td><td>12,589</td><td>10,672</td><td>$4.89</td><td>$5.75</td><td><span class="winner-pill ia">IA</span></td></tr>
+            <tr><td>QuizCompletion</td><td>1,324</td><td>1,368</td><td>$46.52</td><td>$44.87</td><td><span class="winner-pill std">Standard</span></td></tr>
+            <tr><td>AddToCart</td><td>4,034</td><td>3,913</td><td>$15.27</td><td>$15.69</td><td><span class="winner-pill ia">IA</span></td></tr>
+            <tr><td>InitiateCheckout</td><td>1,040</td><td>1,095</td><td>$59.22</td><td>$56.05</td><td><span class="winner-pill std">Standard</span></td></tr>
+            <tr><td>AddPaymentInfo</td><td>157</td><td>70</td><td>$392.32</td><td>$876.85</td><td><span class="winner-pill ia">IA</span></td></tr>
+            <tr><td>Purchase (primary)</td><td>464</td><td>453</td><td>$132.74</td><td>$135.50</td><td><span class="winner-pill ia">IA</span></td></tr>
+            <tr><td>Purchase — New Customer</td><td>440</td><td>428</td><td>$139.99</td><td>$143.41</td><td><span class="winner-pill ia">IA</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="detail-note" style="margin-top:24px;">Campaign-Level Detail</p>
+      <div class="lift-table-wrapper">
+        <table class="lift-table">
+          <thead><tr><th>Campaign</th><th>Reach</th><th>Impr.</th><th>CPM</th><th>Freq.</th><th>Hook Rate</th><th>VTR 100%</th><th>CTR</th><th>Spend</th><th>Cost/Result</th></tr></thead>
+          <tbody>
+            <tr><td>IA · VO</td><td>361,279</td><td>1,170,714</td><td>$26.85</td><td>3.24</td><td>26.9%</td><td>1.33%</td><td>1.33%</td><td>$31,437</td><td>$117.74</td></tr>
+            <tr><td>IA · CO</td><td>399,666</td><td>769,512</td><td>$40.59</td><td>1.93</td><td>29.9%</td><td>1.97%</td><td>2.39%</td><td>$31,234</td><td>$94.93</td></tr>
+            <tr><td>Standard · VO</td><td>297,270</td><td>766,070</td><td>$40.99</td><td>2.58</td><td>27.5%</td><td>1.13%</td><td>1.77%</td><td>$31,400</td><td>$105.73</td></tr>
+            <tr><td>Standard · CO</td><td>366,004</td><td>804,343</td><td>$38.72</td><td>2.20</td><td>30.2%</td><td>1.66%</td><td>2.28%</td><td>$31,148</td><td>$99.83</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
-    <p class="sub-label">Supporting Engagement Detail — Cell Totals</p>
-    <div class="scorecard-grid">
-      <div class="scorecard-header"><span></span><span class="scorecard-label">IA Cell</span><span class="scorecard-label">Standard Cell</span><span class="scorecard-label"></span></div>
-      <div class="scorecard-row"><span class="scorecard-metric">Bounce Rate</span><span class="scorecard-value">7.80%</span><span class="scorecard-value"><span class="val-win std">7.33%</span></span><span class="scorecard-value">lower wins</span></div>
-      <div class="scorecard-row"><span class="scorecard-metric">Engaged Sessions Rate</span><span class="scorecard-value">92.20%</span><span class="scorecard-value"><span class="val-win std">92.69%</span></span><span class="scorecard-value">higher wins</span></div>
-      <div class="scorecard-row"><span class="scorecard-metric">Pages / Session</span><span class="scorecard-value">2.56</span><span class="scorecard-value"><span class="val-win std">2.68</span></span><span class="scorecard-value">higher wins</span></div>
-      <div class="scorecard-row"><span class="scorecard-metric">Time / Session</span><span class="scorecard-value">48s</span><span class="scorecard-value"><span class="val-win std">51s</span></span><span class="scorecard-value">higher wins</span></div>
+    <!-- NORTHBEAM TAB -->
+    <div class="tab-panel" id="tab-northbeam">
+      <p class="section-note" style="margin-top:0;">Standard sweeps the blended-attribution read. Northbeam runs a multi-touch model — it does not isolate incrementality, and systematically under-credits IA's net-new reach relative to its true incremental contribution (see the Meta tab for that read).</p>
+
+      <p class="sub-label">Northbeam — Cell Totals</p>
+      <div class="scorecard-grid">
+        <div class="scorecard-header"><span></span><span class="scorecard-label">IA Cell</span><span class="scorecard-label">Standard Cell</span><span class="scorecard-label"></span></div>
+        <div class="scorecard-row"><span class="scorecard-metric">Visits</span><span class="scorecard-value">22,236</span><span class="scorecard-value">20,713</span><span class="scorecard-value">directional</span></div>
+        <div class="scorecard-row"><span class="scorecard-metric">New-Visit Rate</span><span class="scorecard-value"><span class="val-win ia">72.7%</span></span><span class="scorecard-value">71.7%</span><span class="scorecard-value">higher wins</span></div>
+        <div class="scorecard-row"><span class="scorecard-metric">Conversion Rate<small>transactions / visits</small></span><span class="scorecard-value">1.92%</span><span class="scorecard-value"><span class="val-win std">2.19%</span></span><span class="scorecard-value">higher wins</span></div>
+        <div class="scorecard-row"><span class="scorecard-metric">Transactions</span><span class="scorecard-value">427</span><span class="scorecard-value"><span class="val-win std">454</span></span><span class="scorecard-value">higher wins</span></div>
+        <div class="scorecard-row"><span class="scorecard-metric">CPA</span><span class="scorecard-value">$146.75</span><span class="scorecard-value"><span class="val-win std">$137.75</span></span><span class="scorecard-value">lower wins</span></div>
+        <div class="scorecard-row"><span class="scorecard-metric">AOV</span><span class="scorecard-value">$78.26</span><span class="scorecard-value"><span class="val-win std">$82.65</span></span><span class="scorecard-value">higher wins</span></div>
+        <div class="scorecard-row"><span class="scorecard-metric">Revenue</span><span class="scorecard-value">$33,419</span><span class="scorecard-value"><span class="val-win std">$37,524</span></span><span class="scorecard-value">higher wins</span></div>
+        <div class="scorecard-row"><span class="scorecard-metric">ROAS</span><span class="scorecard-value">0.53×</span><span class="scorecard-value"><span class="val-win std">0.60×</span></span><span class="scorecard-value">higher wins</span></div>
+      </div>
+
+      <p class="detail-note" style="margin-top:28px;">Campaign-Level Detail</p>
+      <div class="lift-table-wrapper">
+        <table class="lift-table">
+          <thead><tr><th>Campaign</th><th>Visits</th><th>New-Visit Rate</th><th>Transactions</th><th>CPA</th><th>AOV</th><th>Revenue</th><th>ROAS</th></tr></thead>
+          <tbody>
+            <tr><td>IA · VO</td><td>10,055</td><td>66.9%</td><td>169</td><td>$186.03</td><td>$89.49</td><td>$15,122</td><td>0.48×</td></tr>
+            <tr><td>IA · CO</td><td>12,181</td><td>77.6%</td><td>258</td><td>$121.02</td><td>$70.91</td><td>$18,297</td><td>0.59×</td></tr>
+            <tr><td>Standard · VO</td><td>9,268</td><td>67.5%</td><td>213</td><td>$147.48</td><td>$92.37</td><td>$19,665</td><td>0.63×</td></tr>
+            <tr><td>Standard · CO</td><td>11,445</td><td>75.1%</td><td>241</td><td>$129.15</td><td>$74.07</td><td>$17,860</td><td>0.57×</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
-    <p class="detail-note" style="margin-top:28px;">Campaign-Level Detail</p>
-    <div class="lift-table-wrapper">
-      <table class="lift-table">
-        <thead><tr><th>Campaign</th><th>Sessions</th><th>Bounce Rate</th><th>Engaged Rate</th><th>Pages/Session</th><th>Time/Session</th><th>Add-to-Cart Rate</th></tr></thead>
-        <tbody>
-          <tr><td>IA · VO</td><td>4,557</td><td>7.22%</td><td>92.78%</td><td>2.35</td><td>47s</td><td>14.66%</td></tr>
-          <tr><td>IA · CO</td><td>12,001</td><td>8.02%</td><td>91.98%</td><td>2.64</td><td>48s</td><td>13.48%</td></tr>
-          <tr><td>Standard · VO</td><td>8,971</td><td>6.92%</td><td>93.08%</td><td>2.70</td><td>54s</td><td>17.62%</td></tr>
-          <tr><td>Standard · CO</td><td>11,285</td><td>7.65%</td><td>92.35%</td><td>2.67</td><td>48s</td><td>13.69%</td></tr>
-        </tbody>
-      </table>
+    <!-- SITE TAB -->
+    <div class="tab-panel" id="tab-site">
+      <p class="section-note" style="margin-top:0;">On-site behavior only — no revenue or conversion-rate figures here (those live in the Northbeam tab and the Meta CLS chart). Bars shrink stage-to-stage to show the true number of sessions remaining at each step.</p>
+
+      <p class="sub-label">Session Funnel — Cell Totals</p>
+      <div class="funnels-wrapper">
+        <div class="funnel-col">
+          <h3 class="funnel-col__label ia">IA Cell</h3>
+          <div class="funnel-stages" id="funnel-ia"></div>
+        </div>
+        <div class="funnel-col">
+          <h3 class="funnel-col__label std">Standard Cell</h3>
+          <div class="funnel-stages" id="funnel-std"></div>
+        </div>
+      </div>
+
+      <p class="sub-label">Supporting Engagement Detail — Cell Totals</p>
+      <div class="scorecard-grid">
+        <div class="scorecard-header"><span></span><span class="scorecard-label">IA Cell</span><span class="scorecard-label">Standard Cell</span><span class="scorecard-label"></span></div>
+        <div class="scorecard-row"><span class="scorecard-metric">Bounce Rate</span><span class="scorecard-value">7.86%</span><span class="scorecard-value"><span class="val-win std">7.31%</span></span><span class="scorecard-value">lower wins</span></div>
+        <div class="scorecard-row"><span class="scorecard-metric">Engaged Sessions Rate</span><span class="scorecard-value">92.11%</span><span class="scorecard-value"><span class="val-win std">92.70%</span></span><span class="scorecard-value">higher wins</span></div>
+        <div class="scorecard-row"><span class="scorecard-metric">Pages / Session</span><span class="scorecard-value">2.67</span><span class="scorecard-value"><span class="val-win std">2.76</span></span><span class="scorecard-value">higher wins</span></div>
+        <div class="scorecard-row"><span class="scorecard-metric">Time / Session</span><span class="scorecard-value">49s</span><span class="scorecard-value"><span class="val-win std">52s</span></span><span class="scorecard-value">higher wins</span></div>
+      </div>
+
+      <p class="detail-note" style="margin-top:28px;">Campaign-Level Detail</p>
+      <div class="lift-table-wrapper">
+        <table class="lift-table">
+          <thead><tr><th>Campaign</th><th>Sessions</th><th>Bounce Rate</th><th>Engaged Rate</th><th>Pages/Session</th><th>Time/Session</th><th>Add-to-Cart Rate</th></tr></thead>
+          <tbody>
+            <tr><td>IA · VO</td><td>5,113</td><td>7.06%</td><td>92.94%</td><td>2.57</td><td>49s</td><td>15.84%</td></tr>
+            <tr><td>IA · CO</td><td>12,805</td><td>8.18%</td><td>91.79%</td><td>2.71</td><td>49s</td><td>13.88%</td></tr>
+            <tr><td>Standard · VO</td><td>9,702</td><td>6.83%</td><td>93.17%</td><td>2.81</td><td>55s</td><td>18.20%</td></tr>
+            <tr><td>Standard · CO</td><td>12,042</td><td>7.70%</td><td>92.31%</td><td>2.71</td><td>49s</td><td>14.07%</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </section>
@@ -307,8 +322,8 @@ body { font-family: var(--font-body); color: var(--ink); background: var(--paper
       <table class="lift-table">
         <thead><tr><th>Optimization</th><th>CPM (Meta)</th><th>Spend (Meta)</th><th>Cost/Result (Meta)</th><th>Conv. Rate (Northbeam)</th><th>CPA (Northbeam)</th><th>AOV (Northbeam)</th><th>ROAS (Northbeam)</th></tr></thead>
         <tbody>
-          <tr><td>CO (pooled)</td><td>$39.91</td><td>$60,209</td><td>$97.90</td><td>2.12%</td><td>$126.12</td><td>$72.74</td><td>0.58×</td></tr>
-          <tr><td>VO (pooled)</td><td>$32.58</td><td>$60,911</td><td>$114.93</td><td>2.00%</td><td>$168.69</td><td>$91.60</td><td>0.54×</td></tr>
+          <tr><td>CO (pooled)</td><td>$39.64</td><td>$62,381</td><td>$97.32</td><td>2.11%</td><td>$125.00</td><td>$72.46</td><td>0.58×</td></tr>
+          <tr><td>VO (pooled)</td><td>$32.44</td><td>$62,837</td><td>$111.41</td><td>1.98%</td><td>$164.48</td><td>$91.07</td><td>0.55×</td></tr>
         </tbody>
       </table>
     </div>
@@ -323,17 +338,17 @@ body { font-family: var(--font-body); color: var(--ink); background: var(--paper
       <div class="insight-card">
         <p class="insight-card__number">01</p>
         <h3 class="insight-card__headline">IA's edge is real but modest — not the 10–15% Whitney's hypothesis called for</h3>
-        <p class="insight-card__body">IA beats Standard on cost-per-incremental-conversion by 1.5% and on incremental sales by 6.1% (Meta CLS, 100% confidence on Purchase). That's a genuine edge, but well short of the 10–15% efficiency gain floated pre-test. Treat IA as a marginal, not transformative, upgrade at current scale.</p>
+        <p class="insight-card__body">IA beats Standard on cost-per-incremental-conversion by 2.0% and on incremental sales by 4.9% (Meta CLS, 100% confidence on Purchase). That's a genuine edge, but well short of the 10–15% efficiency gain floated pre-test. Treat IA as a marginal, not transformative, upgrade at current scale.</p>
       </div>
       <div class="insight-card">
         <p class="insight-card__number">02</p>
-        <h3 class="insight-card__headline">The attribution-vs-incrementality gap is the actual story</h3>
-        <p class="insight-card__body">Meta CLS says IA wins; Northbeam (higher conversion rate, better blended ROAS) and GA4 (more sessions, deeper engagement) both say Standard looks stronger. This is the exact dynamic flagged in the May 19 ROAS investigation — IA volume dilutes blended ROAS optically while still being the more incremental dollar.</p>
+        <h3 class="insight-card__headline">Two measurement systems, two different questions — not a contradiction</h3>
+        <p class="insight-card__body">Meta CLS asks "did the ad cause this?" and says IA wins. Northbeam and GA4 ask "who gets credit for this?" and say Standard wins — more sessions, higher conversion rate, better blended ROAS. This is the exact dynamic flagged in the May 19 ROAS investigation. Don't let Northbeam/GA4 numbers alone drive the IA rollout decision.</p>
       </div>
       <div class="insight-card">
         <p class="insight-card__number">03</p>
         <h3 class="insight-card__headline">IA buys reach ~19% cheaper, but converts clicks less efficiently</h3>
-        <p class="insight-card__body">IA's $32.41 blended CPM (Meta) vs. Standard's $40.13 confirms the pattern Tommy flagged in March. But IA's link CTR (1.22%) trails Standard's (1.43%), and Northbeam's conversion rate is also behind (1.96% vs 2.18%) — IA's cheaper reach is colder, consistent with the View-Through/quality concerns raised in April.</p>
+        <p class="insight-card__body">IA's $32.30 blended CPM (Meta) vs. Standard's $39.83 confirms the pattern Tommy flagged in March. But IA's link CTR (1.24%) trails Standard's (1.44%), and Northbeam's conversion rate is also behind (1.92% vs 2.19%) — IA's cheaper reach is colder, consistent with the View-Through/quality concerns raised in April.</p>
       </div>
       <div class="insight-card">
         <p class="insight-card__number">04</p>
@@ -342,8 +357,8 @@ body { font-family: var(--font-body); color: var(--ink); background: var(--paper
       </div>
       <div class="insight-card">
         <p class="insight-card__number">05</p>
-        <h3 class="insight-card__headline">Recommendation: hold steady, let the test finish, re-read InitiateCheckout at close</h3>
-        <p class="insight-card__body">This pull is 12.5 of 14 days with primary objectives already at 100% confidence — directionally safe to act on, but InitiateCheckout (favors Standard) and AddPaymentInfo (94.9% confidence on Standard) are worth a final check once the study closes 7/1 before locking in any IA expansion beyond current share.</p>
+        <h3 class="insight-card__headline">Recommendation: hold steady, let the test finish, re-read InitiateCheckout and QuizCompletion at close</h3>
+        <p class="insight-card__body">This pull is ~12.3 of 14 days with primary objectives already at 100% confidence — directionally safe to act on, but InitiateCheckout and QuizCompletion (the two objectives favoring Standard) are worth a final check once the study closes 7/1 before locking in any IA expansion beyond current share.</p>
       </div>
     </div>
   </div>
@@ -353,18 +368,28 @@ body { font-family: var(--font-body); color: var(--ink); background: var(--paper
   <div class="data-notes__inner">
     <h3 class="data-notes__title">Data Notes</h3>
     <ul class="data-notes__list">
-      <li>Meta Conversion Lift results pulled directly from Study ID 1008813194853614 (live, ends Jul 1, 2026) via the Meta Ads API — these are Meta's own incrementality figures, not modeled estimates.</li>
-      <li>Meta campaign-level media metrics (reach, CPM, CTR, video, results) pulled via the Meta Ads API for Jun 18–30, 2026. Jun 18 is a partial day (test launched 4:30pm ET).</li>
-      <li>Northbeam Attribution and GA4 figures pulled via Polar Analytics, filtered to the 4 CLS campaign IDs/UTMs, Jun 18–30, 2026.</li>
+      <li>Meta Conversion Lift results pulled directly from Study ID 1008813194853614 (live, ends Jul 1, 2026) via the Meta Ads API on Jul 1, 2026, covering through end-of-day Jun 30 — these are Meta's own incrementality figures, not modeled estimates.</li>
+      <li>Meta campaign-level media metrics (reach, CPM, CTR, video, results) pulled via the Meta Ads API for Jun 18 (partial, 4:30pm ET launch) through the full day of Jun 30, 2026.</li>
+      <li>Northbeam Attribution and GA4 figures pulled via Polar Analytics, filtered to the 4 CLS campaigns, Jun 18–30, 2026. GA4 join key is campaign name (UTM), not Meta's numeric campaign ID — a small number of truncated-UTM sessions (&lt;0.1% of total) were folded into their matching campaign by name prefix.</li>
       <li>Meta "Cost / Result" uses Meta's standard last-touch attribution window and is shown for reference only — it is not incrementality and should not be compared directly against the Conversion Lift figures.</li>
       <li>Reach totals are summed across campaigns within a cell and are not de-duplicated for cross-campaign overlap.</li>
       <li>GA4 funnel stages (Sessions → Engaged Sessions → Add-to-Cart Sessions) are derived by applying each cell's engaged-session rate and add-to-cart rate to its total session count.</li>
+      <li>Purchase_RC has no measurable Conversion Lift data this cycle (insufficient volume) and is excluded from the 7-objective comparison.</li>
       <li>Test design and campaign IDs sourced from #meta_jrb and #growth Slack threads (Jun 3–18, 2026); no Granola transcript was available for the referenced Meta call link at time of this analysis.</li>
     </ul>
   </div>
 </footer>
 
 <script>
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
 function logScale(value, minVal, maxVal, minW = 22, maxW = 100) {
   const logMin = Math.log10(minVal + 1);
   const logMax = Math.log10(maxVal + 1);
@@ -391,14 +416,14 @@ function buildFunnel(containerId, stages, colorClass) {
   });
 }
 buildFunnel('funnel-ia', [
-  { label: 'Sessions', value: 16558 },
-  { label: 'Engaged Sessions', value: 15266, rate: '92.2%', rateLabel: 'of sessions' },
-  { label: 'Add-to-Cart Sessions', value: 2287, rate: '13.8%', rateLabel: 'of sessions' },
+  { label: 'Sessions', value: 17918 },
+  { label: 'Engaged Sessions', value: 16505, rate: '92.1%', rateLabel: 'of sessions' },
+  { label: 'Add-to-Cart Sessions', value: 2587, rate: '14.4%', rateLabel: 'of sessions' },
 ], 'ia');
 buildFunnel('funnel-std', [
-  { label: 'Sessions', value: 20256 },
-  { label: 'Engaged Sessions', value: 18776, rate: '92.7%', rateLabel: 'of sessions' },
-  { label: 'Add-to-Cart Sessions', value: 3126, rate: '15.4%', rateLabel: 'of sessions' },
+  { label: 'Sessions', value: 21744 },
+  { label: 'Engaged Sessions', value: 20157, rate: '92.7%', rateLabel: 'of sessions' },
+  { label: 'Add-to-Cart Sessions', value: 3462, rate: '15.9%', rateLabel: 'of sessions' },
 ], 'std');
 
 new Chart(document.getElementById('clsShareChart'), {
@@ -406,8 +431,8 @@ new Chart(document.getElementById('clsShareChart'), {
   data: {
     labels: ['ViewContent', 'QuizCompletion', 'AddToCart', 'InitiateCheckout', 'AddPaymentInfo', 'Purchase', 'Purchase (NC)'],
     datasets: [
-      { label: 'IA Cell', data: [11467, 1205, 3647, 907, 148, 407, 383], backgroundColor: '#20344E' },
-      { label: 'Standard Cell', data: [9506, 1229, 3417, 982, 60, 401, 371], backgroundColor: '#2E8C9E' },
+      { label: 'IA Cell', data: [12589, 1324, 4034, 1040, 157, 464, 440], backgroundColor: '#20344E' },
+      { label: 'Standard Cell', data: [10672, 1368, 3913, 1095, 70, 453, 428], backgroundColor: '#2E8C9E' },
     ]
   },
   options: {
