@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Partnership Performance — June 2026 Recap</title>
+<style>
+:root{--cream:#FAF9F7;--warm-gray:#E8E4DF;--light-gray:#F3F1EE;--gold:#B8860B;--gold-light:#D4A84B;
+--dark:#2d2926;--dark-light:#5a5652;--green:#2E7D32;--yellow:#F9A825;--red:#C62828;--white:#fff;
+--shadow:0 2px 8px rgba(45,41,38,.08);--shadow-lg:0 8px 28px rgba(45,41,38,.14);--radius:14px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--warm-gray);color:var(--dark);line-height:1.5}
+.deck{max-width:1000px;margin:0 auto;padding:28px 16px 80px}
+.slide{background:var(--cream);border-radius:var(--radius);box-shadow:var(--shadow-lg);padding:40px 44px;margin-bottom:26px;min-height:520px;display:flex;flex-direction:column;scroll-margin-top:20px}
+.slide.title{justify-content:center;background:var(--dark);color:var(--cream);text-align:center;min-height:560px}
+.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:3px;color:var(--gold);font-weight:700;margin-bottom:14px}
+.slide.title .eyebrow{color:var(--gold-light)}
+h1{font-size:52px;font-weight:700;letter-spacing:-1px;line-height:1.05}
+.title .sub{font-size:18px;opacity:.75;margin-top:18px;font-weight:400}
+.title .foot{font-size:13px;opacity:.5;margin-top:40px}
+h2{font-size:28px;font-weight:700;letter-spacing:-.5px;margin-bottom:6px}
+.slide .lead{font-size:15px;color:var(--dark-light);margin-bottom:26px;max-width:760px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.kpi{background:var(--white);border-radius:12px;padding:18px 16px;box-shadow:var(--shadow);text-align:center}
+.kpi .l{font-size:10.5px;text-transform:uppercase;letter-spacing:1px;color:var(--dark-light);margin-bottom:8px}
+.kpi .v{font-size:28px;font-weight:700}
+.kpi .d{font-size:11.5px;margin-top:6px;font-weight:600}
+.up{color:var(--green)} .down{color:var(--red)}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}
+.card{background:var(--white);border-radius:12px;padding:22px;box-shadow:var(--shadow)}
+.card h3{font-size:13px;text-transform:uppercase;letter-spacing:.8px;color:var(--gold);margin-bottom:14px}
+.big{font-size:40px;font-weight:700;line-height:1}
+.big .arrow{color:var(--dark-light);font-weight:400;margin:0 8px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--dark-light);padding:9px 10px;border-bottom:2px solid var(--warm-gray)}
+td{padding:9px 10px;border-bottom:1px solid var(--light-gray)}
+td:nth-child(n+3),th:nth-child(n+3){text-align:right}
+tbody tr:last-child td{border-bottom:none}
+.chart-wrap{background:var(--white);border-radius:12px;padding:20px 22px;box-shadow:var(--shadow);margin-bottom:18px}
+.note{font-size:11.5px;color:var(--dark-light);font-style:italic;margin-top:auto;padding-top:18px}
+ul.take{list-style:none;margin-top:8px}
+ul.take li{background:var(--white);border-left:4px solid var(--gold);border-radius:8px;padding:14px 18px;margin-bottom:12px;box-shadow:var(--shadow);font-size:15px}
+ul.take li b{color:var(--dark)}
+.pill{display:inline-block;background:var(--dark);color:var(--cream);font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;margin-left:8px}
+.navbar{position:fixed;bottom:0;left:0;right:0;background:var(--dark);color:var(--cream);display:flex;justify-content:space-between;align-items:center;padding:10px 22px;font-size:12px;z-index:9}
+.navbar b{color:var(--gold-light)}
+.navbar .btns button{background:transparent;border:1px solid rgba(250,249,247,.3);color:var(--cream);border-radius:6px;padding:5px 12px;margin-left:8px;cursor:pointer;font-size:12px}
+.navbar .btns button:hover{background:var(--gold);border-color:var(--gold)}
+@media(max-width:720px){.kpis{grid-template-columns:repeat(2,1fr)}.split{grid-template-columns:1fr}h1{font-size:38px}}
+@media print{.navbar{display:none}.slide{box-shadow:none;page-break-after:always;border:1px solid #ddd}body{background:#fff}}
+
+.editmode [contenteditable="true"]{cursor:text}
+.editmode [contenteditable="true"]:hover{outline:1px dashed var(--gold-light);outline-offset:2px}
+.editmode [contenteditable="true"]:focus{outline:2px solid var(--gold);background:#fffbe9;border-radius:3px}
+#editbanner{display:none}
+body.editmode #editbanner{display:block;position:fixed;top:0;left:0;right:0;background:var(--gold);color:#fff;text-align:center;font-size:12px;font-weight:600;padding:7px 12px;z-index:20}
+.navbar .btns button#editbtn.on{background:var(--gold);border-color:var(--gold)}
+</style></head><body class="">
+<div class="deck">
+<section class="slide title">
+  <div class="eyebrow">Jones Road Beauty · Growth</div>
+  <h1>Partnership Performance</h1>
+  <div class="sub">Monthly recap — June 2026</div>
+  <div class="foot">Creator partnerships only · excludes Bobbi founder content</div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">Partnership over time</div>
+  <h2>Partnership spend &amp; share, month over month</h2>
+  <p class="lead">The program scaled from near-zero in early 2025 to a Dec 2025 peak of $1.27M, then settled into a $470–880K/month cadence through 2026. Partnership now runs ~27% of total Meta spend.</p>
+  <div class="chart-wrap"><svg viewBox="0 0 940 360" width="100%" style="max-width:940px">
+<line x1="58" y1="306.0" x2="920" y2="306.0" stroke="#E8E4DF" stroke-width="1"></line><text x="50" y="309.0" text-anchor="end" font-size="9.5" fill="#5a5652">$0K</text><line x1="58" y1="228.3" x2="920" y2="228.3" stroke="#E8E4DF" stroke-width="1"></line><text x="50" y="231.3" text-anchor="end" font-size="9.5" fill="#5a5652">$400K</text><line x1="58" y1="150.6" x2="920" y2="150.6" stroke="#E8E4DF" stroke-width="1"></line><text x="50" y="153.6" text-anchor="end" font-size="9.5" fill="#5a5652">$800K</text><line x1="58" y1="72.9" x2="920" y2="72.9" stroke="#E8E4DF" stroke-width="1"></line><text x="50" y="75.9" text-anchor="end" font-size="9.5" fill="#5a5652">$1200K</text><rect x="67.6" y="306.0" width="28.7" height="0.0" rx="2" fill="#B8860B" opacity="0.9"></rect><rect x="115.5" y="304.2" width="28.7" height="1.8" rx="2" fill="#B8860B" opacity="0.9"></rect><rect x="163.4" y="291.7" width="28.7" height="14.3" rx="2" fill="#B8860B" opacity="0.9"></rect><rect x="211.2" y="254.4" width="28.7" height="51.6" rx="2" fill="#B8860B" opacity="0.9"></rect><rect x="259.1" y="208.9" width="28.7" height="97.1" rx="2" fill="#B8860B" opacity="0.9"></rect><rect x="307.0" y="242.8" width="28.7" height="63.2" rx="2" fill="#B8860B" opacity="0.9"></rect><rect x="354.9" y="259.9" width="28.7" height="46.1" rx="2" fill="#B8860B" opacity="0.9"></rect><rect x="402.8" y="273.9" width="28.7" height="32.1" rx="2" fill="#B8860B" opacity="0.9"></rect><rect x="450.7" y="232.8" width="28.7" height="73.2" rx="2" fill="#B8860B" opacity="0.9"></rect><rect x="498.6" y="196.2" width="28.7" height="109.8" rx="2" fill="#B8860B" opacity="0.9"></rect><rect x="546.5" y="128.8" width="28.7" height="177.2" rx="2" fill="#B8860B" opacity="0.9"></rect><rect x="594.4" y="60.0" width="28.7" height="246.0" rx="2" fill="#B8860B" opacity="0.9"></rect><rect x="642.2" y="161.1" width="28.7" height="144.9" rx="2" fill="#B8860B" opacity="0.9"></rect><rect x="690.1" y="215.1" width="28.7" height="90.9" rx="2" fill="#B8860B" opacity="0.9"></rect><rect x="738.0" y="190.8" width="28.7" height="115.2" rx="2" fill="#B8860B" opacity="0.9"></rect><rect x="785.9" y="180.5" width="28.7" height="125.5" rx="2" fill="#B8860B" opacity="0.9"></rect><rect x="833.8" y="135.1" width="28.7" height="170.9" rx="2" fill="#B8860B" opacity="0.9"></rect><rect x="881.7" y="210.9" width="28.7" height="95.1" rx="2" fill="#B8860B" opacity="0.9"></rect><text x="129.8" y="299.2" text-anchor="middle" font-size="9" font-weight="700" fill="#2E7D32">0%</text><text x="177.7" y="286.7" text-anchor="middle" font-size="9" font-weight="700" fill="#2E7D32">3%</text><text x="225.6" y="249.4" text-anchor="middle" font-size="9" font-weight="700" fill="#2E7D32">12%</text><text x="273.5" y="203.9" text-anchor="middle" font-size="9" font-weight="700" fill="#2E7D32">12%</text><text x="321.4" y="237.8" text-anchor="middle" font-size="9" font-weight="700" fill="#2E7D32">16%</text><text x="369.3" y="254.9" text-anchor="middle" font-size="9" font-weight="700" fill="#2E7D32">13%</text><text x="417.2" y="268.9" text-anchor="middle" font-size="9" font-weight="700" fill="#2E7D32">8%</text><text x="465.1" y="227.8" text-anchor="middle" font-size="9" font-weight="700" fill="#2E7D32">20%</text><text x="512.9" y="191.2" text-anchor="middle" font-size="9" font-weight="700" fill="#2E7D32">14%</text><text x="560.8" y="123.8" text-anchor="middle" font-size="9" font-weight="700" fill="#2E7D32">18%</text><text x="608.7" y="55.0" text-anchor="middle" font-size="9" font-weight="700" fill="#2E7D32">34%</text><text x="656.6" y="156.1" text-anchor="middle" font-size="9" font-weight="700" fill="#2E7D32">27%</text><text x="704.5" y="210.1" text-anchor="middle" font-size="9" font-weight="700" fill="#2E7D32">27%</text><text x="752.4" y="185.8" text-anchor="middle" font-size="9" font-weight="700" fill="#2E7D32">25%</text><text x="800.3" y="175.5" text-anchor="middle" font-size="9" font-weight="700" fill="#2E7D32">31%</text><text x="848.2" y="130.1" text-anchor="middle" font-size="9" font-weight="700" fill="#2E7D32">31%</text><text x="896.1" y="205.9" text-anchor="middle" font-size="9" font-weight="700" fill="#2E7D32">27%</text><text x="81.9" y="322" text-anchor="middle" font-size="8.5" fill="#5a5652">25/01</text><text x="129.8" y="322" text-anchor="middle" font-size="8.5" fill="#5a5652">25/02</text><text x="177.7" y="322" text-anchor="middle" font-size="8.5" fill="#5a5652">25/03</text><text x="225.6" y="322" text-anchor="middle" font-size="8.5" fill="#5a5652">25/04</text><text x="273.5" y="322" text-anchor="middle" font-size="8.5" fill="#5a5652">25/05</text><text x="321.4" y="322" text-anchor="middle" font-size="8.5" fill="#5a5652">25/06</text><text x="369.3" y="322" text-anchor="middle" font-size="8.5" fill="#5a5652">25/07</text><text x="417.2" y="322" text-anchor="middle" font-size="8.5" fill="#5a5652">25/08</text><text x="465.1" y="322" text-anchor="middle" font-size="8.5" fill="#5a5652">25/09</text><text x="512.9" y="322" text-anchor="middle" font-size="8.5" fill="#5a5652">25/10</text><text x="560.8" y="322" text-anchor="middle" font-size="8.5" fill="#5a5652">25/11</text><text x="608.7" y="322" text-anchor="middle" font-size="8.5" fill="#5a5652">25/12</text><text x="656.6" y="322" text-anchor="middle" font-size="8.5" fill="#5a5652">26/01</text><text x="704.5" y="322" text-anchor="middle" font-size="8.5" fill="#5a5652">26/02</text><text x="752.4" y="322" text-anchor="middle" font-size="8.5" fill="#5a5652">26/03</text><text x="800.3" y="322" text-anchor="middle" font-size="8.5" fill="#5a5652">26/04</text><text x="848.2" y="322" text-anchor="middle" font-size="8.5" fill="#5a5652">26/05</text><text x="896.1" y="322" text-anchor="middle" font-size="8.5" fill="#5a5652">26/06</text>
+<text x="58" y="14" font-size="11" fill="#5a5652"><tspan fill="#B8860B" font-weight="700">■ Bars</tspan> = monthly partnership spend · <tspan fill="#2E7D32" font-weight="700">green %</tspan> = that month's share of total Meta spend</text></svg></div>
+  <div class="kpis">
+    <div class="kpi"><div class="l">18-mo partnership spend</div><div class="v">$8.5M</div><div class="d">Meta · exl. justbobbi</div></div>
+    <div class="kpi"><div class="l">Peak month</div><div class="v">$1.27M</div><div class="d">Dec 2025 · 34% of Meta</div></div>
+    <div class="kpi"><div class="l">Jun % of Meta spend</div><div class="v">27%</div><div class="d">green % on chart</div></div>
+    <div class="kpi"><div class="l">Jun partnership spend</div><div class="v">$489.6K</div><div class="d">Meta</div></div>
+  </div>
+  <div class="note">Bars = monthly Meta partnership spend; the green % above each bar is that month’s partnership spend as a share of total Meta ad-account spend (Polar). Jan 2025 = pre-launch.</div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">The month at a glance</div>
+  <h2>June partnership topline</h2>
+  <p class="lead">61 external creators had partnership ads live in June, with 50 net-new jobs launched. With prorated spend, we achieved a 26% content efficiency, though further improvements were made EOM to improve this post-audience exclusion shifts.</p>
+  <div class="kpis" style="grid-template-columns:repeat(5,1fr)">
+    <div class="kpi"><div class="l">Spend · Meta</div><div class="v">$489.6K</div></div>
+    <div class="kpi"><div class="l">New-ad content fees · Jun</div><div class="v">$45.6K</div><div class="d">prorated · June-launched ads</div></div>
+    <div class="kpi"><div class="l">New-ad content eff. · Jun</div><div class="v">26%</div><div class="d">prorated · ÷ $177K new-ad spend</div></div>
+    <div class="kpi"><div class="l">First-time revenue · Northbeam</div><div class="v">$193.4K</div></div>
+    <div class="kpi"><div class="l">First-time ROAS · NB ÷ Meta</div><div class="v">0.40</div><div class="d up">0.69 from Jun 23 onward</div></div>
+  </div>
+  <div class="kpis" style="grid-template-columns:repeat(5,1fr)">
+    <div class="kpi"><div class="l">New customers · Northbeam</div><div class="v">1,906</div></div>
+    <div class="kpi"><div class="l">CPA · Meta ÷ NB</div><div class="v">$257</div></div>
+    <div class="kpi"><div class="l">Creators live · Tracker</div><div class="v">61</div></div>
+    <div class="kpi"><div class="l">June-launch cohort · Tracker+Meta</div><div class="v">50</div><div class="d">$46.8K prorated fees</div></div>
+    <div class="kpi"><div class="l">Top source · Tracker</div><div class="v">Superbloom</div><div class="d">74% of matched creators</div></div>
+  </div>
+  <div class="note">ROAS/CPA are Northbeam first-time (new-customer) revenue only — they exclude returning &amp; LTV revenue, so &lt;1.0 is expected. New-ad content fees/efficiency cover only June-launched ads (38% of spend); established ads were paid for earlier.</div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">The headline</div>
+  <h2>Partners stepped up after the June 22 Meta changes <span class="pill">Jun 23 onward</span></h2>
+  <p class="lead">Daily first-time ROAS <b>more than doubled</b> the week after the changes — and CPA halved — on lower daily spend. The inflection is sharp and starts exactly on the 23rd.</p>
+  <div class="chart-wrap"><svg viewBox="0 0 940 340" width="100%" style="max-width:940px">
+<rect x="695.5" y="24" width="224.5" height="264" fill="#2E7D32" opacity="0.07"></rect>
+<line x1="695.5" y1="24" x2="695.5" y2="288" stroke="#2E7D32" stroke-width="1.5" stroke-dasharray="4 3"></line>
+<text x="703.5" y="276" font-size="11.5" font-weight="700" fill="#2E7D32">Meta changes · Jun 23 onward</text>
+<line x1="52" y1="222.0" x2="920" y2="222.0" stroke="#E8E4DF" stroke-width="1"></line><text x="44" y="225.0" text-anchor="end" font-size="10" fill="#5a5652">0.25</text><line x1="52" y1="156.0" x2="920" y2="156.0" stroke="#E8E4DF" stroke-width="1"></line><text x="44" y="159.0" text-anchor="end" font-size="10" fill="#5a5652">0.50</text><line x1="52" y1="90.0" x2="920" y2="90.0" stroke="#E8E4DF" stroke-width="1"></line><text x="44" y="93.0" text-anchor="end" font-size="10" fill="#5a5652">0.75</text><line x1="52" y1="24.0" x2="920" y2="24.0" stroke="#E8E4DF" stroke-width="1"></line><text x="44" y="27.0" text-anchor="end" font-size="10" fill="#5a5652">1.00</text><polyline points="52.0,209.5 81.9,203.7 111.9,206.9 141.8,208.4 171.7,209.1 201.7,185.2 231.6,211.6 261.5,204.1 291.4,193.8 321.4,243.8 351.3,221.3 381.2,193.7 411.2,196.3 441.1,202.4 471.0,210.4 501.0,202.8 530.9,138.7 560.8,205.1 590.8,211.1 620.7,222.6 650.6,217.3 680.6,243.8 710.5,149.4 740.4,169.6 770.3,128.2 800.3,71.5 830.2,31.5 860.1,109.2 890.1,145.6 920.0,124.1" fill="none" stroke="#B8860B" stroke-width="2.5"></polyline><circle cx="52.0" cy="209.5" r="2.5" fill="#B8860B"></circle><circle cx="81.9" cy="203.7" r="2.5" fill="#B8860B"></circle><circle cx="111.9" cy="206.9" r="2.5" fill="#B8860B"></circle><circle cx="141.8" cy="208.4" r="2.5" fill="#B8860B"></circle><circle cx="171.7" cy="209.1" r="2.5" fill="#B8860B"></circle><circle cx="201.7" cy="185.2" r="2.5" fill="#B8860B"></circle><circle cx="231.6" cy="211.6" r="2.5" fill="#B8860B"></circle><circle cx="261.5" cy="204.1" r="2.5" fill="#B8860B"></circle><circle cx="291.4" cy="193.8" r="2.5" fill="#B8860B"></circle><circle cx="321.4" cy="243.8" r="2.5" fill="#B8860B"></circle><circle cx="351.3" cy="221.3" r="2.5" fill="#B8860B"></circle><circle cx="381.2" cy="193.7" r="2.5" fill="#B8860B"></circle><circle cx="411.2" cy="196.3" r="2.5" fill="#B8860B"></circle><circle cx="441.1" cy="202.4" r="2.5" fill="#B8860B"></circle><circle cx="471.0" cy="210.4" r="2.5" fill="#B8860B"></circle><circle cx="501.0" cy="202.8" r="2.5" fill="#B8860B"></circle><circle cx="530.9" cy="138.7" r="2.5" fill="#B8860B"></circle><circle cx="560.8" cy="205.1" r="2.5" fill="#B8860B"></circle><circle cx="590.8" cy="211.1" r="2.5" fill="#B8860B"></circle><circle cx="620.7" cy="222.6" r="2.5" fill="#B8860B"></circle><circle cx="650.6" cy="217.3" r="2.5" fill="#B8860B"></circle><circle cx="680.6" cy="243.8" r="2.5" fill="#B8860B"></circle><circle cx="710.5" cy="149.4" r="3.5" fill="#2E7D32"></circle><circle cx="740.4" cy="169.6" r="3.5" fill="#2E7D32"></circle><circle cx="770.3" cy="128.2" r="3.5" fill="#2E7D32"></circle><circle cx="800.3" cy="71.5" r="3.5" fill="#2E7D32"></circle><circle cx="830.2" cy="31.5" r="3.5" fill="#2E7D32"></circle><circle cx="860.1" cy="109.2" r="3.5" fill="#2E7D32"></circle><circle cx="890.1" cy="145.6" r="3.5" fill="#2E7D32"></circle><circle cx="920.0" cy="124.1" r="3.5" fill="#2E7D32"></circle><text x="52.0" y="304" text-anchor="middle" font-size="9" fill="#5a5652">06-01</text><text x="141.8" y="304" text-anchor="middle" font-size="9" fill="#5a5652">06-04</text><text x="231.6" y="304" text-anchor="middle" font-size="9" fill="#5a5652">06-07</text><text x="321.4" y="304" text-anchor="middle" font-size="9" fill="#5a5652">06-10</text><text x="411.2" y="304" text-anchor="middle" font-size="9" fill="#5a5652">06-13</text><text x="501.0" y="304" text-anchor="middle" font-size="9" fill="#5a5652">06-16</text><text x="590.8" y="304" text-anchor="middle" font-size="9" fill="#5a5652">06-19</text><text x="680.6" y="304" text-anchor="middle" font-size="9" fill="#5a5652">06-22</text><text x="770.3" y="304" text-anchor="middle" font-size="9" fill="#5a5652">06-25</text><text x="860.1" y="304" text-anchor="middle" font-size="9" fill="#5a5652">06-28</text>
+<text x="52" y="14" font-size="10" fill="#5a5652">Daily first-time ROAS · excl. justbobbi founder content</text></svg></div>
+  <div class="split">
+    <div class="card"><h3>First-time ROAS</h3><div class="big"><span style="color:var(--dark-light)">0.31</span><span class="arrow">→</span><span style="color:var(--green)">0.69</span></div><div class="d up" style="margin-top:8px;font-weight:700">+121% · Jun 1–22 vs Jun 23–30</div></div>
+    <div class="card"><h3>CPA (first-time)</h3><div class="big"><span style="color:var(--dark-light)">$319</span><span class="arrow">→</span><span style="color:var(--green)">$153</span></div><div class="d up" style="margin-top:8px;font-weight:700">−52% · new customers got ~2× cheaper</div></div>
+  </div>
+  <div class="note">Pre: $381K spend / $119K rev over 22 days ($17.3K/day). Post: $108K spend / $75K rev over 8 days ($13.5K/day). Of the 4 creators live &amp; spending in both windows, 4/4 improved (aggregate 0.27 → 0.49).</div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">Performance by source</div>
+  <h2>Superbloom carries the program; Agentio lags</h2>
+  <p class="lead">Superbloom is the engine — most creators, most spend, best efficiency of the scaled sources. Agentio spends at a materially lower first-time ROAS, though these creators were paused prior to retargeting exclusion changes, so will re-assess after MMB test in July.</p>
+  <div class="card">
+    <table><thead><tr><th>Source</th><th>Creators</th><th>Spend</th><th>First-time rev</th><th>ROAS</th><th>ROAS Jun 23+</th><th>CPA</th><th>Content eff. (Jun)</th></tr></thead>
+    <tbody><tr><td>Superbloom</td><td>47</td><td>$335,215</td><td>$149,635</td><td><span style="color:#F9A825;font-weight:700">0.45</span></td><td><span style="color:#2E7D32;font-weight:700">0.74</span></td><td>$228</td><td><span style="color:#F9A825;font-weight:700">31%</span></td></tr><tr><td>Aspire</td><td>1</td><td>$45,009</td><td>$15,805</td><td><span style="color:#F9A825;font-weight:700">0.35</span></td><td><span style="color:#5a5652">—</span></td><td>$294</td><td><span style="color:#5a5652">—</span></td></tr><tr><td>Internal</td><td>1</td><td>$40,985</td><td>$10,773</td><td><span style="color:#C62828;font-weight:700">0.26</span></td><td><span style="color:#F9A825;font-weight:700">0.46</span></td><td>$350</td><td><span style="color:#5a5652">—</span></td></tr><tr><td>Agentio</td><td>12</td><td>$37,229</td><td>$6,307</td><td><span style="color:#C62828;font-weight:700">0.17</span></td><td><span style="color:#5a5652">—</span></td><td>$465</td><td><span style="color:#2E7D32;font-weight:700">10%</span></td></tr></tbody></table>
+  </div>
+  <div class="note">Content eff. (Jun) = content fees booked in June (prorated to days live) ÷ that source’s June spend; “—” = no new June fee booked (running on already-paid content). Target &lt;10%. Agentio has no flat fee — billed at 10%/20% of spend, counted here as its content fee.</div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">Who drove June · full funnel</div>
+  <h2><u>High Level</u>: Top creators account-wide (<i>not</i> specific to June creators)</h2>
+  <p class="lead">Top 12 partners ads—Meta delivery (CPM, click-through, hold rate) and Northbeam outcomes (spend, first-time ROAS, CPA) in one view.&nbsp;</p>
+  <div class="kpis">
+    <div class="kpi"><div class="l">Program CPM</div><div class="v">$17.11</div></div>
+    <div class="kpi"><div class="l">Program CTR</div><div class="v">1.41%</div></div>
+    <div class="kpi"><div class="l">NB % new visits</div><div class="v">76%</div></div>
+    <div class="kpi"><div class="l">First-time ROAS</div><div class="v">0.40</div></div>
+  </div>
+  <div style="overflow-x:auto">
+    <table><thead><tr><th>Creator</th><th>Src</th><th>Spend</th><th>CPM</th><th>CTR</th><th>ROAS</th><th>CPA</th></tr></thead><tbody><tr><td>Lauren Youash</td><td>Superbloom</td><td>$83,540</td><td>$15.29</td><td>0.88%</td><td><span style="color:#F9A825;font-weight:700">0.42</span></td><td>$231</td></tr><tr><td>Selena Marchand</td><td>Superbloom</td><td>$53,178</td><td>$27.39</td><td>2.14%</td><td><span style="color:#2E7D32;font-weight:700">0.91</span></td><td>$125</td></tr><tr><td>Valeria Lipovetsky</td><td>Aspire</td><td>$45,009</td><td>$23.49</td><td>1.08%</td><td><span style="color:#F9A825;font-weight:700">0.35</span></td><td>$294</td></tr><tr><td>Emily DiDonato</td><td>Internal</td><td>$40,985</td><td>$13.83</td><td>0.82%</td><td><span style="color:#C62828;font-weight:700">0.26</span></td><td>$350</td></tr><tr><td>Amanda West</td><td>Superbloom</td><td>$23,226</td><td>$21.63</td><td>1.20%</td><td><span style="color:#F9A825;font-weight:700">0.36</span></td><td>$283</td></tr><tr><td>Amanda Knox</td><td>Superbloom</td><td>$19,785</td><td>$17.17</td><td>0.82%</td><td><span style="color:#F9A825;font-weight:700">0.36</span></td><td>$275</td></tr><tr><td>Tiv</td><td>Superbloom</td><td>$19,741</td><td>$36.42</td><td>1.55%</td><td><span style="color:#C62828;font-weight:700">0.34</span></td><td>$282</td></tr><tr><td>Jackie Schimmel</td><td>Superbloom</td><td>$16,282</td><td>$29.90</td><td>3.60%</td><td><span style="color:#C62828;font-weight:700">0.33</span></td><td>$296</td></tr><tr><td>Ellen Kim/Hong</td><td>Superbloom</td><td>$10,760</td><td>$28.46</td><td>1.69%</td><td><span style="color:#F9A825;font-weight:700">0.35</span></td><td>$307</td></tr><tr><td>Shawn Johnson</td><td>Superbloom</td><td>$10,699</td><td>$13.71</td><td>1.04%</td><td><span style="color:#C62828;font-weight:700">0.32</span></td><td>$306</td></tr><tr><td>Rachael Shepard-Ohta</td><td>Superbloom</td><td>$10,449</td><td>$13.65</td><td>0.68%</td><td><span style="color:#F9A825;font-weight:700">0.38</span></td><td>$261</td></tr><tr><td>Natalie Kennedy</td><td>Superbloom</td><td>$9,404</td><td>$22.96</td><td>2.00%</td><td><span style="color:#F9A825;font-weight:700">0.40</span></td><td>$261</td></tr><tr style="border-top:2px solid var(--warm-gray);font-weight:700"><td>Program total</td><td>—</td><td>$489.6K</td><td>$17.11</td><td>1.41%</td><td>0.40</td><td>$257</td></tr></tbody></table>
+  </div>
+  <div class="note">Full funnel per partner: CPM/CTR/hold rate from Meta; ROAS/CPA from Northbeam first-time × Meta spend. GA4 on-site (partnership vs all-paid): bounce 17.9% vs 11.1%, engaged-session 82.1% vs 88.9%. Thumbstop &amp; hold rate live in Meta Ads Manager (video-view metrics).</div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">June's new launches</div>
+  <h2><u>High Level</u>: Top June-specific content creators <span style="font-weight: normal;">(which newly-launched ads performed best?)</span></h2>
+  <p class="lead">Creators who launched a <b>new ad in June</b> (an ad set in the Partnership CO IA campaign) &#8212; includes established creators with a new June launch, and excludes creators whose June spend is only on pre-June content (e.g. Emily DiDonato). Ranked by June spend.</p>
+  <div style="overflow-x:auto">
+    <table><thead><tr><th>Creator</th><th>Src</th><th>June spend</th><th>ROAS</th><th>CPA</th><th>Content eff. (Jun)</th></tr></thead><tbody><tr><td>Selena Marchand</td><td>Superbloom</td><td>$34,083</td><td><span style="color:#2E7D32;font-weight:700">0.91</span></td><td>$125</td><td><span style="color:#2E7D32;font-weight:700">2%</span></td></tr><tr><td>Nikki Burdine</td><td>Superbloom</td><td>$28,955</td><td><span style="color:#C62828;font-weight:700">0.28</span></td><td>$266</td><td><span style="color:#2E7D32;font-weight:700">4%</span></td></tr><tr><td>Natalie Kennedy</td><td>Superbloom</td><td>$10,889</td><td><span style="color:#F9A825;font-weight:700">0.40</span></td><td>$261</td><td><span style="color:#C62828;font-weight:700">58%</span></td></tr><tr><td>Victoria Roloff</td><td>Superbloom</td><td>$9,544</td><td><span style="color:#2E7D32;font-weight:700">0.61</span></td><td>$145</td><td><span style="color:#F9A825;font-weight:700">14%</span></td></tr><tr><td>Yam Concepcion</td><td>Agentio</td><td>$6,935</td><td><span style="color:#F9A825;font-weight:700">0.38</span></td><td>$194</td><td><span style="color:#2E7D32;font-weight:700">10%</span></td></tr><tr><td>Carlie Roman</td><td>Superbloom</td><td>$6,005</td><td><span style="color:#F9A825;font-weight:700">0.46</span></td><td>$205</td><td><span style="color:#F9A825;font-weight:700">15%</span></td></tr><tr><td>Ellen Kim</td><td>Superbloom</td><td>$4,295</td><td><span style="color:#F9A825;font-weight:700">0.35</span></td><td>$307</td><td><span style="color:#C62828;font-weight:700">52%</span></td></tr><tr><td>Meg Kilcup</td><td>Superbloom</td><td>$4,213</td><td><span style="color:#F9A825;font-weight:700">0.39</span></td><td>$256</td><td><span style="color:#F9A825;font-weight:700">31%</span></td></tr><tr><td>Tiv</td><td>Superbloom</td><td>$3,411</td><td><span style="color:#C62828;font-weight:700">0.34</span></td><td>$282</td><td><span style="color:#F9A825;font-weight:700">14%</span></td></tr><tr><td>brontè victoria capowski</td><td>Micro (10-</td><td>$3,243</td><td><span style="color:#C62828;font-weight:700">0.08</span></td><td>$1,013</td><td><span style="color:#2E7D32;font-weight:700">10%</span></td></tr><tr><td>Danica Janae Cadelina</td><td>Agentio</td><td>$3,241</td><td><span style="color:#C62828;font-weight:700">0.15</span></td><td>$636</td><td><span style="color:#2E7D32;font-weight:700">10%</span></td></tr><tr><td>Victoria Wilcox</td><td>Agentio</td><td>$3,237</td><td><span style="color:#C62828;font-weight:700">0.02</span></td><td>$0</td><td><span style="color:#2E7D32;font-weight:700">10%</span></td></tr><tr><td>Meredith Bernard</td><td>Agentio</td><td>$3,235</td><td><span style="color:#C62828;font-weight:700">0.22</span></td><td>$454</td><td><span style="color:#2E7D32;font-weight:700">10%</span></td></tr><tr><td>Melissa Gisoni</td><td>Agentio</td><td>$3,234</td><td><span style="color:#C62828;font-weight:700">0.04</span></td><td>$3,019</td><td><span style="color:#2E7D32;font-weight:700">10%</span></td></tr><tr><td>Alicia B Gettys</td><td>Agentio</td><td>$3,227</td><td><span style="color:#C62828;font-weight:700">0.24</span></td><td>$265</td><td><span style="color:#2E7D32;font-weight:700">10%</span></td></tr></tbody></table>
+  </div>
+  <div class="note">June-launched ads only (ad set launched in June / Partnership CO IA). Established creators with a new June ad are included (e.g. Victoria Roloff); creators running only pre-June content are excluded (Emily DiDonato, Lauren Youash). ROAS = Northbeam first-time &#215; Meta spend; content eff. = prorated June fee &#247; June spend.</div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">Content efficiency · new June launches</div>
+  <h2>June Content Fees Deep Dive</h2>
+  <p class="lead">Matching each June-launched ad's fee to <b>that same ad's spend</b> (job-level), with the flat fee <b>prorated to days live in June</b> so a late-month launch only counts the fee it earned. New content only — established ads that launched earlier (Lauren, Emily, Valeria, Amanda Knox…) are excluded from both fees and spend.</p>
+  <div class="kpis" style="grid-template-columns:repeat(3,1fr)">
+    <div class="kpi"><div class="l">New-ad content fees</div><div class="v">$45.6K</div><div class="d">prorated · 48 June jobs</div></div>
+    <div class="kpi"><div class="l">Their spend</div><div class="v">$177K</div><div class="d">38% of June partnership spend</div></div>
+    <div class="kpi"><div class="l">Content efficiency</div><div class="v">26%</div><div class="d">prorated fees ÷ new-ad spend</div></div>
+  </div>
+  <div class="split">
+    <div class="card"><h3>By source · new June content</h3>
+      <table><thead><tr><th>Source</th><th>Fees</th><th>New-ad spend</th><th>Content eff.</th></tr></thead><tbody>
+        <tr><td>Superbloom</td><td>$41.4K</td><td>$135.7K</td><td><span style="color:#F9A825;font-weight:700">31%</span></td></tr>
+        <tr><td>Agentio</td><td>$3.9K</td><td>$38.5K</td><td><span style="color:#2E7D32;font-weight:700">10%</span></td></tr>
+        <tr><td>Internal / Aspire</td><td>—</td><td>—</td><td><span style="color:#5a5652">no June launch</span></td></tr>
+      </tbody></table>
+    </div>
+    <div class="card"><h3>Reading the 26%</h3>
+      <div style="font-size:13.5px;line-height:1.7">
+        <p style="margin-bottom:10px"><b>Only 38% of June spend is new content.</b> The other 62% ($292K) is established ads launched earlier — already paid for, ~$0 new fee.</p>
+        <p style="margin-bottom:10px"><b>Still front-loaded:</b> new ads that launched late-June (Natalie Kennedy 58%, Meg Kilcup 31%) carry fee ahead of scale even after proration.</p>
+        <p style="margin-bottom:10px"><b>Agentio a clean 10%</b> — billed at 10% of spend.</p>
+        <p><b style="color:#2E7D32">Already efficient:</b> Selena Marchand 2%, Nikki Burdine 4% — scaled past their fee fast.</p>
+      </div>
+    </div>
+  </div>
+  <div class="note">Job-level match: each June-launched ad's content fee, prorated by days live in June (Agentio = 10% of spend, unprorated) ÷ that ad's June Meta spend. Covers 48 jobs = 38% of matched June spend; the rest is pre-June content.</div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">Content-fee load &#183; 2026 YTD</div>
+  <h2>New content-fee commitments swing with signing cadence</h2>
+  <p class="lead"><b>What:</b> of every dollar of partnership spend, how many cents we <b>committed to new content fees</b> that month &#8212; counting each ad's <b>full fee</b> (we pay it in full whether the ad runs 5 days or 30). <b>Why it matters:</b> shows our true content-fee commitment as spend scales. <b>Takeaway:</b> it swings with how much new content we sign &#8212; ~7% in quiet months (Jan&#8211;Feb), spiking to ~20&#8211;23% when we onboard a wave (Mar, May, Jun). June at 21% was a heavy new-signing month.</p>
+  <div class="chart-wrap"><svg viewBox="0 0 940 300" width="100%" style="max-width:940px"><line x1="52" y1="256.0" x2="920" y2="256.0" stroke="#E8E4DF" stroke-width="1"></line><text x="44" y="259.0" text-anchor="end" font-size="10" fill="#5a5652">0%</text><line x1="52" y1="210.8" x2="920" y2="210.8" stroke="#E8E4DF" stroke-width="1"></line><text x="44" y="213.8" text-anchor="end" font-size="10" fill="#5a5652">5%</text><line x1="52" y1="165.6" x2="920" y2="165.6" stroke="#E8E4DF" stroke-width="1"></line><text x="44" y="168.6" text-anchor="end" font-size="10" fill="#5a5652">10%</text><line x1="52" y1="120.4" x2="920" y2="120.4" stroke="#E8E4DF" stroke-width="1"></line><text x="44" y="123.4" text-anchor="end" font-size="10" fill="#5a5652">15%</text><line x1="52" y1="75.2" x2="920" y2="75.2" stroke="#E8E4DF" stroke-width="1"></line><text x="44" y="78.2" text-anchor="end" font-size="10" fill="#5a5652">20%</text><line x1="52" y1="30.0" x2="920" y2="30.0" stroke="#E8E4DF" stroke-width="1"></line><text x="44" y="33.0" text-anchor="end" font-size="10" fill="#5a5652">25%</text><rect x="88.2" y="190.9" width="72.3" height="65.1" rx="3" fill="#B8860B" opacity="0.9"></rect><rect x="232.8" y="194.5" width="72.3" height="61.5" rx="3" fill="#B8860B" opacity="0.9"></rect><rect x="377.5" y="49.9" width="72.3" height="206.1" rx="3" fill="#B8860B" opacity="0.9"></rect><rect x="522.2" y="171.0" width="72.3" height="85.0" rx="3" fill="#B8860B" opacity="0.9"></rect><rect x="666.8" y="76.1" width="72.3" height="179.9" rx="3" fill="#B8860B" opacity="0.9"></rect><rect x="811.5" y="64.4" width="72.3" height="191.6" rx="3" fill="#B8860B" opacity="0.9"></rect><text x="124.3" y="184.9" text-anchor="middle" font-size="13" font-weight="700" fill="#2d2926">7%</text><text x="269.0" y="188.5" text-anchor="middle" font-size="13" font-weight="700" fill="#2d2926">7%</text><text x="413.7" y="43.9" text-anchor="middle" font-size="13" font-weight="700" fill="#2d2926">23%</text><text x="558.3" y="165.0" text-anchor="middle" font-size="13" font-weight="700" fill="#2d2926">9%</text><text x="703.0" y="70.1" text-anchor="middle" font-size="13" font-weight="700" fill="#2d2926">20%</text><text x="847.7" y="58.4" text-anchor="middle" font-size="13" font-weight="700" fill="#2d2926">21%</text><text x="124.3" y="274" text-anchor="middle" font-size="11" fill="#5a5652">Jan</text><text x="269.0" y="274" text-anchor="middle" font-size="11" fill="#5a5652">Feb</text><text x="413.7" y="274" text-anchor="middle" font-size="11" fill="#5a5652">Mar</text><text x="558.3" y="274" text-anchor="middle" font-size="11" fill="#5a5652">Apr</text><text x="703.0" y="274" text-anchor="middle" font-size="11" fill="#5a5652">May</text><text x="847.7" y="274" text-anchor="middle" font-size="11" fill="#5a5652">Jun</text><text x="52" y="14" font-size="10.5" fill="#5a5652">Full new-content fees committed &#247; total partnership spend, by month &#183; 2026 YTD</text></svg></div>
+  <div class="note">Full content fees for ads launched each month (each flat fee counted in full &#8212; a signed fee is a fixed cost regardless of days live or early pause; Agentio at 10%/20% of spend) &#247; that month's total partnership Meta spend (ex-justbobbi), Jan&#8211;Jun 2026. This is a full-commitment view; the 26% content-efficiency figure prorates fees to days live, which is why it reads lower.</div>
+</section>
+</div>
+<div class="navbar"><span>Partnership Recap · <b>June 2026</b></span><span>Slide <span id="cur">10</span> / <span id="tot">9</span> <span class="btns"><button id="editbtn" onclick="toggleEdit()" class="">✎ Edit text</button><button onclick="downloadDeck()">⬇ Download</button><button onclick="go(i-1)">‹ Prev</button><button onclick="go(i+1)">Next ›</button></span></span></div>
+<script>
+const slides=[...document.querySelectorAll('.slide')];let i=0;
+const cur=document.getElementById('cur'),tot=document.getElementById('tot');tot.textContent=slides.length;
+function go(n){i=Math.max(0,Math.min(slides.length-1,n));slides[i].scrollIntoView({behavior:'smooth',block:'start'});cur.textContent=i+1;}
+document.addEventListener('keydown',e=>{if(e.target&&e.target.isContentEditable)return;if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();go(i+1);}if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();go(i-1);}});
+const io=new IntersectionObserver(es=>{es.forEach(en=>{if(en.isIntersecting){i=slides.indexOf(en.target);cur.textContent=i+1;}})},{threshold:.5});
+slides.forEach(s=>io.observe(s));
+
+let editing=false;
+const EDITSEL='h1,h2,.eyebrow,.sub,.foot,.note,.lead,.kpi .l,.kpi .v,.kpi .d,td,th,li,.card h3,.big,.pill';
+function toggleEdit(){editing=!editing;document.body.classList.toggle('editmode',editing);
+ document.querySelectorAll(EDITSEL).forEach(el=>{el.contentEditable=editing;});
+ var b=document.getElementById('editbtn'); if(b){b.textContent=editing?'✓ Done':'✎ Edit text';b.classList.toggle('on',editing);}}
+function downloadDeck(){
+ var clone=document.documentElement.cloneNode(true);
+ clone.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
+ var bd=clone.querySelector('body'); if(bd)bd.classList.remove('editmode');
+ var bn=clone.querySelector('#editbanner'); if(bn)bn.remove();
+ var eb=clone.querySelector('#editbtn'); if(eb){eb.textContent='✎ Edit text';eb.classList.remove('on');}
+ var html='<!doctype html>\n<html lang="en">'+clone.innerHTML+'</html>';
+ var blob=new Blob([html],{type:'text/html'});
+ var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='partnership-recap-june-2026-edited.html';document.body.appendChild(a);a.click();a.remove();}
+</script></body></html>

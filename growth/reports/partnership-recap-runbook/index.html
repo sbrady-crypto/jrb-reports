@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Partnership Recap — Monthly Runbook</title>
+<style>
+:root{--cream:#FAF9F7;--warm:#E8E4DF;--light:#F3F1EE;--gold:#B8860B;--gold-l:#D4A84B;--dark:#2d2926;--dark-l:#5a5652;--green:#2E7D32;--red:#C62828;--white:#fff;--radius:12px;--shadow:0 2px 10px rgba(45,41,38,.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--warm);color:var(--dark);line-height:1.6}
+.wrap{max-width:860px;margin:0 auto;padding:32px 18px 80px}
+header{background:var(--dark);color:var(--cream);border-radius:var(--radius);padding:34px 32px;margin-bottom:24px}
+header .eye{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-l);font-weight:700;margin-bottom:10px}
+header h1{font-size:34px;font-weight:700;letter-spacing:-.5px;line-height:1.1}
+header p{opacity:.8;margin-top:12px;font-size:15px;max-width:640px}
+section{background:var(--cream);border-radius:var(--radius);padding:26px 30px;margin-bottom:18px;box-shadow:var(--shadow)}
+h2{font-size:20px;font-weight:700;color:var(--dark);border-bottom:2px solid var(--gold);display:inline-block;padding-bottom:5px;margin-bottom:16px}
+h3{font-size:14px;text-transform:uppercase;letter-spacing:.6px;color:var(--gold);margin:18px 0 8px}
+p,li{font-size:14.5px;color:var(--dark)}
+ul,ol{padding-left:22px;margin:8px 0}
+li{margin-bottom:7px}
+b{color:var(--dark)}
+code{background:var(--light);border:1px solid var(--warm);border-radius:5px;padding:1px 6px;font-size:12.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#7a3e00;word-break:break-word}
+.step{display:flex;gap:14px;margin-bottom:16px}
+.num{flex:0 0 30px;height:30px;border-radius:50%;background:var(--gold);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px}
+.step .body{flex:1}
+.callout{background:#fffbe9;border-left:4px solid var(--gold);border-radius:8px;padding:12px 16px;margin:12px 0;font-size:13.5px}
+.warn{background:#fdecec;border-left:4px solid var(--red)}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}
+th{text-align:left;background:var(--light);padding:8px 10px;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--dark-l);border-bottom:2px solid var(--warm)}
+td{padding:8px 10px;border-bottom:1px solid var(--light);vertical-align:top}
+td:first-child{font-weight:600;white-space:nowrap}
+.tag{display:inline-block;background:var(--dark);color:var(--cream);font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px}
+.foot{font-size:12px;color:var(--dark-l);text-align:center;margin-top:20px}
+</style></head><body>
+<div class="wrap">
+<header>
+  <div class="eye">Jones Road Beauty · Growth</div>
+  <h1>Partnership Performance Recap — Monthly Runbook</h1>
+  <p>Everything needed to rebuild the monthly creator-partnership recap deck: data sources, exact filters, the metric definitions we settled on, and the 9-slide structure. Hand this to Claude (or a teammate) at month-end and say "rebuild the partnership recap for [month] using this runbook."</p>
+</header>
+
+<section>
+  <h2>What this is</h2>
+  <p>A self-contained HTML slide deck recapping <b>third-party creator-partnership performance on Meta</b> for the month. Built in the JRB house theme (cream / charcoal / gold), published as a claude.ai Artifact with a built-in <b>Edit mode + Download</b> button so anyone can tweak copy and export their own copy. <b>Data-driven — never hand-type the numbers.</b></p>
+  <div class="callout"><b>Golden rule:</b> copy/wording can be hand-edited; <b>numbers, tables and charts must be recomputed</b> from the sources below, or the reconciliation breaks.</div>
+</section>
+
+<section>
+  <h2>Data sources</h2>
+  <table>
+    <tr><th>Source</th><th>What it gives</th><th>Key access</th></tr>
+    <tr><td>Google Sheet<br>"New Master"</td><td>Creator roster: name (A), content fee $ (D), % of ad spend (E), agency (G), Ad Launch Date (T), job code(s) (X)</td><td><code>14JFuRlI1E7cm3ADNIMbLXPo_BAsOneoqJviNY9c91lQ</code> · data starts row index 2 (two header rows)</td></tr>
+    <tr><td>Polar</td><td>Northbeam first-time attribution × Meta spend (topline, by-source, daily, MoM)</td><td><code>get_context</code> v3.2 → conversation_id, then <code>generate_report</code></td></tr>
+    <tr><td>Meta Ads MCP</td><td>Per-ad June spend + reach / CTR / ThruPlay; job codes from ad names</td><td>account <code>788856061928226</code>, <code>ads_get_ad_entities</code> (level=ad)</td></tr>
+  </table>
+  <h3>Partnership filter (Polar)</h3>
+  <p><code>ad_name CONTAINS "partnership" AND NOT CONTAINS "justbobbi"</code> (nested array = AND) · <code>campaign NOTCONTAINS returning / viewcontent / quizcomplete</code>. Metrics: <code>revenue_first_time, transactions_first_time, facebookads…spend</code> (+ impressions, link_clicks, visits, new_visits as needed).</p>
+  <h3>Meta per-ad pull</h3>
+  <p>Filter <code>ad.campaign_id EQUAL &lt;one id&gt;</code> — query the 3 partnership campaigns one at a time (an <code>IN</code> across all three times out). Campaign IDs: <code>120232761995510628</code>, <code>120243090707210628</code>, <code>120252337108490628</code>. Parse the job code from each ad name with regex <code>^[A-Z]{1,4}\d{2,4}$</code> on the pipe-delimited segments (guard against <code>AdNN</code> variation tokens).</p>
+</section>
+
+<section>
+  <h2>Metric definitions <span class="tag">the important part</span></h2>
+  <ol>
+    <li><b>Exclude justbobbi everywhere</b> — it's Bobbi's founder content, not a partner. Variants: <code>justbobbiwithjrb</code>, <code>justbobbidotcom</code>, <code>partnershipwithjustbobbi</code>.</li>
+    <li><b>ROAS / CPA = Northbeam first-time revenue ÷ Meta spend.</b> New-customer only, so values <1.0 are expected (excludes returning & LTV).</li>
+    <li><b>Agentio bills % of spend, no flat fee</b> → its content fee = <code>pct × spend</code> (col E: 10% new cohort / 20% old). Never $0. A couple non-Agentio deals are also % (e.g. brontè 10%).</li>
+    <li><b>Agency is per-job.</b> Don't use "last non-empty agency" — it mis-tags established creators (e.g. Amanda West is <b>Superbloom</b>, not Internal). Assign by the dominant / fee-bearing jobs.</li>
+    <li><b>Content efficiency = job-matched + prorated.</b> Match each June-launched ad's fee to <b>that same ad's</b> June spend (by job code, not a creator's blended spend). Prorate the flat fee by days-live-in-the-month; Agentio unprorated (already % of spend). This is the "did new content earn its fee yet" number (June '26 = 26%). Only covers the share of spend that's new content (~38%); the rest is established ads already paid for.</li>
+    <li><b>Content-fee LOAD (over-time chart) = FULL committed fees, NOT prorated.</b> A signed fee is a fixed cost regardless of days live or an early pause, so it counts in full the month the ad launched, ÷ that month's total partnership spend. This is a spend-burden view and is lumpy (swings with signing cadence) — deliberately different from #5.</li>
+    <li><b>"New launches" = creators with an ad set launched in the month (Partnership CO IA campaign).</b> Includes established creators who launched a <b>new</b> job that month; excludes creators running only prior-month content (e.g. Emily DiDonato). Rank by spend.</li>
+    <li><b>Headline story = the audience-exclusion / Meta change.</b> In June it was the June 22 change — split pre (1–22) vs post (23–EOM); partners' first-time ROAS ~doubled, CPA ~halved. Each month, find the inflection and split around it.</li>
+  </ol>
+  <div class="callout warn"><b>Efficiency vs load, in one line:</b> efficiency <b>prorates</b> the fee (fee ÷ that content's own spend); load uses the <b>full</b> fee (fee ÷ all spend that month). That's why the two numbers differ — it's intentional, and both notes on the deck say so.</div>
+</section>
+
+<section>
+  <h2>The deck — 9 slides</h2>
+  <ol>
+    <li><b>Title</b> — month, "creator partnerships only · excludes founder content".</li>
+    <li><b>Partnership over time</b> — MoM Meta partnership spend (bars) + % of total Meta spend (label on each bar).</li>
+    <li><b>Month topline</b> — Spend · new-ad content fees · content efficiency · first-time rev · first-time ROAS (+ CPA, customers, creators live, cohort, top source). Each KPI tagged with its source (Meta / Northbeam / Tracker).</li>
+    <li><b>The headline</b> — pre/post the month's Meta change; daily first-time ROAS chart + the ROAS→ROAS and CPA→CPA swing.</li>
+    <li><b>Performance by source</b> — Superbloom / Internal / Aspire / Agentio: spend, first-time rev, ROAS, ROAS post-change, CPA, content eff.</li>
+    <li><b>Full funnel by partner</b> — top 12 by spend: Meta CPM/CTR + Northbeam ROAS/CPA in one table + program strip.</li>
+    <li><b>New launches</b> — creators with a new ad launched that month, ranked by spend.</li>
+    <li><b>Content-efficiency deep dive</b> — job-matched, prorated (26%); by-source + "reading the number".</li>
+    <li><b>Content-fee load (YTD)</b> — full committed fees ÷ monthly spend, month by month.</li>
+  </ol>
+</section>
+
+<section>
+  <h2>How to run it each month</h2>
+  <div class="step"><div class="num">1</div><div class="body"><b>Set the window.</b> 2025-01-01 → last completed month-end. Never include the current (partial) month.</div></div>
+  <div class="step"><div class="num">2</div><div class="body"><b>Pull the roster</b> from "New Master" (fees, % of spend, agency, launch dates, job codes).</div></div>
+  <div class="step"><div class="num">3</div><div class="body"><b>Pull Polar</b> — partnership filter (ex-justbobbi): monthly spend + % of Meta; the month's topline; daily for the pre/post split; by-source.</div></div>
+  <div class="step"><div class="num">4</div><div class="body"><b>Pull Meta per-ad</b> for the month (3 campaigns, one at a time); parse job codes; get reach/CTR/ThruPlay + per-job spend.</div></div>
+  <div class="step"><div class="num">5</div><div class="body"><b>Compute</b> per the definitions above: job-matched prorated content efficiency, full-fee content-fee load, by-source, full-funnel, new launches.</div></div>
+  <div class="step"><div class="num">6</div><div class="body"><b>Assemble</b> the 9-slide HTML (JRB theme, Edit-mode + Download script), <b>preview to confirm it renders</b>, then publish as an Artifact.</div></div>
+  <div class="callout">Reference implementation + saved methodology: Claude's memory note <code>reference_partnership_recap_runbook</code>. Prior month's deck file: <code>~/Desktop/partnership-recap-&lt;month&gt;.html</code>.</div>
+</section>
+
+<section>
+  <h2>Gotchas we hit</h2>
+  <ul>
+    <li><b>justbobbi</b> quietly inflates the topline — exclude it in every pull, not just the creator tables.</li>
+    <li><b>Emily DiDonato / Lauren Youash</b> show big June spend but no <b>new</b> June ad — they belong in account-wide views, not "new launches".</li>
+    <li><b>Reach isn't additive</b> across ads (dedup) — don't sum it for a true cost-per-1k-reached; CPM is the clean cross-partner metric. Thumbstop needs Meta video data not in Polar.</li>
+    <li><b>Chart regex:</b> two charts can share a viewBox — scope any find/replace to a single slide or you'll eat neighbors.</li>
+    <li>When editing the shared HTML by hand, keep the closing <code>&lt;/div&gt; · navbar · &lt;script&gt;</code> tail attached — it lives after the last slide.</li>
+  </ul>
+</section>
+
+<div class="foot">JRB Growth · Partnership Recap Runbook · rebuild monthly</div>
+</div>
+</body></html>
